@@ -2133,8 +2133,9 @@ document.addEventListener('DOMContentLoaded', init);
 // FEEDBACK
 // ════════════════════════════════════════════════════════
 
-// Formspree endpoint — replace FORM_ID after creating form at formspree.io
-const FORMSPREE_URL = 'https://formspree.io/f/xpwwgdqr';
+// To upgrade to Formspree: create a free form at formspree.io, then replace:
+// const FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID';
+const FORMSPREE_URL = null;
 
 let fbRating = 0;
 
@@ -2176,9 +2177,10 @@ async function submitFeedback(e) {
 
   const role = document.getElementById('fb-role').value;
   if (!role) {
-    document.getElementById('fb-role').focus();
-    document.getElementById('fb-role').style.borderColor = '#8B2535';
-    setTimeout(() => document.getElementById('fb-role').style.borderColor = '', 1500);
+    const sel = document.getElementById('fb-role');
+    sel.focus();
+    sel.style.borderColor = '#8B2535';
+    setTimeout(() => sel.style.borderColor = '', 1800);
     return;
   }
 
@@ -2187,37 +2189,57 @@ async function submitFeedback(e) {
   btn.textContent = 'Sending…';
 
   const form = document.getElementById('fb-form');
-  const data = new FormData(form);
-
-  // Collect checkboxes manually
   const useful = Array.from(form.querySelectorAll('input[type=checkbox]:checked')).map(c => c.value);
-  data.set('useful_features', useful.join(', ') || 'None selected');
-  data.set('rating', fbRating ? `${fbRating}/5 stars` : 'Not rated');
+  const comments  = document.getElementById('fb-comments').value.trim();
+  const replyEmail = document.getElementById('fb-email').value.trim();
+  const name      = document.getElementById('fb-name').value.trim();
 
-  try {
-    const res = await fetch(FORMSPREE_URL, {
-      method: 'POST',
-      body: data,
-      headers: { Accept: 'application/json' },
-    });
+  const ratingStr = fbRating ? `${fbRating}/5 stars` : 'Not rated';
+  const usefulStr = useful.length ? useful.join(', ') : 'None selected';
 
-    if (res.ok) {
-      showThankyou();
-    } else {
-      const json = await res.json().catch(() => ({}));
-      // Formspree may return errors array
-      throw new Error(json.errors?.map(e => e.message).join(', ') || `HTTP ${res.status}`);
-    }
-  } catch (err) {
-    btn.disabled = false;
-    btn.textContent = 'Send Feedback';
-    // Fallback: open mailto
-    const body = encodeURIComponent(
-      `Role: ${role}\nRating: ${fbRating}/5\nUseful: ${useful.join(', ')}\n\nComments: ${document.getElementById('fb-comments').value}\n\nFrom: ${document.getElementById('fb-name').value} <${document.getElementById('fb-email').value}>`
-    );
-    window.location.href = `mailto:sravan.prathy@gmail.com?subject=PrivacyWatch%20Feedback&body=${body}`;
-    showThankyou();
+  // Try Formspree first if configured
+  if (FORMSPREE_URL) {
+    try {
+      const data = new FormData(form);
+      data.set('rating', ratingStr);
+      data.set('useful_features', usefulStr);
+      const res = await fetch(FORMSPREE_URL, {
+        method: 'POST', body: data,
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) { showThankyou(); return; }
+    } catch (_) { /* fall through to mailto */ }
   }
+
+  // Mailto fallback — compiles a clean formatted email
+  const subject = encodeURIComponent('PrivacyWatch Beta Feedback');
+  const bodyLines = [
+    `PrivacyWatch Beta Feedback`,
+    `──────────────────────────`,
+    `Name:     ${name || '(not provided)'}`,
+    `Role:     ${role}`,
+    `Rating:   ${ratingStr}`,
+    `Useful:   ${usefulStr}`,
+    ``,
+    `Comments:`,
+    comments || '(none)',
+    ``,
+    `Reply to: ${replyEmail || '(not provided)'}`,
+    `Sent from: https://sravanprat.github.io/privacy-watch/`,
+  ];
+  const mailtoHref = `mailto:sravan.prathy@gmail.com?subject=${subject}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+
+  // Open in new tab so it doesn't navigate away
+  const a = document.createElement('a');
+  a.href = mailtoHref;
+  a.target = '_blank';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  btn.disabled = false;
+  btn.textContent = 'Send Feedback';
+  showThankyou();
 }
 
 function showThankyou() {
