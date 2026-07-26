@@ -270,32 +270,66 @@ html.dark{
   --green:#3A8C64;--burgundy:#9B3A4A;--amber:#C98A3E;
 }
 html.dark body{background:var(--ivory);color:var(--text)}
+
+/* ── Surfaces ── */
 html.dark .stat-strip{background:var(--cream);border-color:var(--border)}
-html.dark .stat-item{border-color:var(--border)}
-html.dark .stat-value{color:var(--text)}
 html.dark .problem-section{background:var(--ivory)}
-html.dark .problem-card{background:var(--cream);border-color:var(--border)}
-html.dark .solution-section,.html.dark .features-section{background:var(--cream)}
 html.dark .solution-section{background:var(--cream)}
 html.dark .features-section{background:var(--cream)}
-html.dark .feature-card{background:var(--warm-gray);border-color:var(--border)}
 html.dark .audience-section{background:var(--ivory)}
-html.dark .audience-card{background:var(--cream);border-color:var(--border)}
 html.dark .sources-section{background:var(--ivory)}
-html.dark .source-tab{border-color:var(--border);color:var(--text-mid)}
-html.dark .source-tab.active{background:var(--gold);color:#0F1219;border-color:var(--gold)}
-html.dark .source-tile{background:var(--cream);border-color:var(--border)}
-html.dark .source-name,.html.dark .source-what{color:var(--text-mid)}
 html.dark .how-section{background:var(--cream)}
-html.dark .how-step{border-color:var(--border)}
 html.dark .disclaimer-section{background:var(--warm-gray)}
+
+/* ── Cards & tiles ── */
+html.dark .stat-item{background:var(--cream);border-color:var(--border)}
+html.dark .problem-card{background:var(--cream);border-color:var(--border)}
+html.dark .feature-card{background:var(--warm-gray);border-color:var(--border)}
+html.dark .audience-card{background:var(--cream);border-color:var(--border)}
+html.dark .source-tile{background:var(--cream);border-color:var(--border)}
 html.dark .disclaimer-box{background:var(--cream);border-color:var(--border)}
+
+/* ── Text — previously missing or had .html.dark typo ── */
+html.dark .stat-value{color:var(--text)}
+html.dark .stat-label{color:var(--text-muted)}
+html.dark .section-eyebrow{color:var(--gold)}
+html.dark .section-title{color:var(--text)}
+html.dark .section-deck{color:var(--text-mid)}
+html.dark .sources-intro{color:var(--text-mid)}
+html.dark .problem-title{color:var(--text)}
+html.dark .problem-body{color:var(--text-mid)}
+html.dark .audience-role{color:var(--gold)}
+html.dark .audience-title{color:var(--text)}
+html.dark .audience-body{color:var(--text-mid)}
+html.dark .audience-gets li{color:var(--text-mid)}
+html.dark .feature-title{color:var(--text)}
+html.dark .feature-body{color:var(--text-mid)}
+html.dark .source-name{color:var(--text-mid)}   /* fixed typo */
+html.dark .source-what{color:var(--text-muted)} /* fixed typo */
+html.dark .step-title{color:var(--text)}
+html.dark .step-desc{color:var(--text-mid)}
+html.dark .step-note{color:var(--text-muted)}
+html.dark .step-arrow{color:var(--text-muted)}
+html.dark .disclaimer-title{color:var(--text)}
+html.dark .disclaimer-body{color:var(--text-mid)}
+html.dark .hero-deck{color:rgba(232,236,244,0.65)}
+html.dark p{color:var(--text-mid)}
+
+/* ── Source tabs ── */
+html.dark .source-tab{border-color:var(--border);color:var(--text-mid);background:transparent}
+html.dark .source-tab:hover{color:var(--text);border-color:rgba(232,236,244,0.25)}
+html.dark .source-tab.active{background:var(--gold);color:#0F1219;border-color:var(--gold)}
+
+/* ── How it works ── */
+html.dark .how-step{border-color:var(--border)}
 html.dark .step-num{background:var(--gold);color:#0F1219}
-html.dark .nav-cta{background:var(--gold);color:#0F1219}
-html.dark .nav-cta:hover{background:#D4A84B}
+
+/* ── Buttons & links ── */
 html.dark a{color:var(--gold)}
 html.dark .btn-primary{background:var(--gold);color:#0F1219}
 html.dark .btn-secondary{border-color:rgba(232,236,244,0.25);color:rgba(232,236,244,0.7)}
+html.dark .nav-cta{background:var(--gold);color:#0F1219}
+html.dark .nav-cta:hover{background:#D4A84B}
 /* Dark mode toggle button on about page */
 .about-mode-toggle{
   width:32px;height:32px;border-radius:50%;
