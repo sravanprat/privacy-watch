@@ -900,10 +900,8 @@ html.dark #disclaimer{background:var(--depth-2);border-top-color:var(--border)}
           <input class="fb-input" type="text" id="fb-name" name="name" placeholder="Your name">
         </div>
 
-        <!-- Hidden metadata -->
-        <input type="hidden" name="_subject" value="PrivacyWatch Beta Feedback">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="source" value="PrivacyWatch Beta">
+        <!-- Hidden honeypot — FormSubmit.co spam prevention -->
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       </form>
     </div>
 
@@ -2133,9 +2131,8 @@ document.addEventListener('DOMContentLoaded', init);
 // FEEDBACK
 // ════════════════════════════════════════════════════════
 
-// To upgrade to Formspree: create a free form at formspree.io, then replace:
-// const FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID';
-const FORMSPREE_URL = null;
+// FormSubmit.co — free, no account. First submission sends Sravan a one-time activation email.
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/sravan.prathy@gmail.com';
 
 let fbRating = 0;
 
@@ -2197,49 +2194,57 @@ async function submitFeedback(e) {
   const ratingStr = fbRating ? `${fbRating}/5 stars` : 'Not rated';
   const usefulStr = useful.length ? useful.join(', ') : 'None selected';
 
-  // Try Formspree first if configured
-  if (FORMSPREE_URL) {
-    try {
-      const data = new FormData(form);
-      data.set('rating', ratingStr);
-      data.set('useful_features', usefulStr);
-      const res = await fetch(FORMSPREE_URL, {
-        method: 'POST', body: data,
-        headers: { Accept: 'application/json' },
-      });
-      if (res.ok) { showThankyou(); return; }
-    } catch (_) { /* fall through to mailto */ }
+  // Build payload
+  const payload = {
+    name:            name || 'Anonymous',
+    email:           replyEmail || '(not provided)',
+    role,
+    rating:          ratingStr,
+    useful_features: usefulStr,
+    comments:        comments || '(none)',
+    _subject:        'PrivacyWatch Beta Feedback',
+    _template:       'table',
+    _captcha:        'false',
+    source:          'https://sravanprat.github.io/privacy-watch/',
+  };
+
+  try {
+    const res = await fetch(FORM_ENDPOINT, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && (data.success === 'true' || data.success === true)) {
+      showThankyou();
+      return;
+    }
+    throw new Error(data.message || `HTTP ${res.status}`);
+  } catch (err) {
+    // Mailto fallback — opens email client as backup
+    btn.disabled = false;
+    btn.textContent = 'Send Feedback';
+    const subject = encodeURIComponent('PrivacyWatch Beta Feedback');
+    const body = encodeURIComponent([
+      'PrivacyWatch Beta Feedback',
+      '──────────────────────────',
+      `Name:     ${name || '(not provided)'}`,
+      `Role:     ${role}`,
+      `Rating:   ${ratingStr}`,
+      `Useful:   ${usefulStr}`,
+      '',
+      'Comments:',
+      comments || '(none)',
+      '',
+      `Reply to: ${replyEmail || '(not provided)'}`,
+    ].join('\n'));
+    const a = Object.assign(document.createElement('a'), {
+      href: `mailto:sravan.prathy@gmail.com?subject=${subject}&body=${body}`,
+      target: '_blank',
+    });
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showThankyou();
   }
-
-  // Mailto fallback — compiles a clean formatted email
-  const subject = encodeURIComponent('PrivacyWatch Beta Feedback');
-  const bodyLines = [
-    `PrivacyWatch Beta Feedback`,
-    `──────────────────────────`,
-    `Name:     ${name || '(not provided)'}`,
-    `Role:     ${role}`,
-    `Rating:   ${ratingStr}`,
-    `Useful:   ${usefulStr}`,
-    ``,
-    `Comments:`,
-    comments || '(none)',
-    ``,
-    `Reply to: ${replyEmail || '(not provided)'}`,
-    `Sent from: https://sravanprat.github.io/privacy-watch/`,
-  ];
-  const mailtoHref = `mailto:sravan.prathy@gmail.com?subject=${subject}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
-
-  // Open in new tab so it doesn't navigate away
-  const a = document.createElement('a');
-  a.href = mailtoHref;
-  a.target = '_blank';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  btn.disabled = false;
-  btn.textContent = 'Send Feedback';
-  showThankyou();
 }
 
 function showThankyou() {
