@@ -588,6 +588,50 @@ html.dark .fb-submit-row{background:var(--depth-3)}
 .fb-ty-close{padding:8px 20px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--platinum);font-size:13px;cursor:pointer;transition:all .15s;font-family:var(--font)}
 .fb-ty-close:hover{border-color:var(--navy);color:var(--navy)}
 
+/* ── FILTER RAIL ENHANCEMENTS ── */
+.filter-group-hdr{
+  display:flex;align-items:center;gap:4px;
+  padding:6px 0 3px;cursor:pointer;
+}
+.filter-group-hdr:hover .filter-grp-label{color:var(--white)}
+.filter-grp-label{
+  font-size:8.5px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);flex:1;
+  transition:color .15s;
+}
+.filter-grp-count{
+  font-size:9px;font-family:var(--mono);color:var(--muted);
+  background:var(--depth-4);border:1px solid var(--border);
+  padding:0 5px;border-radius:8px;min-width:18px;text-align:center;
+  flex-shrink:0;
+}
+.grp-toggle-btn{
+  font-size:9px;font-weight:600;padding:1px 6px;border-radius:3px;
+  border:1px solid var(--border);background:transparent;color:var(--muted);
+  cursor:pointer;font-family:var(--font);transition:all .12s;flex-shrink:0;
+  line-height:1.6;
+}
+.grp-toggle-btn:hover{background:var(--navy);color:#E8ECF4;border-color:var(--navy)}
+.fi-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fi-count{
+  font-size:9px;font-family:var(--mono);color:var(--muted);
+  background:var(--depth-4);border:1px solid var(--border);
+  padding:0 5px;border-radius:8px;min-width:18px;text-align:center;flex-shrink:0;
+}
+.fi-count.has-items{color:var(--white);background:rgba(26,39,68,0.08)}
+/* Remove auto-margin from check since fi-label now grows */
+.filter-check{margin-left:4px !important}
+/* Global all/none for whole section */
+.filter-global-btns{
+  display:flex;gap:4px;margin:4px 8px 6px;
+}
+.filter-global-btn{
+  flex:1;padding:4px;border-radius:4px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-size:10px;font-weight:600;
+  cursor:pointer;font-family:var(--font);transition:all .15s;text-align:center;
+}
+.filter-global-btn:hover{background:var(--navy);color:#E8ECF4;border-color:var(--navy)}
+
 /* ── DISCLAIMER BAR ── */
 #disclaimer{
   position:fixed;bottom:0;left:0;right:0;z-index:50;
@@ -1744,28 +1788,50 @@ const JURIS_GROUPS = [
 function buildFilterRail() {
   const container = document.getElementById('filter-rail-container');
   if (!container) return;
+
+  // Tally counts from live data
+  const srcCount = {}, jurisCount = {};
+  REGULATIONS.forEach(r => {
+    srcCount[r.source]       = (srcCount[r.source]       || 0) + 1;
+    jurisCount[r.jurisdiction] = (jurisCount[r.jurisdiction] || 0) + 1;
+  });
+
+  const totalItems = REGULATIONS.length;
   let html = '';
 
-  // Sources section
+  // ── SOURCES ──────────────────────────────────────────
   html += `<div class="filter-section">
     <div class="filter-section-label" onclick="toggleFilterSection('src-all')">
-      Sources <span class="filter-toggle" id="filter-toggle-src-all">▾</span>
+      Sources
+      <span class="filter-grp-count" style="margin-left:5px">${totalItems}</span>
+      <span class="filter-toggle" id="filter-toggle-src-all" style="margin-left:auto">▾</span>
     </div>
-    <div id="filter-src-all">`;
+    <div id="filter-src-all">
+    <div class="filter-global-btns">
+      <button class="filter-global-btn" onclick="setAllSources(true)">✓ All sources</button>
+      <button class="filter-global-btn" onclick="setAllSources(false)">○ None</button>
+    </div>`;
 
   FILTER_GROUPS.forEach(g => {
-    html += `<div style="padding:4px 0 0">
-      <div class="filter-section-label" style="padding:4px 0 2px;font-size:8.5px;color:var(--muted);letter-spacing:.12em;cursor:pointer"
-           onclick="toggleFilterSection('grp-${g.id}')">
-        ${g.label} <span class="filter-toggle" id="filter-toggle-grp-${g.id}">▾</span>
+    const groupTotal = g.sources.reduce((n, s) => n + (srcCount[s] || 0), 0);
+    html += `<div style="padding:2px 0 0;margin:0 6px">
+      <div class="filter-group-hdr" onclick="toggleFilterSection('grp-${g.id}')">
+        <span class="filter-grp-label">${g.label}</span>
+        <span class="filter-grp-count">${groupTotal}</span>
+        <button class="grp-toggle-btn" onclick="event.stopPropagation();setGroupSources('${g.id}',true)" title="Select all in group">All</button>
+        <button class="grp-toggle-btn" onclick="event.stopPropagation();setGroupSources('${g.id}',false)" title="Deselect all in group">None</button>
+        <span class="filter-toggle" id="filter-toggle-grp-${g.id}" style="font-size:10px;color:var(--muted);margin-left:2px">▾</span>
       </div>
       <div class="filter-items" id="filter-grp-${g.id}">`;
+
     g.sources.forEach(src => {
       const color = SOURCE_COLORS[src] || '#4A5568';
       const label = SOURCE_LABELS[src] || src;
+      const n     = srcCount[src] || 0;
       html += `<div class="filter-item" onclick="toggleFilter('${src}')" id="filter-${src}">
         <div class="filter-dot" style="background:${color}"></div>
-        ${label}
+        <span class="fi-label">${label}</span>
+        <span class="fi-count${n > 0 ? ' has-items' : ''}">${n}</span>
         <div class="filter-check on" style="--filter-color:${color}" id="fc-${src}">✓</div>
       </div>`;
     });
@@ -1773,24 +1839,38 @@ function buildFilterRail() {
   });
   html += `</div></div>`;
 
-  // Jurisdiction section
+  // ── JURISDICTIONS ─────────────────────────────────────
+  const totalJurisItems = REGULATIONS.length;
   html += `<div class="filter-section">
     <div class="filter-section-label" onclick="toggleFilterSection('jur-all')">
-      Jurisdiction <span class="filter-toggle" id="filter-toggle-jur-all">▾</span>
+      Jurisdiction
+      <span class="filter-grp-count" style="margin-left:5px">${totalJurisItems}</span>
+      <span class="filter-toggle" id="filter-toggle-jur-all" style="margin-left:auto">▾</span>
     </div>
-    <div id="filter-jur-all">`;
+    <div id="filter-jur-all">
+    <div class="filter-global-btns">
+      <button class="filter-global-btn" onclick="setAllJuris(true)">✓ All regions</button>
+      <button class="filter-global-btn" onclick="setAllJuris(false)">○ None</button>
+    </div>`;
 
   JURIS_GROUPS.forEach(g => {
-    html += `<div style="padding:4px 0 0">
-      <div class="filter-section-label" style="padding:4px 0 2px;font-size:8.5px;color:var(--muted);letter-spacing:.12em;cursor:pointer"
-           onclick="toggleFilterSection('jg-${g.id}')">
-        ${g.label} <span class="filter-toggle" id="filter-toggle-jg-${g.id}">▾</span>
+    const groupTotal = g.items.reduce((n, item) => n + (jurisCount[item.id] || 0), 0);
+    html += `<div style="padding:2px 0 0;margin:0 6px">
+      <div class="filter-group-hdr" onclick="toggleFilterSection('jg-${g.id}')">
+        <span class="filter-grp-label">${g.label}</span>
+        <span class="filter-grp-count">${groupTotal}</span>
+        <button class="grp-toggle-btn" onclick="event.stopPropagation();setGroupJuris('${g.id}',true)">All</button>
+        <button class="grp-toggle-btn" onclick="event.stopPropagation();setGroupJuris('${g.id}',false)">None</button>
+        <span class="filter-toggle" id="filter-toggle-jg-${g.id}" style="font-size:10px;color:var(--muted);margin-left:2px">▾</span>
       </div>
       <div class="filter-items" id="filter-jg-${g.id}">`;
+
     g.items.forEach(item => {
+      const n = jurisCount[item.id] || 0;
       html += `<div class="filter-item" onclick="toggleJuris('${item.id}')" id="j-${item.id}">
         <div class="filter-dot" style="background:${item.color}"></div>
-        ${item.label}
+        <span class="fi-label">${item.label}</span>
+        <span class="fi-count${n > 0 ? ' has-items' : ''}">${n}</span>
         <div class="filter-check on" style="--filter-color:${item.color}" id="jc-${item.id}">✓</div>
       </div>`;
     });
@@ -1799,6 +1879,47 @@ function buildFilterRail() {
   html += `</div></div>`;
 
   container.innerHTML = html;
+}
+
+// ── GROUP / GLOBAL TOGGLE HELPERS ──────────────────────
+function setGroupSources(groupId, value) {
+  const g = FILTER_GROUPS.find(g => g.id === groupId);
+  if (!g) return;
+  g.sources.forEach(src => {
+    STATE.sources[src] = value;
+    const el = document.getElementById(`fc-${src}`);
+    if (el) { el.className = `filter-check${value?' on':''}`; el.textContent = value ? '✓' : ''; }
+  });
+  if (STATE.view === 'radar') renderView();
+}
+
+function setGroupJuris(groupId, value) {
+  const g = JURIS_GROUPS.find(g => g.id === groupId);
+  if (!g) return;
+  g.items.forEach(item => {
+    STATE.juris[item.id] = value;
+    const el = document.getElementById(`jc-${item.id}`);
+    if (el) { el.className = `filter-check${value?' on':''}`; el.textContent = value ? '✓' : ''; }
+  });
+  if (STATE.view === 'radar') renderView();
+}
+
+function setAllSources(value) {
+  Object.keys(STATE.sources).forEach(src => {
+    STATE.sources[src] = value;
+    const el = document.getElementById(`fc-${src}`);
+    if (el) { el.className = `filter-check${value?' on':''}`; el.textContent = value ? '✓' : ''; }
+  });
+  if (STATE.view === 'radar') renderView();
+}
+
+function setAllJuris(value) {
+  Object.keys(STATE.juris).forEach(j => {
+    STATE.juris[j] = value;
+    const el = document.getElementById(`jc-${j}`);
+    if (el) { el.className = `filter-check${value?' on':''}`; el.textContent = value ? '✓' : ''; }
+  });
+  if (STATE.view === 'radar') renderView();
 }
 
 function toggleFilter(source) {
