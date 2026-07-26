@@ -259,6 +259,53 @@ footer{background:var(--navy);padding:40px 0;color:rgba(232,236,244,0.5)}
 /* ── DIVIDER ── */
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0}
 
+/* ── DARK MODE ── */
+html.dark{
+  --navy:#0F1A33;--navy-mid:#1A2A4A;
+  --ivory:#0F1219;--cream:#151B27;--warm-gray:#1C2333;--tan:#232D42;
+  --border:rgba(255,255,255,0.08);
+  --text:#E8ECF4;--text-mid:#8B9BB4;--text-muted:#4A5978;
+  --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.12);--gold-border:rgba(201,168,76,0.20);
+  --slate:#4A6FA5;--slate-dim:rgba(74,111,165,0.12);
+  --green:#3A8C64;--burgundy:#9B3A4A;--amber:#C98A3E;
+}
+html.dark body{background:var(--ivory);color:var(--text)}
+html.dark .stat-strip{background:var(--cream);border-color:var(--border)}
+html.dark .stat-item{border-color:var(--border)}
+html.dark .stat-value{color:var(--text)}
+html.dark .problem-section{background:var(--ivory)}
+html.dark .problem-card{background:var(--cream);border-color:var(--border)}
+html.dark .solution-section,.html.dark .features-section{background:var(--cream)}
+html.dark .solution-section{background:var(--cream)}
+html.dark .features-section{background:var(--cream)}
+html.dark .feature-card{background:var(--warm-gray);border-color:var(--border)}
+html.dark .audience-section{background:var(--ivory)}
+html.dark .audience-card{background:var(--cream);border-color:var(--border)}
+html.dark .sources-section{background:var(--ivory)}
+html.dark .source-tab{border-color:var(--border);color:var(--text-mid)}
+html.dark .source-tab.active{background:var(--gold);color:#0F1219;border-color:var(--gold)}
+html.dark .source-tile{background:var(--cream);border-color:var(--border)}
+html.dark .source-name,.html.dark .source-what{color:var(--text-mid)}
+html.dark .how-section{background:var(--cream)}
+html.dark .how-step{border-color:var(--border)}
+html.dark .disclaimer-section{background:var(--warm-gray)}
+html.dark .disclaimer-box{background:var(--cream);border-color:var(--border)}
+html.dark .step-num{background:var(--gold);color:#0F1219}
+html.dark .nav-cta{background:var(--gold);color:#0F1219}
+html.dark .nav-cta:hover{background:#D4A84B}
+html.dark a{color:var(--gold)}
+html.dark .btn-primary{background:var(--gold);color:#0F1219}
+html.dark .btn-secondary{border-color:rgba(232,236,244,0.25);color:rgba(232,236,244,0.7)}
+/* Dark mode toggle button on about page */
+.about-mode-toggle{
+  width:32px;height:32px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);
+  color:rgba(232,236,244,0.6);cursor:pointer;font-size:13px;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+  flex-shrink:0;
+}
+.about-mode-toggle:hover{border-color:rgba(255,255,255,0.4);color:#E8ECF4}
+
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
   .container,.container-wide{padding:0 20px}
@@ -285,7 +332,8 @@ footer{background:var(--navy);padding:40px 0;color:rgba(232,236,244,0.5)}
   <div class="nav-links">
     <a href="about.html" class="nav-link active">About</a>
     <a href="index.html" class="nav-link">Radar</a>
-    <a href="index.html" class="nav-cta">Open App →</a>
+    <a href="https://privacywatch.io" class="nav-cta">Open App →</a>
+    <button class="about-mode-toggle" onclick="toggleAboutMode()" id="about-mode-btn" title="Toggle dark/light mode">☾</button>
   </div>
 </nav>
 
@@ -697,6 +745,23 @@ function toggleStep(el) {
   document.querySelectorAll('.how-step').forEach(s => s.classList.remove('open'));
   if (!wasOpen) el.classList.add('open');
 }
+function toggleAboutMode() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('pw-dark', isDark ? '1' : '0');
+  const btn = document.getElementById('about-mode-btn');
+  if (btn) btn.textContent = isDark ? '☀' : '☾';
+}
+// On load: respect saved preference or system preference
+(function() {
+  const saved = localStorage.getItem('pw-dark');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const dark = saved !== null ? saved === '1' : prefersDark;
+  if (dark) {
+    document.documentElement.classList.add('dark');
+    const btn = document.getElementById('about-mode-btn');
+    if (btn) btn.textContent = '☀';
+  }
+})();
 </script>
 </body>
 </html>

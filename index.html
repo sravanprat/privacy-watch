@@ -2488,9 +2488,20 @@ function handleInputKey(e) {
 // ════════════════════════════════════════════════════════
 
 function toggleMode() {
-  document.documentElement.classList.toggle('dark');
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('pw-dark', isDark ? '1' : '0');
   const btn = document.querySelector('.mode-toggle');
-  if (btn) btn.textContent = document.documentElement.classList.contains('dark') ? '☀' : '☾';
+  if (btn) btn.textContent = isDark ? '☀' : '☾';
+}
+
+function initDarkMode() {
+  const saved = localStorage.getItem('pw-dark');
+  // Use saved preference, or fall back to OS preference
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const dark = saved !== null ? saved === '1' : prefersDark;
+  if (dark) document.documentElement.classList.add('dark');
+  const btn = document.querySelector('.mode-toggle');
+  if (btn) btn.textContent = dark ? '☀' : '☾';
 }
 
 function formatDate(d) {
@@ -2515,6 +2526,7 @@ function hexDim(hex) {
 // ════════════════════════════════════════════════════════
 
 function init() {
+  initDarkMode();
   buildFilterRail();
   // Update nav counts from data
   const radarCount = document.getElementById('count-radar');
