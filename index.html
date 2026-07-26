@@ -2167,9 +2167,9 @@ function setRating(val) {
 }
 
 function toggleCheck(label) {
-  // Don't double-toggle — the click already toggled the checkbox
   const cb = label.querySelector('input[type=checkbox]');
-  label.classList.toggle('checked', cb.checked);
+  // Defer one tick so the browser has finished toggling cb.checked before we read it
+  setTimeout(() => label.classList.toggle('checked', cb.checked), 0);
 }
 
 async function submitFeedback(e) {
