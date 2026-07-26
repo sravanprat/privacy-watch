@@ -43,7 +43,7 @@ a:hover{text-decoration:underline}
 .nav-cta:hover{background:#D4A74B;text-decoration:none}
 
 /* ── PAGE SECTIONS ── */
-section{padding:80px 0}
+section{padding:56px 0}
 .container{max-width:860px;margin:0 auto;padding:0 40px}
 .container-wide{max-width:1100px;margin:0 auto;padding:0 40px}
 
@@ -156,7 +156,7 @@ section{padding:80px 0}
 
 /* ── FEATURES ── */
 .features-section{background:var(--cream)}
-.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
 .feature-card{
   display:flex;gap:16px;padding:22px 20px;
   background:var(--ivory);border:1px solid var(--border);border-radius:8px;
@@ -189,8 +189,17 @@ section{padding:80px 0}
 
 /* ── HOW IT WORKS ── */
 .how-section{background:var(--cream)}
-.how-steps{display:flex;flex-direction:column;gap:0;margin-top:40px;max-width:640px}
-.how-step{display:flex;gap:24px;padding:24px 0;border-bottom:1px solid var(--border);position:relative}
+.how-steps{display:flex;flex-direction:column;gap:0;margin-top:28px;max-width:680px}
+.how-step{
+  display:flex;gap:20px;padding:14px 0;border-bottom:1px solid var(--border);
+  cursor:pointer;position:relative;align-items:flex-start;
+}
+.how-step:last-child{border-bottom:none}
+.how-step .step-desc,.how-step .step-note{display:none}
+.how-step.open .step-desc,.how-step.open .step-note{display:block}
+.step-title-row{display:flex;align-items:center;gap:8px;width:100%}
+.step-arrow{margin-left:auto;font-size:11px;color:var(--text-muted);flex-shrink:0;transition:transform .2s;line-height:1}
+.how-step.open .step-arrow{transform:rotate(180deg)}
 .how-step:last-child{border-bottom:none}
 .step-num{
   width:36px;height:36px;border-radius:50%;background:var(--navy);
@@ -226,6 +235,26 @@ footer{background:var(--navy);padding:40px 0;color:rgba(232,236,244,0.5)}
 .footer-link{font-size:12px;color:rgba(232,236,244,0.4);transition:color .15s}
 .footer-link:hover{color:#E8ECF4;text-decoration:none}
 .footer-note{font-size:11px;color:rgba(232,236,244,0.3);width:100%;text-align:center;margin-top:8px;border-top:1px solid rgba(255,255,255,0.06);padding-top:20px}
+
+/* ── SOURCE TABS ── */
+.source-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.source-tab{
+  padding:6px 14px;border-radius:4px;border:1px solid var(--border);
+  font-size:11px;font-weight:600;color:var(--text-mid);cursor:pointer;
+  transition:all .15s;background:transparent;font-family:var(--font);
+  white-space:nowrap;
+}
+.source-tab:hover{border-color:rgba(26,39,68,.25);color:var(--text)}
+.source-tab.active{background:var(--navy);border-color:var(--navy);color:#E8ECF4}
+.source-group{display:none}
+.source-group.active{display:block}
+.source-group-heading{
+  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:12px;margin-top:4px;
+}
+/* Feature card compact for 3-col */
+.feature-card{padding:18px 16px}
+.feature-body{font-size:12px}
 
 /* ── DIVIDER ── */
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0}
@@ -489,61 +518,74 @@ footer{background:var(--navy);padding:40px 0;color:rgba(232,236,244,0.5)}
 <section class="sources-section" id="sources">
   <div class="container">
     <div class="section-eyebrow">Data sources</div>
-    <h2 class="section-title">32 authoritative sources — regulators, courts, standards bodies, and platforms</h2>
-    <p class="sources-intro">PrivacyWatch monitors primary regulatory and standards sources — not news aggregators. Every item is traced back to an official document, enforcement notice, or specification. Sources span 9 jurisdictions and 5 source categories.</p>
+    <h2 class="section-title">32 authoritative sources across 5 categories</h2>
+    <p class="sources-intro" style="margin-bottom:20px">Primary regulatory and standards sources — not news aggregators. Every item traces to an official document.</p>
 
-    <div style="margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">US Regulators</div>
-    <div class="sources-grid" style="margin-bottom:20px">
-      <div class="source-tile" style="--src-color:#8B2535"><div class="source-abbr">FTC</div><div class="source-name">Federal Trade Commission</div><div class="source-what">Commercial Surveillance Rule, enforcement, data broker regulation</div></div>
-      <div class="source-tile" style="--src-color:#B8762E"><div class="source-abbr">CPPA</div><div class="source-name">CA Privacy Protection Agency</div><div class="source-what">CPRA, ADMT regulations, adtech audit initiative, GPC enforcement</div></div>
-      <div class="source-tile" style="--src-color:#7A4E2A"><div class="source-abbr">CO AG</div><div class="source-name">Colorado Attorney General</div><div class="source-what">CPA enforcement, mandatory GPC recognition, data broker audits</div></div>
-      <div class="source-tile" style="--src-color:#8B3520"><div class="source-abbr">TX AG</div><div class="source-name">Texas Attorney General</div><div class="source-what">TDPSA enforcement, data broker registration, sensitive data consent</div></div>
-      <div class="source-tile" style="--src-color:#2A6B5A"><div class="source-abbr">CT AG</div><div class="source-name">Connecticut Attorney General</div><div class="source-what">CTDPA profiling opt-out, lookalike modeling guidance</div></div>
-      <div class="source-tile" style="--src-color:#2A4B6B"><div class="source-abbr">VA AG</div><div class="source-name">Virginia Attorney General</div><div class="source-what">CDPA enforcement, targeted advertising opt-out</div></div>
-      <div class="source-tile" style="--src-color:#A03020"><div class="source-abbr">FCC</div><div class="source-name">Federal Communications Commission</div><div class="source-what">Telecom privacy, CPNI rules, robocall/TCPA enforcement</div></div>
-      <div class="source-tile" style="--src-color:#4A5568"><div class="source-abbr">IAPP</div><div class="source-name">Intl. Assoc. of Privacy Professionals</div><div class="source-what">APRA tracker, state law developments, enforcement news digest</div></div>
+    <div class="source-tabs">
+      <button class="source-tab active" onclick="switchTab('us',this)">🇺🇸 US Regulators · 8</button>
+      <button class="source-tab" onclick="switchTab('eu',this)">🇪🇺 EU DPAs · 8</button>
+      <button class="source-tab" onclick="switchTab('euleg',this)">📜 EU Legislation · 4</button>
+      <button class="source-tab" onclick="switchTab('intl',this)">🌐 International · 4</button>
+      <button class="source-tab" onclick="switchTab('industry',this)">⚙️ Industry & Platforms · 10</button>
     </div>
 
-    <div style="margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">EU / European Data Protection Authorities</div>
-    <div class="sources-grid" style="margin-bottom:20px">
-      <div class="source-tile" style="--src-color:#2A4580"><div class="source-abbr">EDPB</div><div class="source-name">European Data Protection Board</div><div class="source-what">GDPR guidelines, legitimate interest decisions, cross-DPA coordination</div></div>
-      <div class="source-tile" style="--src-color:#1B6F7A"><div class="source-abbr">CNIL</div><div class="source-name">France — CNIL</div><div class="source-what">Cookie consent enforcement, adtech fines, analytics guidance</div></div>
-      <div class="source-tile" style="--src-color:#2B5888"><div class="source-abbr">DPC</div><div class="source-name">Ireland — Data Protection Commission</div><div class="source-what">Regulates Meta, Google, TikTok, LinkedIn, Twitter/X (all EU HQ'd in Ireland)</div></div>
-      <div class="source-tile" style="--src-color:#6B2D5E"><div class="source-abbr">APD</div><div class="source-name">Belgium — APD / GBA</div><div class="source-what">TCF ruling against IAB Europe, ongoing compliance monitoring</div></div>
-      <div class="source-tile" style="--src-color:#8B3A28"><div class="source-abbr">Garante</div><div class="source-name">Italy — Garante Privacy</div><div class="source-what">Cookie sweeps, analytics enforcement, AI profiling decisions</div></div>
-      <div class="source-tile" style="--src-color:#C45C1A"><div class="source-abbr">AEPD</div><div class="source-name">Spain — AEPD</div><div class="source-what">RTB guidance, TCF enforcement, behavioral advertising rulings</div></div>
-      <div class="source-tile" style="--src-color:#3D5E2A"><div class="source-abbr">DSK</div><div class="source-name">Germany — DSK / BfDI</div><div class="source-what">Cookie consent position, TTDSG interpretation, consent-or-pay rulings</div></div>
-      <div class="source-tile" style="--src-color:#1E6B7A"><div class="source-abbr">ICO</div><div class="source-name">UK — Information Commissioner</div><div class="source-what">UK GDPR enforcement, RTB investigation, SSP enforcement notices</div></div>
+    <div class="source-group active" id="src-us">
+      <div class="sources-grid">
+        <div class="source-tile" style="--src-color:#8B2535"><div class="source-abbr">FTC</div><div class="source-name">Federal Trade Commission</div><div class="source-what">Commercial Surveillance Rule, enforcement, data broker regulation</div></div>
+        <div class="source-tile" style="--src-color:#B8762E"><div class="source-abbr">CPPA</div><div class="source-name">CA Privacy Protection Agency</div><div class="source-what">CPRA, ADMT regulations, adtech audit initiative, GPC enforcement</div></div>
+        <div class="source-tile" style="--src-color:#7A4E2A"><div class="source-abbr">CO AG</div><div class="source-name">Colorado Attorney General</div><div class="source-what">CPA enforcement, mandatory GPC recognition, data broker audits</div></div>
+        <div class="source-tile" style="--src-color:#8B3520"><div class="source-abbr">TX AG</div><div class="source-name">Texas Attorney General</div><div class="source-what">TDPSA enforcement, data broker registration, sensitive data consent</div></div>
+        <div class="source-tile" style="--src-color:#2A6B5A"><div class="source-abbr">CT AG</div><div class="source-name">Connecticut Attorney General</div><div class="source-what">CTDPA profiling opt-out, lookalike modeling guidance</div></div>
+        <div class="source-tile" style="--src-color:#2A4B6B"><div class="source-abbr">VA AG</div><div class="source-name">Virginia Attorney General</div><div class="source-what">CDPA enforcement, targeted advertising opt-out</div></div>
+        <div class="source-tile" style="--src-color:#A03020"><div class="source-abbr">FCC</div><div class="source-name">Federal Communications Commission</div><div class="source-what">Telecom privacy, CPNI rules, robocall/TCPA enforcement</div></div>
+        <div class="source-tile" style="--src-color:#4A5568"><div class="source-abbr">IAPP</div><div class="source-name">Intl. Assoc. of Privacy Professionals</div><div class="source-what">APRA tracker, state law developments, enforcement news digest</div></div>
+      </div>
     </div>
 
-    <div style="margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">EU Legislation</div>
-    <div class="sources-grid" style="margin-bottom:20px">
-      <div class="source-tile" style="--src-color:#1A4B6E"><div class="source-abbr">DSA / DMA</div><div class="source-name">European Commission</div><div class="source-what">VLOP ad targeting restrictions, gatekeeper consent obligations, EC enforcement</div></div>
-      <div class="source-tile" style="--src-color:#4A3A8C"><div class="source-abbr">EU AI Act</div><div class="source-name">EU Artificial Intelligence Act</div><div class="source-what">Prohibited AI (biometric targeting), high-risk AI obligations, ADM transparency</div></div>
-      <div class="source-tile" style="--src-color:#3A4A7A"><div class="source-abbr">ePrivacy</div><div class="source-name">ePrivacy Regulation (pending)</div><div class="source-what">Cookie Directive replacement, browser-level consent model, tracking rules</div></div>
-      <div class="source-tile" style="--src-color:#1A2744"><div class="source-abbr">CJEU</div><div class="source-name">Court of Justice of the EU</div><div class="source-what">C-252/21 (Meta/LI), Schrems II, foundational GDPR adtech rulings</div></div>
+    <div class="source-group" id="src-eu">
+      <div class="sources-grid">
+        <div class="source-tile" style="--src-color:#2A4580"><div class="source-abbr">EDPB</div><div class="source-name">European Data Protection Board</div><div class="source-what">GDPR guidelines, legitimate interest decisions, cross-DPA coordination</div></div>
+        <div class="source-tile" style="--src-color:#1B6F7A"><div class="source-abbr">CNIL</div><div class="source-name">France — CNIL</div><div class="source-what">Cookie consent enforcement, adtech fines, analytics guidance</div></div>
+        <div class="source-tile" style="--src-color:#2B5888"><div class="source-abbr">DPC</div><div class="source-name">Ireland — Data Protection Commission</div><div class="source-what">Regulates Meta, Google, TikTok, LinkedIn, Twitter/X (all EU HQ'd in Ireland)</div></div>
+        <div class="source-tile" style="--src-color:#6B2D5E"><div class="source-abbr">APD</div><div class="source-name">Belgium — APD / GBA</div><div class="source-what">TCF ruling against IAB Europe, ongoing compliance monitoring</div></div>
+        <div class="source-tile" style="--src-color:#8B3A28"><div class="source-abbr">Garante</div><div class="source-name">Italy — Garante Privacy</div><div class="source-what">Cookie sweeps, analytics enforcement, AI profiling decisions</div></div>
+        <div class="source-tile" style="--src-color:#C45C1A"><div class="source-abbr">AEPD</div><div class="source-name">Spain — AEPD</div><div class="source-what">RTB guidance, TCF enforcement, behavioral advertising rulings</div></div>
+        <div class="source-tile" style="--src-color:#3D5E2A"><div class="source-abbr">DSK</div><div class="source-name">Germany — DSK / BfDI</div><div class="source-what">Cookie consent position, TTDSG interpretation, consent-or-pay rulings</div></div>
+        <div class="source-tile" style="--src-color:#1E6B7A"><div class="source-abbr">ICO</div><div class="source-name">UK — Information Commissioner</div><div class="source-what">UK GDPR enforcement, RTB investigation, SSP enforcement notices</div></div>
+      </div>
     </div>
 
-    <div style="margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">International</div>
-    <div class="sources-grid" style="margin-bottom:20px">
-      <div class="source-tile" style="--src-color:#8C5A2A"><div class="source-abbr">OPC</div><div class="source-name">Canada — Office of the Privacy Commissioner</div><div class="source-what">PIPEDA, Bill C-27/CPPA, Quebec Law 25 enforcement</div></div>
-      <div class="source-tile" style="--src-color:#2A6B4A"><div class="source-abbr">OAIC</div><div class="source-name">Australia — OAIC</div><div class="source-what">Privacy Act reform, targeted advertising consent, right of action proposals</div></div>
-      <div class="source-tile" style="--src-color:#4A2A8C"><div class="source-abbr">PDPC</div><div class="source-name">Singapore — PDPC</div><div class="source-what">PDPA 2021 amendments, adtech data use obligations</div></div>
-      <div class="source-tile" style="--src-color:#2A3655"><div class="source-abbr">US Courts</div><div class="source-name">US Federal / State Courts</div><div class="source-what">ECPA/CIPA wiretapping class actions, session replay liability, pixel cases</div></div>
+    <div class="source-group" id="src-euleg">
+      <div class="sources-grid">
+        <div class="source-tile" style="--src-color:#1A4B6E"><div class="source-abbr">DSA / DMA</div><div class="source-name">European Commission</div><div class="source-what">VLOP ad targeting restrictions, gatekeeper consent obligations, EC enforcement</div></div>
+        <div class="source-tile" style="--src-color:#4A3A8C"><div class="source-abbr">EU AI Act</div><div class="source-name">EU Artificial Intelligence Act</div><div class="source-what">Prohibited AI (biometric targeting), high-risk AI obligations, ADM transparency</div></div>
+        <div class="source-tile" style="--src-color:#3A4A7A"><div class="source-abbr">ePrivacy</div><div class="source-name">ePrivacy Regulation (pending)</div><div class="source-what">Cookie Directive replacement, browser-level consent model, tracking rules</div></div>
+        <div class="source-tile" style="--src-color:#1A2744"><div class="source-abbr">CJEU</div><div class="source-name">Court of Justice of the EU</div><div class="source-what">C-252/21 (Meta/LI), Schrems II, foundational GDPR adtech rulings</div></div>
+      </div>
     </div>
 
-    <div style="margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Industry, Standards &amp; Platforms</div>
-    <div class="sources-grid">
-      <div class="source-tile" style="--src-color:#5B3A8C"><div class="source-abbr">IAB Europe</div><div class="source-name">IAB Europe / IAB Tech Lab</div><div class="source-what">TCF, GPP, OpenRTB spec, AdsCert, sellers.json, consent signal standards</div></div>
-      <div class="source-tile" style="--src-color:#2D6A4F"><div class="source-abbr">W3C</div><div class="source-name">World Wide Web Consortium</div><div class="source-what">GPC spec, Privacy Sandbox APIs, Privacy CG working group</div></div>
-      <div class="source-tile" style="--src-color:#4A5568"><div class="source-abbr">NAI</div><div class="source-name">Network Advertising Initiative</div><div class="source-what">Code of conduct, CCBA opt-out standards, FTC self-regulatory framework</div></div>
-      <div class="source-tile" style="--src-color:#6B5030"><div class="source-abbr">DAA</div><div class="source-name">Digital Advertising Alliance</div><div class="source-what">AdChoices program, fingerprinting opt-out, cross-context behavioral ad principles</div></div>
-      <div class="source-tile" style="--src-color:#2A4A3A"><div class="source-abbr">TAG</div><div class="source-name">Trustworthy Accountability Group</div><div class="source-what">CAF consent signal validation, brand safety, fraud prevention certification</div></div>
-      <div class="source-tile" style="--src-color:#6B4A20"><div class="source-abbr">Prebid</div><div class="source-name">Prebid.org</div><div class="source-what">Header bidding standards, GPP/USP module migration, consent passthrough</div></div>
-      <div class="source-tile" style="--src-color:#1565B4"><div class="source-abbr">Google</div><div class="source-name">Google / Alphabet</div><div class="source-what">Consent Mode v2, Privacy Sandbox, DV360/GAM policy, DMA compliance</div></div>
-      <div class="source-tile" style="--src-color:#3A3A3A"><div class="source-abbr">Apple</div><div class="source-name">Apple</div><div class="source-what">ATT framework, Privacy Manifests, SKAdNetwork, Link Tracking Protection</div></div>
-      <div class="source-tile" style="--src-color:#1A3A7A"><div class="source-abbr">Meta</div><div class="source-name">Meta / Facebook</div><div class="source-what">Restricted Data Use, Audience Network consent signals, CAPI requirements</div></div>
-      <div class="source-tile" style="--src-color:#005A9E"><div class="source-abbr">Microsoft</div><div class="source-name">Microsoft</div><div class="source-what">Edge tracking prevention, MSFT Advertising policy, LinkedIn DPC compliance</div></div>
+    <div class="source-group" id="src-intl">
+      <div class="sources-grid">
+        <div class="source-tile" style="--src-color:#8C5A2A"><div class="source-abbr">OPC</div><div class="source-name">Canada — Privacy Commissioner</div><div class="source-what">PIPEDA, Bill C-27/CPPA, Quebec Law 25 enforcement</div></div>
+        <div class="source-tile" style="--src-color:#2A6B4A"><div class="source-abbr">OAIC</div><div class="source-name">Australia — OAIC</div><div class="source-what">Privacy Act reform, targeted advertising consent, right of action proposals</div></div>
+        <div class="source-tile" style="--src-color:#4A2A8C"><div class="source-abbr">PDPC</div><div class="source-name">Singapore — PDPC</div><div class="source-what">PDPA 2021 amendments, adtech data use obligations</div></div>
+        <div class="source-tile" style="--src-color:#2A3655"><div class="source-abbr">US Courts</div><div class="source-name">US Federal / State Courts</div><div class="source-what">ECPA/CIPA wiretapping class actions, session replay liability, pixel cases</div></div>
+      </div>
+    </div>
+
+    <div class="source-group" id="src-industry">
+      <div class="sources-grid">
+        <div class="source-tile" style="--src-color:#5B3A8C"><div class="source-abbr">IAB Europe</div><div class="source-name">IAB Europe / IAB Tech Lab</div><div class="source-what">TCF, GPP, OpenRTB spec, AdsCert, sellers.json, consent signal standards</div></div>
+        <div class="source-tile" style="--src-color:#2D6A4F"><div class="source-abbr">W3C</div><div class="source-name">World Wide Web Consortium</div><div class="source-what">GPC spec, Privacy Sandbox APIs, Privacy CG working group</div></div>
+        <div class="source-tile" style="--src-color:#4A5568"><div class="source-abbr">NAI</div><div class="source-name">Network Advertising Initiative</div><div class="source-what">Code of conduct, CCBA opt-out standards, FTC self-regulatory framework</div></div>
+        <div class="source-tile" style="--src-color:#6B5030"><div class="source-abbr">DAA</div><div class="source-name">Digital Advertising Alliance</div><div class="source-what">AdChoices program, fingerprinting opt-out, cross-context behavioral ad principles</div></div>
+        <div class="source-tile" style="--src-color:#2A4A3A"><div class="source-abbr">TAG</div><div class="source-name">Trustworthy Accountability Group</div><div class="source-what">CAF consent signal validation, brand safety, fraud prevention certification</div></div>
+        <div class="source-tile" style="--src-color:#6B4A20"><div class="source-abbr">Prebid</div><div class="source-name">Prebid.org</div><div class="source-what">Header bidding standards, GPP/USP module migration, consent passthrough</div></div>
+        <div class="source-tile" style="--src-color:#1565B4"><div class="source-abbr">Google</div><div class="source-name">Google / Alphabet</div><div class="source-what">Consent Mode v2, Privacy Sandbox, DV360/GAM policy, DMA compliance</div></div>
+        <div class="source-tile" style="--src-color:#3A3A3A"><div class="source-abbr">Apple</div><div class="source-name">Apple</div><div class="source-what">ATT framework, Privacy Manifests, SKAdNetwork, Link Tracking Protection</div></div>
+        <div class="source-tile" style="--src-color:#1A3A7A"><div class="source-abbr">Meta</div><div class="source-name">Meta / Facebook</div><div class="source-what">Restricted Data Use, Audience Network consent signals, CAPI requirements</div></div>
+        <div class="source-tile" style="--src-color:#005A9E"><div class="source-abbr">Microsoft</div><div class="source-name">Microsoft</div><div class="source-what">Edge tracking prevention, MSFT Advertising policy, LinkedIn DPC compliance</div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -554,40 +596,54 @@ footer{background:var(--navy);padding:40px 0;color:rgba(232,236,244,0.5)}
     <div class="section-eyebrow">How it works</div>
     <h2 class="section-title">Simple to start, useful every day</h2>
     <div class="how-steps">
-      <div class="how-step">
+      <div class="how-step open" onclick="toggleStep(this)">
         <div class="step-num">1</div>
         <div class="step-body">
-          <div class="step-title">Open the Regulation Radar</div>
-          <div class="step-desc">All active adtech regulatory developments are shown in priority order — EFFECTIVE rules first, then ENFORCEMENT actions, then open CONSULTATIONs. Filter by source or jurisdiction from the left rail.</div>
+          <div class="step-title-row">
+            <div class="step-title">Open the Regulation Radar</div>
+            <span class="step-arrow">▾</span>
+          </div>
+          <div class="step-desc">Developments are shown in priority order — EFFECTIVE rules first, then ENFORCEMENT actions, then open CONSULTATIONs. Filter by source (CNIL, FTC, EDPB…) or jurisdiction from the left rail.</div>
         </div>
       </div>
-      <div class="how-step">
+      <div class="how-step" onclick="toggleStep(this)">
         <div class="step-num">2</div>
         <div class="step-body">
-          <div class="step-title">Click any item to read the full development</div>
-          <div class="step-desc">Each card shows the summary, the action your clients need to take, the compliance deadline, and direct links to the primary source documents — regulation text, enforcement notice, or spec.</div>
-          <div class="step-note">Citations include the exact statutory reference (e.g., Cal. Civ. Code § 1798.185(a)(16)) so you can go straight to the authoritative text.</div>
+          <div class="step-title-row">
+            <div class="step-title">Click any card for the full picture</div>
+            <span class="step-arrow">▾</span>
+          </div>
+          <div class="step-desc">Each card shows the summary, required client action, compliance deadline, and direct links to the primary source. Citations include the exact statutory reference (e.g., <em>Cal. Civ. Code § 1798.185(a)(16)</em>) so you can go straight to the authoritative text.</div>
         </div>
       </div>
-      <div class="how-step">
+      <div class="how-step" onclick="toggleStep(this)">
         <div class="step-num">3</div>
         <div class="step-body">
-          <div class="step-title">Search across everything</div>
-          <div class="step-desc">Type any term into the right-hand search panel — <em>legitimate interest</em>, <em>GPC propagation</em>, <em>TCF</em>, <em>DSP California</em> — and see matching items from regulations, standards, and deadlines with highlighted matches.</div>
+          <div class="step-title-row">
+            <div class="step-title">Search across all content</div>
+            <span class="step-arrow">▾</span>
+          </div>
+          <div class="step-desc">Type any term into the right-hand panel — <em>legitimate interest</em>, <em>TCF</em>, <em>GPC</em>, <em>DSP California</em> — and see matching items across regulations, standards, deadlines, and live feed with highlighted matches.</div>
         </div>
       </div>
-      <div class="how-step">
+      <div class="how-step" onclick="toggleStep(this)">
         <div class="step-num">4</div>
         <div class="step-body">
-          <div class="step-title">Check the Standards Tracker before advising on tech</div>
-          <div class="step-desc">When a client asks about cookie deprecation, consent string migration, or GPC implementation — the Standards Tracker shows the current version, next version, and what's changing in each major framework.</div>
+          <div class="step-title-row">
+            <div class="step-title">Check Standards Tracker before advising on tech</div>
+            <span class="step-arrow">▾</span>
+          </div>
+          <div class="step-desc">When a client asks about cookie deprecation, consent string migration, or GPC implementation — the Standards Tracker shows the current version, next version, and what's changing in IAB TCF, GPP, Privacy Sandbox, Apple ATT, and OpenRTB.</div>
         </div>
       </div>
-      <div class="how-step">
+      <div class="how-step" onclick="toggleStep(this)">
         <div class="step-num">5</div>
         <div class="step-body">
-          <div class="step-title">Stay current with live alerts</div>
-          <div class="step-desc">Enable browser notifications and PrivacyWatch will alert you the moment a new item appears from your watched sources. The site auto-syncs every 10 minutes from 7 live feeds — FTC, IAPP, IAB Tech Lab, CNIL, EDPB, ICO, and OAIC.</div>
+          <div class="step-title-row">
+            <div class="step-title">Stay current with live alerts</div>
+            <span class="step-arrow">▾</span>
+          </div>
+          <div class="step-desc">Enable browser notifications to be alerted the moment a new item drops from any of your 32 watched sources. The site auto-syncs every 10 minutes from 7 live RSS feeds.</div>
         </div>
       </div>
     </div>
@@ -629,5 +685,18 @@ footer{background:var(--navy);padding:40px 0;color:rgba(232,236,244,0.5)}
   </div>
 </footer>
 
+<script>
+function switchTab(group, btn) {
+  document.querySelectorAll('.source-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.source-group').forEach(g => g.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('src-' + group).classList.add('active');
+}
+function toggleStep(el) {
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.how-step').forEach(s => s.classList.remove('open'));
+  if (!wasOpen) el.classList.add('open');
+}
+</script>
 </body>
 </html>
