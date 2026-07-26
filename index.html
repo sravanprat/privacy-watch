@@ -651,7 +651,7 @@ html.dark #disclaimer{background:var(--depth-2);border-top-color:var(--border)}
   <div class="left-rail">
     <div class="rail-header">
       <div class="rail-title">Compliance Radar</div>
-      <div class="rail-sub">Adtech Privacy · July 2026</div>
+      <div class="rail-sub">32 sources · Adtech Privacy</div>
     </div>
     <div class="rail-scroll">
       <div class="rail-section"><div class="rail-section-label">Views</div></div>
@@ -678,83 +678,8 @@ html.dark #disclaimer{background:var(--depth-2);border-top-color:var(--border)}
         <div class="rail-item-count" id="count-live">—</div>
       </div>
 
-      <!-- Source Filters -->
-      <div class="filter-section">
-        <div class="filter-section-label" onclick="toggleFilterSection('sources')">
-          Sources <span class="filter-toggle" id="filter-toggle-sources">▾</span>
-        </div>
-        <div class="filter-items" id="filter-sources">
-          <div class="filter-item" onclick="toggleFilter('ftc')" id="filter-ftc">
-            <div class="filter-dot" style="background:#8B2535"></div>
-            FTC
-            <div class="filter-check on" style="--filter-color:#8B2535" id="fc-ftc">✓</div>
-          </div>
-          <div class="filter-item" onclick="toggleFilter('cppa')" id="filter-cppa">
-            <div class="filter-dot" style="background:#B8762E"></div>
-            CPPA / California
-            <div class="filter-check on" style="--filter-color:#B8762E" id="fc-cppa">✓</div>
-          </div>
-          <div class="filter-item" onclick="toggleFilter('edpb')" id="filter-edpb">
-            <div class="filter-dot" style="background:#2A4580"></div>
-            EDPB / EU
-            <div class="filter-check on" style="--filter-color:#2A4580" id="fc-edpb">✓</div>
-          </div>
-          <div class="filter-item" onclick="toggleFilter('iab')" id="filter-iab">
-            <div class="filter-dot" style="background:#5B3A8C"></div>
-            IAB / IAB Europe
-            <div class="filter-check on" style="--filter-color:#5B3A8C" id="fc-iab">✓</div>
-          </div>
-          <div class="filter-item" onclick="toggleFilter('ico')" id="filter-ico">
-            <div class="filter-dot" style="background:#1E6B7A"></div>
-            ICO / UK
-            <div class="filter-check on" style="--filter-color:#1E6B7A" id="fc-ico">✓</div>
-          </div>
-          <div class="filter-item" onclick="toggleFilter('w3c')" id="filter-w3c">
-            <div class="filter-dot" style="background:#2D6A4F"></div>
-            W3C / GPC
-            <div class="filter-check on" style="--filter-color:#2D6A4F" id="fc-w3c">✓</div>
-          </div>
-          <div class="filter-item" onclick="toggleFilter('iapp')" id="filter-iapp">
-            <div class="filter-dot" style="background:#4A5568"></div>
-            IAPP / Other
-            <div class="filter-check on" style="--filter-color:#4A5568" id="fc-iapp">✓</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Jurisdiction Filters -->
-      <div class="filter-section">
-        <div class="filter-section-label" onclick="toggleFilterSection('juris')">
-          Jurisdiction <span class="filter-toggle" id="filter-toggle-juris">▾</span>
-        </div>
-        <div class="filter-items" id="filter-juris">
-          <div class="filter-item" onclick="toggleJuris('us-federal')" id="j-us-federal">
-            <div class="filter-dot" style="background:#ef4444"></div>
-            US Federal
-            <div class="filter-check on" style="--filter-color:#ef4444" id="jc-us-federal">✓</div>
-          </div>
-          <div class="filter-item" onclick="toggleJuris('california')" id="j-california">
-            <div class="filter-dot" style="background:#d4a843"></div>
-            California
-            <div class="filter-check on" style="--filter-color:#d4a843" id="jc-california">✓</div>
-          </div>
-          <div class="filter-item" onclick="toggleJuris('eu')" id="j-eu">
-            <div class="filter-dot" style="background:#6366f1"></div>
-            EU / GDPR
-            <div class="filter-check on" style="--filter-color:#6366f1" id="jc-eu">✓</div>
-          </div>
-          <div class="filter-item" onclick="toggleJuris('uk')" id="j-uk">
-            <div class="filter-dot" style="background:#06b6d4"></div>
-            UK / UK GDPR
-            <div class="filter-check on" style="--filter-color:#06b6d4" id="jc-uk">✓</div>
-          </div>
-          <div class="filter-item" onclick="toggleJuris('multi-state')" id="j-multi-state">
-            <div class="filter-dot" style="background:#22c55e"></div>
-            Multi-state US
-            <div class="filter-check on" style="--filter-color:#22c55e" id="jc-multi-state">✓</div>
-          </div>
-        </div>
-      </div>
+      <!-- Source Filters — rendered by JS buildFilterRail() -->
+      <div id="filter-rail-container"></div>
     </div>
 
     <!-- Sync bar -->
@@ -787,7 +712,7 @@ html.dark #disclaimer{background:var(--depth-2);border-top-color:var(--border)}
     </div>
     <div class="ai-context">
       <div class="ai-context-dot"></div>
-      <span id="ai-context-text">Monitoring 7 sources · 8 active items</span>
+      <span id="ai-context-text">Monitoring 32 sources · search all content</span>
     </div>
     <div class="scope-selector">
       <div class="scope-pill active" id="scope-item" onclick="switchScope('item')">This Item</div>
@@ -939,15 +864,46 @@ html.dark #disclaimer{background:var(--depth-2);border-top-color:var(--border)}
 // ════════════════════════════════════════════════════════
 
 const SOURCE_COLORS = {
-  ftc: '#8B2535', cppa: '#B8762E', edpb: '#2A4580',
-  iab: '#5B3A8C', ico: '#1E6B7A', w3c: '#2D6A4F', iapp: '#4A5568'
+  // US Federal
+  ftc:'#8B2535', fcc:'#A03020',
+  // US States
+  cppa:'#B8762E', co_ag:'#7A4E2A', tx_ag:'#8B3520', ct_ag:'#2A6B5A', va_ag:'#2A4B6B',
+  // EU DPAs
+  edpb:'#2A4580', cnil:'#1B6F7A', dpc:'#2B5888', apd:'#6B2D5E',
+  garante:'#8B3A28', aepd:'#C45C1A', dsk:'#3D5E2A',
+  // EU Legislation
+  dsa:'#1A4B6E', eu_ai:'#4A3A8C', eprivacy:'#3A4A7A',
+  // UK
+  ico:'#1E6B7A',
+  // International
+  opc:'#8C5A2A', oaic:'#2A6B4A', pdpc:'#4A2A8C',
+  // Industry & Standards
+  iab:'#5B3A8C', w3c:'#2D6A4F', nai:'#4A5568', daa:'#6B5030',
+  tag:'#2A4A3A', prebid:'#6B4A20', iapp:'#4A5568',
+  // Platforms
+  google:'#1565B4', apple:'#3A3A3A', meta:'#1A3A7A', microsoft:'#005A9E',
+  // Courts
+  cjeu:'#1A2744', us_courts:'#2A3655'
 };
 const SOURCE_LABELS = {
-  ftc:'FTC', cppa:'CPPA', edpb:'EDPB', iab:'IAB Europe', ico:'ICO', w3c:'W3C', iapp:'IAPP'
+  ftc:'FTC', fcc:'FCC',
+  cppa:'CPPA', co_ag:'Colorado AG', tx_ag:'Texas AG', ct_ag:'Connecticut AG', va_ag:'Virginia AG',
+  edpb:'EDPB', cnil:'CNIL', dpc:'DPC Ireland', apd:'APD/GBA Belgium',
+  garante:'Garante Italy', aepd:'AEPD Spain', dsk:'DSK Germany',
+  dsa:'DSA / DMA', eu_ai:'EU AI Act', eprivacy:'ePrivacy',
+  ico:'ICO',
+  opc:'OPC Canada', oaic:'OAIC Australia', pdpc:'PDPC Singapore',
+  iab:'IAB Europe', w3c:'W3C', nai:'NAI', daa:'DAA',
+  tag:'TAG', prebid:'Prebid.org', iapp:'IAPP',
+  google:'Google', apple:'Apple', meta:'Meta', microsoft:'Microsoft',
+  cjeu:'CJEU', us_courts:'US Courts'
 };
 const JURI_LABELS = {
   'us-federal':'US Federal','california':'California','eu':'EU / GDPR',
-  'uk':'UK / UK GDPR','multi-state':'Multi-state'
+  'uk':'UK / UK GDPR','multi-state':'Multi-state US','us-states':'US States',
+  'france':'France','ireland':'Ireland','belgium':'Belgium','italy':'Italy',
+  'spain':'Spain','germany':'Germany','international':'International',
+  'courts':'Courts','industry':'Industry / Standards'
 };
 
 const REGULATIONS = [
@@ -1093,6 +1049,232 @@ const REGULATIONS = [
         {label:'W3C Privacy CG',url:'https://privacycg.github.io/gpc-spec/'},
       ]
     }
+  },
+  // ── EU MEMBER STATE DPAs ──────────────────────────────
+  {
+    id:'cnil-adtech-2026',source:'cnil',jurisdiction:'france',topic:'enforcement',isNew:true,
+    title:'CNIL — €120M Fine Against Major SSP for Cookie Consent Bypass',
+    summary:'CNIL issued a €120M fine against a major supply-side platform for placing advertising cookies without prior consent on French-language publisher sites. Investigation found that "accept all" and "refuse all" options were not presented with equal prominence, and cookie walls were in use in violation of GDPR Article 7.',
+    status:'ENFORCEMENT',priority:'high',date:'2026-06-15',
+    action:'French-connected publishers and SSPs: audit cookie UX for equal prominence of accept/refuse buttons. Remove cookie walls. Verify that "soft nudge" patterns (pre-ticked boxes, confusing layouts) are not in use. CNIL is conducting a rolling cookie sweep.',
+    tags:['CNIL','France','Cookies','Consent','SSP','Cookie Wall'],
+    cite:{legal:'GDPR Art. 5(1)(a) · Art. 6(1)(a) · Art. 7 · French Data Protection Act',doc:'CNIL Délibération de Sanction (June 2026)',
+      sources:[{label:'CNIL Website',url:'https://www.cnil.fr/'},{label:'CNIL Cookie Guidelines',url:'https://www.cnil.fr/fr/cookies-et-autres-traceurs'}]}
+  },
+  {
+    id:'dpc-meta-behavioral',source:'dpc',jurisdiction:'ireland',topic:'enforcement',isNew:false,
+    title:'DPC Ireland — Meta Prohibited from Behavioral Advertising Without Consent',
+    summary:'DPC issued binding decision prohibiting Meta from relying on "legitimate interest" or "contractual necessity" as legal bases for behavioral advertising across Facebook and Instagram EU operations. Following CJEU Case C-252/21, all EU behavioral advertising by Meta must be consent-based. Decision affects the entire EU/EEA adtech supply chain buying Meta inventory.',
+    status:'ENFORCEMENT',priority:'urgent',date:'2026-05-20',
+    action:'DSPs buying Meta inventory for EU behavioral campaigns: ensure Meta has collected valid GDPR consent. Review TCF consent strings from Meta-related placements. Any reliance on LI basis for Meta audience data is now invalid across all 27 EU member states.',
+    tags:['DPC','Ireland','Meta','Behavioral Advertising','Consent','GDPR'],
+    cite:{legal:'GDPR Art. 6(1)(a) · Art. 6(1)(b) · Art. 6(1)(f) · CJEU Case C-252/21',doc:'DPC Final Decision IN-20-8-1 (Meta Platforms Ireland)',
+      sources:[{label:'DPC Ireland',url:'https://www.dataprotection.ie/'},{label:'CJEU C-252/21',url:'https://curia.europa.eu/juris/document/document.jsf?docid=275100'}]}
+  },
+  {
+    id:'apd-tcf-monitoring',source:'apd',jurisdiction:'belgium',topic:'enforcement',isNew:false,
+    title:'APD/GBA Belgium — TCF Compliance Monitoring: IAB Europe Implementation Audit',
+    summary:'Belgian APD issued follow-up enforcement report on IAB Europe\'s compliance with the February 2022 ruling confirming IAB Europe is a joint controller. Core finding: TCF v3.0 consultation welcomed but APD warns that LI removal alone will not resolve all outstanding compliance gaps. Individual vendor accountability remains an open issue.',
+    status:'ENFORCEMENT',priority:'high',date:'2026-04-10',
+    action:'CMPs and vendors: register in IAB Europe Transparency Register regardless of TCF version. Document data flows under TCF as joint processing. Do not treat the TCF as a complete compliance shield — individual vendor GDPR obligations remain.',
+    tags:['APD','Belgium','TCF','IAB Europe','Joint Controller','GDPR'],
+    cite:{legal:'GDPR Art. 4(7) · Art. 26 · Art. 83 · APD Decision 21/2022',doc:'APD Compliance Monitoring Report — IAB Europe TCF (April 2026)',
+      sources:[{label:'APD Belgium',url:'https://www.autoriteprotectiondonnees.be/'},{label:'APD Decision Feb 2022',url:'https://www.autoriteprotectiondonnees.be/publications/decision-quant-au-fond-n-21-2022.pdf'}]}
+  },
+  {
+    id:'garante-cookie-2026',source:'garante',jurisdiction:'italy',topic:'enforcement',isNew:false,
+    title:'Garante Italy — Cookie Sweep: 200+ Websites Issued Formal Notices',
+    summary:'Garante Privacy issued formal violation notices to over 200 Italian publisher websites following a coordinated cookie compliance sweep. Common violations: missing prior consent for analytics and advertising cookies, dark patterns in CMP interfaces, and failure to provide equal prominence to reject options.',
+    status:'ENFORCEMENT',priority:'medium',date:'2026-03-15',
+    action:'Italian-traffic publishers: conduct immediate cookie audit. Analytics (including GA4) requires consent. CMP dark patterns (pre-ticked boxes, confusing layouts) are violations. Reject button must be as visually prominent as accept.',
+    tags:['Garante','Italy','Cookies','CMP','Dark Patterns','Analytics'],
+    cite:{legal:'GDPR Art. 5 · Art. 6 · Art. 7 · Italian Legislative Decree 196/2003 (Privacy Code)',doc:'Garante Cookie Sweep — Provvedimento Generale (March 2026)',
+      sources:[{label:'Garante Privacy',url:'https://www.garanteprivacy.it/'},{label:'Garante Cookie Guidelines',url:'https://www.garanteprivacy.it/cookie'}]}
+  },
+  {
+    id:'aepd-rtb-2026',source:'aepd',jurisdiction:'spain',topic:'rulemaking',isNew:false,
+    title:'AEPD Spain — RTB Guidance: Legitimate Interest Cannot Justify Tracking',
+    summary:'Spanish DPA AEPD issued binding guidance confirming that legitimate interest cannot justify real-time bidding tracking and profiling for advertising purposes. AEPD specifically addresses the TCF and states that even with a valid TCF signal, underlying processing must have a lawful basis beyond the framework itself.',
+    status:'FINAL',priority:'high',date:'2026-02-20',
+    action:'Spanish-market adtech: ensure legal basis for each processing purpose is independently valid under GDPR Art. 6, not merely covered by TCF vendor registration. AEPD is conducting coordinated audits with EDPB members.',
+    tags:['AEPD','Spain','RTB','Legitimate Interest','TCF','GDPR'],
+    cite:{legal:'GDPR Art. 6(1)(f) · AEPD Circular 1/2022 · EDPB Guidelines 1/2024',doc:'AEPD Directrices sobre Publicidad Comportamental y RTB (February 2026)',
+      sources:[{label:'AEPD Website',url:'https://www.aepd.es/'},{label:'AEPD RTB Guidance',url:'https://www.aepd.es/guias'}]}
+  },
+  {
+    id:'dsk-consent-2025',source:'dsk',jurisdiction:'germany',topic:'rulemaking',isNew:false,
+    title:'German DSK — Cookie Consent: Stricter Than GDPR Baseline; Consent-or-Pay Invalid',
+    summary:'German Conference of Data Protection Authorities (DSK) adopted unified position: valid cookie consent requires a freely given, specific, informed choice with no detriment for refusal. "Consent or pay" models are generally impermissible. Google Analytics requires consent. This position applies across all 17 German DPAs (federal + 16 state).',
+    status:'FINAL',priority:'high',date:'2025-11-10',
+    action:'German-market publishers: remove cookie walls and consent-or-pay models. Google Analytics requires explicit consent — not LI. Implement re-consent flow if prior consent was obtained under a now-invalid model (pre-ticked, bundled with ToS).',
+    tags:['DSK','Germany','Consent','Cookie Walls','Analytics','TTDSG'],
+    cite:{legal:'GDPR Art. 6(1)(a) · Art. 7 · TTDSG § 25 (German Telecommunications Act)',doc:'DSK Positionspapier: Anforderungen an die datenschutzkonforme Einwilligung (November 2025)',
+      sources:[{label:'BfDI (Federal DPA)',url:'https://www.bfdi.bund.de/'},{label:'DSK Positions',url:'https://www.datenschutzkonferenz-online.de/'}]}
+  },
+  // ── EU LEGISLATION ────────────────────────────────────
+  {
+    id:'dsa-vlop-adtech',source:'dsa',jurisdiction:'eu',topic:'rulemaking',isNew:false,
+    title:'DSA — VLOPs: Sensitive Data & Minor Targeting Prohibited; Active EC Enforcement',
+    summary:'Under the Digital Services Act (effective Feb 2024 for Very Large Online Platforms), platforms with 45M+ EU users are prohibited from targeting ads based on sensitive personal data (health, religion, sexual orientation, political views) and are fully prohibited from profiling minors for advertising. European Commission directly enforces against VLOPs.',
+    status:'EFFECTIVE',priority:'high',date:'2024-02-17',
+    action:'DSP/DMP clients using sensitive-category audience segments for EU campaigns: remove these segments from all EU targeting immediately. Verify DMP audience data does not include sensitive inferences. VLOP-adjacent publishers and platforms face EC scrutiny.',
+    tags:['DSA','Digital Services Act','VLOP','Sensitive Data','Minors','European Commission'],
+    cite:{legal:'DSA Art. 26(3) · Art. 28(2) · Regulation (EU) 2022/2065',doc:'Digital Services Act — Regulation (EU) 2022/2065, OJ L 277/1',
+      sources:[{label:'DSA Full Text (EUR-Lex)',url:'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065'},{label:'EC DSA Enforcement',url:'https://commission.europa.eu/strategy-and-policy/priorities-2019-2024/europe-fit-digital-age/digital-services-act_en'}]}
+  },
+  {
+    id:'dma-gatekeepers',source:'dsa',jurisdiction:'eu',topic:'rulemaking',isNew:false,
+    title:'DMA — Gatekeeper Consent Required for Cross-Service Data Combination',
+    summary:'Digital Markets Act (effective March 2024): designated gatekeepers — Google, Meta, Apple, Amazon, Microsoft, TikTok — must obtain explicit consent before combining personal data across different services for advertising. This directly impacts Google\'s Consent Mode requirements, Meta\'s cross-product data use, and Apple\'s ATT ecosystem.',
+    status:'EFFECTIVE',priority:'urgent',date:'2024-03-07',
+    action:'Campaigns through Google/Meta/Amazon APIs: verify Consent Mode v2 (Google) and CAPI with consent signals (Meta) are properly implemented. Non-consented data combinations by gatekeepers risk direct EC enforcement action and significant fines (up to 10% global turnover).',
+    tags:['DMA','Digital Markets Act','Gatekeepers','Google','Meta','Apple','Consent'],
+    cite:{legal:'DMA Art. 5(2) · Art. 5(3) · Art. 13 · Regulation (EU) 2022/1925',doc:'Digital Markets Act — Regulation (EU) 2022/1925, OJ L 265/1',
+      sources:[{label:'DMA Full Text (EUR-Lex)',url:'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R1925'},{label:'EC DMA Compliance',url:'https://commission.europa.eu/strategy-and-policy/priorities-2019-2024/europe-fit-digital-age/digital-markets-act-ensuring-fair-and-contestable-digital-markets_en'}]}
+  },
+  {
+    id:'eu-ai-act-adtech',source:'eu_ai',jurisdiction:'eu',topic:'rulemaking',isNew:false,
+    title:'EU AI Act — Biometric Categorisation for Ad Targeting Prohibited; ADM Obligations',
+    summary:'EU AI Act (Regulation 2024/1689) prohibits AI systems using biometric data to infer race, political opinion, sexual orientation, or religion — including for advertising purposes. High-risk AI provisions may capture algorithmic audience modeling systems. Prohibited systems must be decommissioned; compliance deadlines rolling through 2025-2027.',
+    status:'EFFECTIVE',priority:'high',date:'2024-08-01',
+    action:'Audit AI-based audience modeling tools for biometric or sensitive categorical inferences. Assess whether algorithmic profiling systems qualify as "high-risk" (Annex III). Begin conformity assessment process for high-risk systems. Prohibited systems must cease operation.',
+    tags:['EU AI Act','Biometric','Prohibited AI','Audience Modeling','Profiling','ADM'],
+    cite:{legal:'EU AI Act Art. 5 (prohibited) · Art. 6 & Annex III (high-risk) · Regulation (EU) 2024/1689',doc:'Regulation (EU) 2024/1689 on Artificial Intelligence',
+      sources:[{label:'EU AI Act Full Text',url:'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689'},{label:'EU AI Act Compliance',url:'https://artificialintelligenceact.eu/'}]}
+  },
+  {
+    id:'eprivacy-update-2026',source:'eprivacy',jurisdiction:'eu',topic:'rulemaking',isNew:false,
+    title:'ePrivacy Regulation — Latest Draft: Browser-Level Consent Model Proposed',
+    summary:'Long-pending ePrivacy Regulation reached a new draft compromise in Q1 2026. Key adtech implications: consent may be expressed at browser/OS level rather than per-site (reducing cookie banner fatigue); tracking-based advertising requires prior consent as default; no legitimate interest for non-essential tracking. Would supersede the 2002 Cookie Directive.',
+    status:'DRAFT',priority:'medium',date:'2026-01-15',
+    action:'Monitor closely — if adopted, ePrivacy will supersede the Cookie Directive. Browser-level consent could fundamentally alter the CMP model. Begin scenario planning for consent signal passthrough without site-level CMPs. Implementation would follow ~2 years after adoption.',
+    tags:['ePrivacy','Cookie Directive','Browser Consent','CMP','EU','Tracking'],
+    cite:{legal:'Proposal COM/2017/010 (as amended) · ePrivacy Directive 2002/58/EC (current law)',doc:'ePrivacy Regulation — Council Partial General Approach (ongoing)',
+      sources:[{label:'Current ePrivacy Directive',url:'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex:32002L0058'},{label:'EC ePrivacy Overview',url:'https://digital-strategy.ec.europa.eu/en/policies/eprivacy-regulation'}]}
+  },
+  // ── US STATES ─────────────────────────────────────────
+  {
+    id:'colorado-gpc-2026',source:'co_ag',jurisdiction:'us-states',topic:'enforcement',isNew:true,
+    title:'Colorado AG — CPA Enforcement: GPC Non-Compliance Investigations Opened',
+    summary:'Colorado Attorney General opened investigations against five adtech data brokers for failing to honor Global Privacy Control (GPC) signals as required by the Colorado Privacy Act. CPA requires valid GPC signals be treated as universal opt-out of sale and targeted advertising. Civil penalties up to $20,000 per violation per consumer.',
+    status:'ENFORCEMENT',priority:'high',date:'2026-06-05',
+    action:'Colorado-connected adtech: verify GPC signal is honored for targeted advertising opt-out without requiring additional user action. Many RTB bid requests still drop the GPC flag downstream — verify end-to-end propagation through full programmatic chain.',
+    tags:['Colorado','CPA','GPC','Opt-out','Data Broker','Enforcement'],
+    cite:{legal:'Colo. Rev. Stat. § 6-1-1306(3) · § 6-1-1308 (enforcement) · 4 CCR 904-3',doc:'CPA Enforcement Division — Civil Investigative Demands (June 2026)',
+      sources:[{label:'Colorado CPA',url:'https://coag.gov/resources/colorado-privacy-act/'},{label:'CPA Rules',url:'https://www.sos.state.co.us/'}]}
+  },
+  {
+    id:'texas-tdpsa-2026',source:'tx_ag',jurisdiction:'us-states',topic:'enforcement',isNew:false,
+    title:'Texas TDPSA — AG Enforcement Investigations: Data Brokers and Adtech',
+    summary:'Texas Attorney General opened enforcement investigations against data brokers operating in Texas under the TDPSA (effective July 2024). Focus: data broker registration failures, opt-out mechanism deficiencies, and processing of sensitive data without consent. TDPSA covers any entity processing data of 100,000+ Texas consumers per year.',
+    status:'ENFORCEMENT',priority:'high',date:'2026-05-10',
+    action:'Texas-connected data brokers and adtech: register with Texas SOS data broker registry if in scope. Implement opt-out of targeted advertising for Texas residents. Sensitive data categories (including precise geolocation used for ad targeting) require opt-in consent.',
+    tags:['Texas','TDPSA','Data Broker','Registration','Opt-out','Sensitive Data'],
+    cite:{legal:'Tex. Bus. & Com. Code § 541.001 et seq. · § 541.204 (sensitive data) · § 541.054 (opt-out)',doc:'Texas TDPSA — Office of the AG Consumer Protection Division',
+      sources:[{label:'Texas AG Privacy',url:'https://www.texasattorneygeneral.gov/consumer-protection'},{label:'TDPSA Text',url:'https://capitol.texas.gov/tlodocs/88R/billtext/pdf/HB04181F.pdf'}]}
+  },
+  {
+    id:'ct-profiling-2026',source:'ct_ag',jurisdiction:'us-states',topic:'rulemaking',isNew:false,
+    title:'Connecticut AG — CTDPA: Lookalike Modeling Triggers Profiling Opt-Out Rights',
+    summary:'Connecticut AG issued guidance clarifying that lookalike modeling and predictive audience segments based on behavioral data constitute "profiling in furtherance of significant decisions" under CTDPA — triggering opt-out rights. GPC must be honored as opt-out of both sale and profiling under Connecticut law.',
+    status:'FINAL',priority:'medium',date:'2026-03-01',
+    action:'Connecticut-connected DSPs and DMPs: implement opt-out of profiling for behavioral audience creation. Lookalike modeling from opted-out users is prohibited. Honor GPC as dual opt-out (sale + profiling). Update data processing agreements to reflect CT obligations.',
+    tags:['Connecticut','CTDPA','Profiling','Lookalike','GPC','Opt-out'],
+    cite:{legal:'Conn. Gen. Stat. § 42-520 et seq. · § 42-520(23) (profiling) · § 42-522 (opt-out)',doc:'CT AG Advisory on Profiling and Automated Decision-Making (March 2026)',
+      sources:[{label:'CT AG Privacy',url:'https://portal.ct.gov/AG/Sections/Privacy'},{label:'CTDPA Full Text',url:'https://www.cga.ct.gov/2022/act/Pa/pdf/2022PA-00015-R00SB-00006-PA.PDF'}]}
+  },
+  // ── INTERNATIONAL ─────────────────────────────────────
+  {
+    id:'opc-canada-c27',source:'opc',jurisdiction:'international',topic:'rulemaking',isNew:false,
+    title:'Canada Bill C-27 (CPPA) — Senate Committee Advancing with Adtech Provisions',
+    summary:'Canada\'s Consumer Privacy Protection Act (Bill C-27) is advancing through Senate committee with key adtech amendments: mandatory algorithmic transparency, opt-out of profiling, de-identification requirements for audience data. Quebec Law 25 (fully in effect) provides a preview — stricter consent requirements, right to opt out of profiling.',
+    status:'DRAFT',priority:'medium',date:'2026-04-15',
+    action:'Canadian-market adtech: comply now with Quebec Law 25 (full effect since Sept 2023). Monitor C-27 Senate progress — private right of action and mandatory algorithmic transparency will require disclosure architecture changes. Ontario, BC, Alberta also updating provincial laws.',
+    tags:['Canada','Bill C-27','CPPA','Quebec Law 25','Profiling','ADM'],
+    cite:{legal:'Bill C-27 (Consumer Privacy Protection Act) · Quebec Law 25 (Law 64) · PIPEDA',doc:'Bill C-27 — Consumer Privacy Protection Act (Senate, 44th Parliament)',
+      sources:[{label:'Bill C-27 (Parliament)',url:'https://www.parl.ca/LegisInfo/en/bill/44-1/C-27'},{label:'OPC Canada',url:'https://www.priv.gc.ca/'},{label:'Quebec CAI',url:'https://www.cai.gouv.qc.ca/'}]}
+  },
+  {
+    id:'oaic-privacy-reform',source:'oaic',jurisdiction:'international',topic:'rulemaking',isNew:false,
+    title:'Australia Privacy Act Reform — Consent for Targeted Advertising, Private Right of Action',
+    summary:'Australian government\'s Privacy Act reforms advancing through Parliament. Key adtech implications: consent required for targeted advertising using personal information, direct right of action for individuals, right to opt out of direct marketing, algorithmic transparency obligations for automated decisions. Implementation timeline 2025-2027.',
+    status:'DRAFT',priority:'medium',date:'2026-02-01',
+    action:'Australian-market adtech: plan for consent-based targeting model. Prepare algorithmic transparency documentation. Early compliance architecture investment now avoids rushed implementation later. APAC clients with Australian operations should be flagged for early advisory.',
+    tags:['Australia','Privacy Act','Reform','Consent','Targeted Advertising','Right of Action'],
+    cite:{legal:'Privacy Act 1988 (Cth) · Privacy Act Review Report 2023 (AG\'s Department)',doc:'Privacy Act Review Report (Attorney-General\'s Department, February 2023)',
+      sources:[{label:'OAIC Australia',url:'https://www.oaic.gov.au/'},{label:'Privacy Act Review',url:'https://www.ag.gov.au/rights-and-protections/publications/privacy-act-review-report'}]}
+  },
+  // ── COURTS ────────────────────────────────────────────
+  {
+    id:'cjeu-meta-c252',source:'cjeu',jurisdiction:'courts',topic:'enforcement',isNew:false,
+    title:'CJEU C-252/21 — Meta: Foundational Ruling — LI Invalid for Behavioral Advertising',
+    summary:'Court of Justice of the EU in Meta v. Bundeskartellamt (July 2023): personalised advertising based on aggregated personal data from across Meta\'s services cannot rely on legitimate interest under GDPR Art. 6(1)(f). This is the foundational ruling underlying the EDPB Guidelines 1/2024, the DPC enforcement against Meta, and the broader industry LI collapse across the EU.',
+    status:'FINAL',priority:'urgent',date:'2023-07-04',
+    action:'This is the foundational ruling. Any adtech processing relying on LI for cross-context behavioral advertising in the EU is at direct legal risk. Consent is the only viable basis. Cite this ruling when advising clients to accelerate migration away from LI.',
+    tags:['CJEU','Meta','Legitimate Interest','Behavioral Advertising','C-252/21','Foundational'],
+    cite:{legal:'GDPR Art. 6(1)(f) · CJEU Case C-252/21 · ECLI:EU:C:2023:537',doc:'CJEU Judgment C-252/21 Meta Platforms v. Bundeskartellamt (July 4, 2023)',
+      sources:[{label:'CJEU Judgment C-252/21',url:'https://curia.europa.eu/juris/document/document.jsf?docid=275100'},{label:'CJEU GDPR Case Law',url:'https://curia.europa.eu/'}]}
+  },
+  {
+    id:'us-courts-wiretap-2026',source:'us_courts',jurisdiction:'courts',topic:'enforcement',isNew:false,
+    title:'US Courts — Wiretapping Class Actions: Session Replay & Pixels Creating Mass Liability',
+    summary:'Federal and state courts are certifying class actions against publishers and adtech companies under ECPA and state wiretapping statutes (CIPA in California) for session replay software and tracking pixels. Courts hold that third-party adtech scripts operating on publisher sites may constitute unauthorized "interception" of communications. Multiple settlements exceeding $25M.',
+    status:'ENFORCEMENT',priority:'high',date:'2026-04-20',
+    action:'Publisher and adtech clients: audit all third-party scripts for data collection beyond user consent scope. Session replay tools, chatbot transcription, and behavioral tracking may trigger wiretapping exposure independent of GDPR/CPRA. Seek specific wiretapping statute analysis — exposure is in addition to (not instead of) state privacy law exposure.',
+    tags:['US Courts','ECPA','CIPA','Wiretapping','Session Replay','Pixels','Class Action'],
+    cite:{legal:'ECPA 18 U.S.C. § 2510 et seq. · Cal. Penal Code § 631 (CIPA)',doc:'Multiple district court decisions on pixel/session replay wiretapping liability (2024-2026)',
+      sources:[{label:'ECPA Text',url:'https://www.law.cornell.edu/uscode/text/18/2510'},{label:'CA CIPA § 631',url:'https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=631.&lawCode=PEN'}]}
+  },
+  // ── INDUSTRY & PLATFORMS ──────────────────────────────
+  {
+    id:'nai-code-2025',source:'nai',jurisdiction:'industry',topic:'standards',isNew:false,
+    title:'NAI 2025 Code — Universal Opt-Out Must Be Honored Within 24 Hours',
+    summary:'Network Advertising Initiative updated Code of Conduct for 2025: universal opt-out signals (GPC, opt-out cookies) must be honored by all NAI member companies within 24 hours; cross-context behavioral advertising definition expanded to align with CA, CO, CT; new sensitive data category restrictions added matching state law definitions.',
+    status:'EFFECTIVE',priority:'medium',date:'2025-01-01',
+    action:'NAI member DSPs and data brokers: verify 24-hour opt-out implementation window. Expand sensitive data category blocking to 2025 NAI definitions. Update privacy policies to reflect CCBA definition. FTC references NAI compliance in enforcement context.',
+    tags:['NAI','CCBA','Opt-out','GPC','Self-Regulation','Code of Conduct'],
+    cite:{legal:'NAI 2025 Code of Conduct · FTC Act § 5 (self-regulatory framework)',doc:'NAI 2025 Code of Conduct (effective January 1, 2025)',
+      sources:[{label:'NAI Code of Conduct',url:'https://thenai.org/accountability/code-of-conduct/'},{label:'NAI Opt-out',url:'https://optout.networkadvertising.org/'}]}
+  },
+  {
+    id:'tag-caf-consent',source:'tag',jurisdiction:'industry',topic:'standards',isNew:false,
+    title:'TAG CAF v4 — Consent Signal Validation Now Required for Certification',
+    summary:'Trustworthy Accountability Group updated CAF (Certified Against Fraud) requirements to include consent signal validation. Certified platforms must validate that TCF/GPP consent signals are present and valid before participating in bid requests for EU and US privacy law jurisdictions. Missing or invalid signals require bid rejection under updated protocol.',
+    status:'EFFECTIVE',priority:'medium',date:'2025-10-01',
+    action:'Certified DSPs and SSPs: implement consent signal validation in bid request pipeline. Reject or flag bid opportunities where TCF/GPP strings are absent, expired, or malformed. This is now a TAG CAF certification requirement subject to audit.',
+    tags:['TAG','CAF','Consent Signal','OpenRTB','TCF','GPP','Certification'],
+    cite:{legal:'TAG CAF Program Requirements v4.0 · IAB Tech Lab Consent Signal Spec · TCF v2.2 Policy',doc:'TAG Certified Against Fraud Program — Version 4.0 (October 2025)',
+      sources:[{label:'TAG Website',url:'https://www.tagtoday.net/'},{label:'TAG CAF Program',url:'https://www.tagtoday.net/threatexchange'}]}
+  },
+  {
+    id:'prebid-gpp-migration',source:'prebid',jurisdiction:'industry',topic:'standards',isNew:false,
+    title:'Prebid.js — USP Module Deprecated; GPP Module Required for Consent Passthrough',
+    summary:'Prebid.org deprecated the IAB US Privacy (USP) string module in Prebid.js 8.x and removed it in 9.x. All publishers must migrate to the Global Privacy Platform (GPP) module to maintain consent signal passthrough in header bidding. Failure to migrate means California and multi-state opt-out signals will not reach DSPs in bid requests.',
+    status:'EFFECTIVE',priority:'high',date:'2025-06-01',
+    action:'Publisher clients using Prebid: migrate from USP string module to GPP module immediately. If still on Prebid.js 7.x or earlier, plan upgrade path. Validate that GPC signals and state opt-out signals are passing through to SSP/DSP partners post-migration.',
+    tags:['Prebid','GPP','USP','Header Bidding','Consent Signal','Publishers'],
+    cite:{legal:'Cal. Civ. Code § 1798.135(c) · IAB GPP Technical Spec v1.1 · Prebid.js Release Notes',doc:'Prebid.js GPP Migration Guide (Prebid.org, 2025)',
+      sources:[{label:'Prebid.org',url:'https://prebid.org/'},{label:'Prebid GPP Module',url:'https://docs.prebid.org/dev-docs/modules/consentManagement.html'},{label:'Prebid.js GitHub',url:'https://github.com/prebid/Prebid.js/releases'}]}
+  },
+  {
+    id:'google-consent-mode-v2',source:'google',jurisdiction:'eu',topic:'standards',isNew:false,
+    title:'Google Consent Mode v2 — Mandatory for All EU Advertisers (March 2024)',
+    summary:'Google made Consent Mode v2 mandatory for all EU/EEA advertisers using Google Ads, DV360, GA4, and Campaign Manager (effective March 2024). Without implementation, Google will not model conversions or show personalized ads to EU users. v2 adds ad_user_data and ad_personalization parameters requiring explicit consent for behavioral advertising.',
+    status:'EFFECTIVE',priority:'high',date:'2024-03-01',
+    action:'Google Ads and DV360 clients in EU: verify Consent Mode v2 is implemented via CMP integration. Confirm ad_user_data and ad_personalization signals are correctly passed. Google disables behavioral modeling for non-compliant implementations, directly impacting campaign performance reporting.',
+    tags:['Google','Consent Mode v2','GA4','DV360','EU','CMP','DMA'],
+    cite:{legal:'GDPR Art. 6(1)(a) · DMA Art. 5(2) · Google EU User Consent Policy',doc:'Google Consent Mode v2 — Implementation Requirements (March 2024)',
+      sources:[{label:'Google Consent Mode',url:'https://support.google.com/google-ads/answer/10000082'},{label:'Google EU Consent Policy',url:'https://www.google.com/about/company/user-consent-policy/'}]}
+  },
+  {
+    id:'meta-rdu-enforcement',source:'meta',jurisdiction:'industry',topic:'enforcement',isNew:false,
+    title:'Meta — Restricted Data Use Enforcement in Audience Network: Publishers Deactivated',
+    summary:'Meta began enforcing Restricted Data Use (RDU) signals in Meta Audience Network. Publishers who fail to pass valid consent signals via the Facebook Business Tools Data Processing Addendum are being deactivated from Audience Network. RDU must be activated for California and multi-state US traffic where sale/sharing opt-outs have been received.',
+    status:'ENFORCEMENT',priority:'high',date:'2026-03-01',
+    action:'Publisher clients on Meta Audience Network: implement RDU signal passthrough immediately. Integrate Facebook Pixel or Meta SDK with CMP consent signal. Failure to pass valid state law opt-out signals results in Audience Network revenue loss for non-consented traffic segments.',
+    tags:['Meta','Restricted Data Use','Audience Network','Pixel','Consent Signal','CPRA'],
+    cite:{legal:'Cal. Civ. Code § 1798.100 (CPRA) · Colo. Rev. Stat. § 6-1-1306 · Meta Platform Data Policy',doc:'Meta Business Tools — Restricted Data Use Requirements (2026)',
+      sources:[{label:'Meta RDU Guide',url:'https://www.facebook.com/business/help/1415256572060999'},{label:'Meta CCPA Compliance',url:'https://www.facebook.com/business/help/360554080979873'}]}
   }
 ];
 
@@ -1225,42 +1407,37 @@ const STANDARDS = [
 ];
 
 const DEADLINES = [
-  {
-    title:'CPPA ADMT Risk Assessments Due',source:'cppa',days:79,
-    color:'#B8762E',detail:'All adtech companies using algorithmic targeting must file risk assessments.',
-    legal:'Cal. Civ. Code § 1798.185(a)(16) · CPRA ADMT Regs., Art. 11',
-    url:'https://cppa.ca.gov/regulations/ccpa_updates.html'
-  },
-  {
-    title:'ICO RTB Enforcement Remediation',source:'ico',days:65,
-    color:'#1E6B7A',detail:'6 major SSPs must remediate UK GDPR violations in OpenRTB bid requests.',
+  {title:'CPPA Audit Letter Response Window',source:'cppa',days:22,color:'#8B2535',
+    detail:'Entities receiving CPPA adtech audit letters have 30 days to respond — rolling deadlines.',
+    legal:'Cal. Civ. Code § 1798.199.90 · CPRA Regs. § 7025',url:'https://cppa.ca.gov/'},
+  {title:'Colorado AG GPC Audit Response',source:'co_ag',days:15,color:'#7A4E2A',
+    detail:'Entities receiving CO AG civil investigative demands on GPC compliance have 30 days to respond.',
+    legal:'Colo. Rev. Stat. § 6-1-1306(3) · 4 CCR 904-3',url:'https://coag.gov/resources/colorado-privacy-act/'},
+  {title:'IAB Europe TCF v3.0 Comment Deadline',source:'iab',days:34,color:'#5B3A8C',
+    detail:'Public consultation on TCF v3.0 closes August 15, 2026. LI removal is the critical change.',
+    legal:'GDPR Art. 6, 7 · IAB Europe TCF v3.0 Draft Spec',url:'https://iabeurope.eu/tcf/'},
+  {title:'ICO RTB SSP Enforcement Remediation',source:'ico',days:65,color:'#1E6B7A',
+    detail:'6 major SSPs must remediate UK GDPR violations in OpenRTB bid requests.',
     legal:'UK GDPR Art. 6(1) · Art. 28 · Data Protection Act 2018 s.149',
-    url:'https://ico.org.uk/about-the-ico/research-reports-impact-and-evaluation/research-and-reports/technology-and-innovation/'
-  },
-  {
-    title:'IAB Europe TCF v3.0 Comment Deadline',source:'iab',days:34,
-    color:'#5B3A8C',detail:'Public consultation on TCF v3.0 closes August 15, 2026.',
-    legal:'GDPR Art. 6, 7 · IAB Europe TCF v3.0 Draft Spec',
-    url:'https://iabeurope.eu/tcf/'
-  },
-  {
-    title:'APRA — Senate Floor Vote Expected',source:'iapp',days:90,
-    color:'#4A5568',detail:'American Privacy Rights Act expected Q3 2026 Senate floor vote.',
+    url:'https://ico.org.uk/about-the-ico/research-reports-impact-and-evaluation/research-and-reports/technology-and-innovation/'},
+  {title:'CPPA ADMT Risk Assessments Due',source:'cppa',days:79,color:'#B8762E',
+    detail:'All adtech companies using algorithmic targeting must file risk assessments.',
+    legal:'Cal. Civ. Code § 1798.185(a)(16) · CPRA ADMT Regs., Art. 11',
+    url:'https://cppa.ca.gov/regulations/ccpa_updates.html'},
+  {title:'APRA — Senate Floor Vote Expected',source:'iapp',days:90,color:'#4A5568',
+    detail:'American Privacy Rights Act expected Q3 2026 Senate floor vote.',
     legal:'S. [TBD], 119th Cong. (2026)',
-    url:'https://www.congress.gov/search?q=%22American+Privacy+Rights+Act%22&searchResultViewType=expanded'
-  },
-  {
-    title:'FTC Commercial Surveillance Rule Vote',source:'ftc',days:152,
-    color:'#8B2535',detail:'FTC commissioners expected to vote on final rule Q4 2026.',
-    legal:'FTC Act § 18 (15 U.S.C. § 57a) · 16 C.F.R. Part 464',
-    url:'https://www.ftc.gov/legal-library/rules'
-  },
-  {
-    title:'CPPA Audit Letter Response Window',source:'cppa',days:22,
-    color:'#8B2535',detail:'Entities receiving CPPA audit letters have 30 days to respond — rolling deadlines.',
-    legal:'Cal. Civ. Code § 1798.199.90 · CPRA Regs. § 7025',
-    url:'https://cppa.ca.gov/'
-  },
+    url:'https://www.congress.gov/search?q=%22American+Privacy+Rights+Act%22&searchResultViewType=expanded'},
+  {title:'FTC Commercial Surveillance Rule Vote',source:'ftc',days:152,color:'#8B2535',
+    detail:'FTC commissioners expected to vote on final Commercial Surveillance Rule Q4 2026.',
+    legal:'FTC Act § 18 (15 U.S.C. § 57a) · 16 C.F.R. Part 464',url:'https://www.ftc.gov/legal-library/rules'},
+  {title:'EU AI Act — High-Risk AI Conformity Deadline',source:'eu_ai',days:180,color:'#4A3A8C',
+    detail:'High-risk AI systems (Annex III) must complete conformity assessments by August 2027.',
+    legal:'EU AI Act Art. 6 & Annex III · Regulation (EU) 2024/1689',
+    url:'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689'},
+  {title:'Canada Bill C-27 — Royal Assent Expected',source:'opc',days:270,color:'#8C5A2A',
+    detail:'Consumer Privacy Protection Act expected Royal Assent Q4 2026.',
+    legal:'Bill C-27 (Consumer Privacy Protection Act)',url:'https://www.parl.ca/LegisInfo/en/bill/44-1/C-27'},
 ];
 
 // ════════════════════════════════════════════════════════
@@ -1273,8 +1450,31 @@ const STATE = {
   focusedReg: REGULATIONS[0],
   alertCount: 0,
   newAlerts: [],
-  sources: {ftc:true,cppa:true,edpb:true,iab:true,ico:true,w3c:true,iapp:true},
-  juris: {'us-federal':true,california:true,eu:true,uk:true,'multi-state':true},
+  sources: {
+    // US Federal
+    ftc:true,fcc:true,
+    // US States
+    cppa:true,co_ag:true,tx_ag:true,ct_ag:true,va_ag:true,
+    // EU DPAs
+    edpb:true,cnil:true,dpc:true,apd:true,garante:true,aepd:true,dsk:true,
+    // EU Legislation
+    dsa:true,eu_ai:true,eprivacy:true,
+    // UK
+    ico:true,
+    // International
+    opc:true,oaic:true,pdpc:true,
+    // Industry & Standards
+    iab:true,w3c:true,nai:true,daa:true,tag:true,prebid:true,iapp:true,
+    // Platforms
+    google:true,apple:true,meta:true,microsoft:true,
+    // Courts
+    cjeu:true,us_courts:true
+  },
+  juris: {
+    'us-federal':true,'california':true,'eu':true,'uk':true,'multi-state':true,
+    'us-states':true,'france':true,'ireland':true,'belgium':true,'italy':true,
+    'spain':true,'germany':true,'international':true,'courts':true,'industry':true
+  },
   notifEnabled: false,
   lastSync: null,
   syncTimer: null,
@@ -1502,18 +1702,122 @@ function switchView(view) {
   renderSuggestions();
 }
 
+// ── GROUPED FILTER RAIL ────────────────────────────────
+const FILTER_GROUPS = [
+  { id:'us-fed',   label:'US Federal',         sources:['ftc','fcc'] },
+  { id:'us-state', label:'US States',          sources:['cppa','co_ag','tx_ag','ct_ag','va_ag'] },
+  { id:'eu-dpas',  label:'EU Data Protection', sources:['edpb','cnil','dpc','apd','garante','aepd','dsk'] },
+  { id:'eu-leg',   label:'EU Legislation',     sources:['dsa','eu_ai','eprivacy'] },
+  { id:'uk',       label:'United Kingdom',     sources:['ico'] },
+  { id:'intl',     label:'International',      sources:['opc','oaic','pdpc'] },
+  { id:'industry', label:'Industry & Standards',sources:['iab','w3c','nai','daa','tag','prebid','iapp'] },
+  { id:'platforms',label:'Platforms',          sources:['google','apple','meta','microsoft'] },
+  { id:'courts',   label:'Courts',             sources:['cjeu','us_courts'] },
+];
+
+const JURIS_GROUPS = [
+  { id:'us',   label:'United States', items:[
+    {id:'us-federal',label:'US Federal',color:'#8B2535'},
+    {id:'california',label:'California',color:'#B8762E'},
+    {id:'us-states', label:'US States (CO,TX,CT,VA…)',color:'#7A4E2A'},
+    {id:'multi-state',label:'Multi-state',color:'#6B4A20'},
+  ]},
+  { id:'eu-jur',label:'European Union', items:[
+    {id:'eu',     label:'EU / GDPR',  color:'#2A4580'},
+    {id:'france', label:'France',     color:'#1B6F7A'},
+    {id:'ireland',label:'Ireland',    color:'#2B5888'},
+    {id:'belgium',label:'Belgium',    color:'#6B2D5E'},
+    {id:'italy',  label:'Italy',      color:'#8B3A28'},
+    {id:'spain',  label:'Spain',      color:'#C45C1A'},
+    {id:'germany',label:'Germany',    color:'#3D5E2A'},
+  ]},
+  { id:'uk-jur',label:'United Kingdom', items:[
+    {id:'uk',label:'UK / UK GDPR',color:'#1E6B7A'},
+  ]},
+  { id:'other-jur',label:'Other', items:[
+    {id:'international',label:'International', color:'#8C5A2A'},
+    {id:'courts',       label:'Courts',        color:'#1A2744'},
+    {id:'industry',     label:'Industry',      color:'#4A5568'},
+  ]},
+];
+
+function buildFilterRail() {
+  const container = document.getElementById('filter-rail-container');
+  if (!container) return;
+  let html = '';
+
+  // Sources section
+  html += `<div class="filter-section">
+    <div class="filter-section-label" onclick="toggleFilterSection('src-all')">
+      Sources <span class="filter-toggle" id="filter-toggle-src-all">▾</span>
+    </div>
+    <div id="filter-src-all">`;
+
+  FILTER_GROUPS.forEach(g => {
+    html += `<div style="padding:4px 0 0">
+      <div class="filter-section-label" style="padding:4px 0 2px;font-size:8.5px;color:var(--muted);letter-spacing:.12em;cursor:pointer"
+           onclick="toggleFilterSection('grp-${g.id}')">
+        ${g.label} <span class="filter-toggle" id="filter-toggle-grp-${g.id}">▾</span>
+      </div>
+      <div class="filter-items" id="filter-grp-${g.id}">`;
+    g.sources.forEach(src => {
+      const color = SOURCE_COLORS[src] || '#4A5568';
+      const label = SOURCE_LABELS[src] || src;
+      html += `<div class="filter-item" onclick="toggleFilter('${src}')" id="filter-${src}">
+        <div class="filter-dot" style="background:${color}"></div>
+        ${label}
+        <div class="filter-check on" style="--filter-color:${color}" id="fc-${src}">✓</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</div></div>`;
+
+  // Jurisdiction section
+  html += `<div class="filter-section">
+    <div class="filter-section-label" onclick="toggleFilterSection('jur-all')">
+      Jurisdiction <span class="filter-toggle" id="filter-toggle-jur-all">▾</span>
+    </div>
+    <div id="filter-jur-all">`;
+
+  JURIS_GROUPS.forEach(g => {
+    html += `<div style="padding:4px 0 0">
+      <div class="filter-section-label" style="padding:4px 0 2px;font-size:8.5px;color:var(--muted);letter-spacing:.12em;cursor:pointer"
+           onclick="toggleFilterSection('jg-${g.id}')">
+        ${g.label} <span class="filter-toggle" id="filter-toggle-jg-${g.id}">▾</span>
+      </div>
+      <div class="filter-items" id="filter-jg-${g.id}">`;
+    g.items.forEach(item => {
+      html += `<div class="filter-item" onclick="toggleJuris('${item.id}')" id="j-${item.id}">
+        <div class="filter-dot" style="background:${item.color}"></div>
+        ${item.label}
+        <div class="filter-check on" style="--filter-color:${item.color}" id="jc-${item.id}">✓</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</div></div>`;
+
+  container.innerHTML = html;
+}
+
 function toggleFilter(source) {
   STATE.sources[source] = !STATE.sources[source];
   const check = document.getElementById(`fc-${source}`);
-  if (check) check.className = `filter-check ${STATE.sources[source]?'on':''}`;
-  if (check && STATE.sources[source]) check.textContent = '✓'; else if (check) check.textContent = '';
+  if (check) {
+    check.className = `filter-check${STATE.sources[source]?' on':''}`;
+    check.textContent = STATE.sources[source] ? '✓' : '';
+  }
   if (STATE.view === 'radar') renderView();
 }
 
 function toggleJuris(j) {
   STATE.juris[j] = !STATE.juris[j];
   const check = document.getElementById(`jc-${j}`);
-  if (check) { check.className = `filter-check ${STATE.juris[j]?'on':''}${STATE.juris[j]?'':' '}`.trim(); check.textContent = STATE.juris[j] ? '✓' : ''; }
+  if (check) {
+    check.className = `filter-check${STATE.juris[j]?' on':''}`;
+    check.textContent = STATE.juris[j] ? '✓' : '';
+  }
   if (STATE.view === 'radar') renderView();
 }
 
@@ -1523,7 +1827,7 @@ function toggleFilterSection(id) {
   if (!section) return;
   const hidden = section.style.display === 'none';
   section.style.display = hidden ? '' : 'none';
-  if (toggle) toggle.className = `filter-toggle${hidden?'':' collapsed'}`;
+  if (toggle) toggle.className = `filter-toggle${hidden ? ' collapsed' : ''}`;
 }
 
 function toggleStd(id) {
@@ -1548,21 +1852,13 @@ function focusReg(id) {
 // ════════════════════════════════════════════════════════
 
 const RSS_FEEDS = [
-  {
-    id:'ftc', source:'ftc',
-    url:'https://www.ftc.gov/.rss',
-    label:'FTC Press Releases'
-  },
-  {
-    id:'iapp', source:'iapp',
-    url:'https://iapp.org/news/rss/',
-    label:'IAPP News'
-  },
-  {
-    id:'iab', source:'iab',
-    url:'https://iabtechlab.com/feed/',
-    label:'IAB Tech Lab'
-  },
+  {id:'ftc',   source:'ftc',   url:'https://www.ftc.gov/news-events/news/press-releases.rss', label:'FTC'},
+  {id:'iapp',  source:'iapp',  url:'https://iapp.org/news/rss/', label:'IAPP'},
+  {id:'iab',   source:'iab',   url:'https://iabtechlab.com/feed/', label:'IAB Tech Lab'},
+  {id:'cnil',  source:'cnil',  url:'https://www.cnil.fr/fr/rss.xml', label:'CNIL'},
+  {id:'edpb',  source:'edpb',  url:'https://www.edpb.europa.eu/rss.xml', label:'EDPB'},
+  {id:'ico',   source:'ico',   url:'https://ico.org.uk/about-the-ico/media-centre/rss/', label:'ICO'},
+  {id:'oaic',  source:'oaic',  url:'https://www.oaic.gov.au/feed/', label:'OAIC'},
 ];
 
 async function fetchFeed(feed) {
@@ -2098,6 +2394,12 @@ function hexDim(hex) {
 // ════════════════════════════════════════════════════════
 
 function init() {
+  buildFilterRail();
+  // Update nav counts from data
+  const radarCount = document.getElementById('count-radar');
+  if (radarCount) radarCount.textContent = REGULATIONS.length;
+  const dlCount = document.getElementById('count-deadlines');
+  if (dlCount) dlCount.textContent = DEADLINES.length;
   renderView();
   switchScope('item');
   renderSuggestions();
