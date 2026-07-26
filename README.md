@@ -1,6 +1,6 @@
 # PrivacyWatch — Adtech Privacy Compliance Intelligence
 
-A real-time regulatory monitoring tool for privacy lawyers and compliance professionals who advise the adtech ecosystem. Tracks CPPA, EDPB, FTC, ICO, IAB, W3C, and IAPP developments with citations to primary sources.
+A real-time regulatory monitoring tool for privacy lawyers and compliance professionals who advise the adtech ecosystem. Tracks **32 sources** across US federal, US state AGs, EU DPAs, EU legislation, UK, international regulators, courts, industry standards bodies, and platforms — with citations to primary sources.
 
 **Live site:** [sravanprat.github.io/privacy-watch](https://sravanprat.github.io/privacy-watch/) · [About page](https://sravanprat.github.io/privacy-watch/about.html)
 
@@ -57,28 +57,48 @@ A built-in feedback form delivers responses directly to the maintainer. Powered 
 
 ---
 
-## Data sources
+## Data sources (32 total)
 
-| Source | Coverage |
-|---|---|
-| **FTC** | Commercial Surveillance rulemaking, enforcement actions, data broker regulation |
-| **CPPA** | CPRA regulations, ADMT rules, adtech audit initiative, GPC enforcement |
-| **EDPB** | GDPR guidelines, legitimate interest decisions, DPA coordination |
-| **IAB Europe / Tech Lab** | TCF framework, GPP, OpenRTB, AdsCert, sellers.json |
-| **ICO** | UK GDPR enforcement, adtech RTB investigation, SSP notices |
-| **W3C** | GPC specification, Privacy Sandbox, Privacy CG working group |
-| **IAPP** | Legislative tracker, APRA updates, state law developments |
+**US Regulators:** FTC · CPPA (California) · Colorado AG · Texas AG · Connecticut AG · Virginia AG · FCC · IAPP
+
+**EU Data Protection Authorities:** EDPB · CNIL (France) · DPC (Ireland) · APD/GBA (Belgium) · Garante (Italy) · AEPD (Spain) · DSK (Germany)
+
+**EU Legislation:** DSA / DMA (European Commission) · EU AI Act · ePrivacy Regulation
+
+**UK:** ICO
+
+**Courts:** CJEU · US Federal/State Courts
+
+**International:** OPC (Canada) · OAIC (Australia) · PDPC (Singapore)
+
+**Industry & Standards:** IAB Europe · IAB Tech Lab · W3C · NAI · DAA · TAG · Prebid.org
+
+**Platforms:** Google · Apple · Meta · Microsoft
 
 ---
 
-## Key regulatory items currently tracked
+## Selected items currently tracked (30 total)
 
+**Enforcement actions:**
 - **CPPA ADMT Regulations** — Effective July 1, 2026. Risk assessments due Sept 29. *(Cal. Civ. Code § 1798.185(a)(16))*
-- **EDPB Guidelines 1/2024** — Legitimate interest confirmed invalid for cross-context behavioral advertising. *(GDPR Art. 6(1)(f))*
-- **IAB Europe TCF v3.0** — Public consultation open until Aug 15, 2026. LI removal affects ~65% of current TCF signals.
+- **CNIL — €120M SSP Fine** — Cookie consent bypass. *(GDPR Art. 6(1)(a), Art. 7)*
+- **DPC Ireland — Meta behavioral ad ban** — Consent required for EU behavioral advertising. *(CJEU C-252/21)*
 - **ICO SSP Enforcement Notices** — 90-day remediation window ends Sept 18, 2026. *(UK GDPR Art. 6(1), Art. 28)*
-- **FTC Commercial Surveillance Rule** — Final vote expected Q4 2026. Adtech intermediaries in scope as "covered entities." *(FTC Act § 18)*
-- **W3C GPC Candidate Recommendation** — Legally required opt-out signal in CA, CO, CT, MT. *(Cal. Civ. Code § 1798.135(c))*
+- **Colorado AG — GPC Enforcement** — Civil investigative demands against data brokers. *(Colo. Rev. Stat. § 6-1-1306(3))*
+- **US Courts — Wiretapping class actions** — Session replay and pixel liability under ECPA/CIPA.
+
+**Rulemaking & guidance:**
+- **EDPB Guidelines 1/2024** — LI invalid for cross-context behavioral advertising (foundational). *(GDPR Art. 6(1)(f))*
+- **IAB Europe TCF v3.0** — Consultation open until Aug 15, 2026. LI removal affects ~65% of TCF signals.
+- **DSA/DMA** — VLOP sensitive data ban, gatekeeper consent obligations. *(Regulation (EU) 2022/2065, 2022/1925)*
+- **EU AI Act** — Biometric categorisation for ad targeting prohibited. *(Regulation (EU) 2024/1689)*
+- **FTC Commercial Surveillance Rule** — Final vote Q4 2026. *(FTC Act § 18)*
+- **CJEU C-252/21** — Meta ruling: foundational case eliminating LI for EU behavioral advertising.
+
+**Standards & platform changes:**
+- **Google Consent Mode v2** — Mandatory for EU advertisers. *(DMA Art. 5(2))*
+- **Prebid.js GPP migration** — USP module removed; GPP required. *(Cal. Civ. Code § 1798.135(c))*
+- **W3C GPC Candidate Recommendation** — Legally required in CA, CO, CT, MT. *(Cal. Civ. Code § 1798.135(c))*
 
 ---
 
