@@ -89,7 +89,7 @@ html.dark .sync-badge.live{background:rgba(58,140,100,.12);border-color:rgba(58,
 html.dark .ai-orb-inner{background:var(--depth-3);color:var(--gold)}
 
 /* ── APP LAYOUT ── */
-#app{display:grid;grid-template-columns:260px 1fr 320px;grid-template-rows:56px 1fr;height:100vh;overflow:hidden}
+#app{display:grid;grid-template-columns:260px 1fr 320px;grid-template-rows:56px 1fr;height:calc(100vh - 28px);overflow:hidden}
 
 /* ── TOP BAR ── */
 .top-bar{
@@ -384,7 +384,7 @@ html.dark .ai-orb-inner{background:var(--depth-3);color:var(--gold)}
 .suggestion-chip::after{content:'→';opacity:0;font-size:11px;color:var(--navy);transition:all .15s;transform:translateX(-4px)}
 .suggestion-chip:hover{border-color:rgba(26,39,68,0.25);color:var(--white);background:rgba(26,39,68,0.05);transform:translateX(2px)}
 .suggestion-chip:hover::after{opacity:1;transform:translateX(0)}
-.ai-input-row{display:flex;gap:7px;padding:10px 14px;border-top:1px solid var(--border);flex-shrink:0}
+.ai-input-row{display:flex;gap:7px;padding:10px 14px;border-top:1px solid var(--border);flex-shrink:0;min-height:58px}
 .ai-input{flex:1;padding:9px 12px;border-radius:6px;border:1px solid var(--border);background:var(--depth-3);color:var(--white);font-family:var(--font);font-size:12px;outline:none;transition:border-color .2s;resize:none}
 .ai-input:focus{border-color:rgba(26,39,68,0.30)}
 .ai-input::placeholder{color:var(--muted)}
