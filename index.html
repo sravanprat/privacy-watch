@@ -1,0 +1,2240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrivacyWatch — Adtech Compliance Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── LEGAL PROFESSIONAL THEME (default) ── */
+:root{
+  /* Surfaces — warm ivory / cream */
+  --void:#F0EDE6;--depth-1:#F8F6F1;--depth-2:#FFFFFF;--depth-3:#F4F1EA;--depth-4:#EDE9DF;
+  /* Borders — navy at low opacity */
+  --border:rgba(26,39,68,0.10);--border-glow:rgba(196,151,59,0.30);
+  /* Typography */
+  --white:#1A2744;--platinum:#4A5568;--muted:#8B9BB4;
+  /* Gold accent — warm legal gold */
+  --gold:#C4973B;--gold-light:#D4A74B;--gold-dim:rgba(196,151,59,0.10);
+  /* Electric → slate blue (links, active states) */
+  --electric:#2A4580;--electric-2:#3A5590;--electric-dim:rgba(42,69,128,0.08);
+  /* Semantic */
+  --positive:#2D6A4F;--warning:#B8762E;--negative:#8B2535;
+  /* Typography */
+  --font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(0.4,0,0.2,1);
+  /* Source colors — muted, professional */
+  --ftc:#8B2535;--ftc-dim:rgba(139,37,53,0.09);
+  --cppa:#B8762E;--cppa-dim:rgba(184,118,46,0.09);
+  --edpb:#2A4580;--edpb-dim:rgba(42,69,128,0.09);
+  --iab:#5B3A8C;--iab-dim:rgba(91,58,140,0.09);
+  --ico:#1E6B7A;--ico-dim:rgba(30,107,122,0.09);
+  --w3c:#2D6A4F;--w3c-dim:rgba(45,106,79,0.09);
+  --iapp:#4A5568;--iapp-dim:rgba(74,85,104,0.09);
+  /* Navy for top bar */
+  --navy:#1A2744;
+}
+
+/* ── DARK MODE (optional toggle) ── */
+html.dark{
+  --void:#0A0D14;--depth-1:#0F1219;--depth-2:#151B27;--depth-3:#1C2333;--depth-4:#232D42;
+  --border:rgba(255,255,255,0.07);--border-glow:rgba(196,151,59,0.20);
+  --white:#E8ECF4;--platinum:#8B9BB4;--muted:#4A5978;
+  --gold:#C9A84C;--gold-light:#D9B85C;--gold-dim:rgba(201,168,76,0.12);
+  --electric:#4A6FA5;--electric-2:#6A8FC5;--electric-dim:rgba(74,111,165,0.12);
+  --positive:#3A8C64;--warning:#C98A3E;--negative:#9B3A4A;
+  --ftc:#9B3A4A;--ftc-dim:rgba(155,58,74,0.12);
+  --cppa:#C98A3E;--cppa-dim:rgba(201,138,62,0.12);
+  --edpb:#4A6FA5;--edpb-dim:rgba(74,111,165,0.12);
+  --iab:#7A5AAC;--iab-dim:rgba(122,90,172,0.12);
+  --ico:#3A8A9C;--ico-dim:rgba(58,138,156,0.12);
+  --w3c:#3A8C64;--w3c-dim:rgba(58,140,100,0.12);
+  --iapp:#6B7E9A;--iapp-dim:rgba(107,126,154,0.12);
+  --navy:#151B27;
+}
+
+html,body{height:100%;overflow:hidden;background:var(--depth-1);color:var(--white);font-family:var(--font);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* ── DARK MODE PANEL OVERRIDES ── */
+html.dark .left-rail{background:var(--depth-2);border-right:1px solid var(--border)}
+html.dark .top-bar{background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.06)}
+html.dark .top-logo{color:var(--gold)}
+html.dark .top-logo span{color:var(--white)}
+html.dark .top-divider{background:rgba(255,255,255,0.08)}
+html.dark .last-sync{color:rgba(255,255,255,0.35)}
+html.dark .top-bar-label{color:rgba(255,255,255,0.45)}
+html.dark .ai-panel{background:var(--depth-2);border-left:1px solid var(--border)}
+html.dark .ai-panel-header{background:var(--navy)}
+html.dark .ai-panel-header .ai-panel-title strong{color:#E8ECF4}
+html.dark .ai-panel-header .ai-panel-title span{color:rgba(232,236,244,0.45)}
+html.dark .reg-card{background:var(--depth-3);border-color:var(--border)}
+html.dark .std-card{background:var(--depth-3);border-color:var(--border)}
+html.dark .deadline-card{background:var(--depth-3);border-color:var(--border)}
+html.dark .content-tab-bar{background:var(--depth-2);border-bottom:1px solid var(--border)}
+html.dark .center-stage{background:var(--depth-1)}
+html.dark .sync-bar{background:var(--depth-2);border-top-color:var(--border)}
+html.dark .rail-item:hover{background:var(--depth-3)}
+html.dark .rail-item.active{background:var(--depth-3)}
+html.dark .filter-item:hover{background:var(--depth-3)}
+html.dark .ai-msg.ai{background:var(--depth-3);border:1px solid var(--border)}
+html.dark .ai-msg.user{background:var(--electric);color:#fff}
+html.dark .ai-input{background:var(--depth-3);border-color:var(--border);color:var(--white)}
+html.dark .scope-pill.active{background:var(--electric-dim);border-color:var(--border-glow);color:var(--white)}
+html.dark .mode-toggle{background:var(--depth-3);border-color:var(--border);color:var(--platinum)}
+html.dark .alert-btn{background:var(--depth-3);border-color:var(--border);color:var(--platinum)}
+html.dark .sync-badge.live{background:rgba(58,140,100,.12);border-color:rgba(58,140,100,.25);color:#3A8C64}
+html.dark .ai-orb-inner{background:var(--depth-3);color:var(--gold)}
+
+/* ── APP LAYOUT ── */
+#app{display:grid;grid-template-columns:260px 1fr 320px;grid-template-rows:56px 1fr;height:100vh;overflow:hidden}
+
+/* ── TOP BAR ── */
+.top-bar{
+  grid-column:1/-1;display:flex;align-items:center;padding:0 20px;
+  background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.07);gap:12px;
+  position:relative;z-index:20;
+}
+.top-logo{font-size:11px;font-weight:800;letter-spacing:.32em;color:var(--gold);text-transform:uppercase;flex-shrink:0}
+.top-logo span{color:#E8ECF4;letter-spacing:.18em;font-weight:600}
+.top-divider{width:1px;height:18px;background:rgba(255,255,255,0.12);flex-shrink:0}
+.top-bar-label{font-size:11px;color:rgba(232,236,244,0.40);font-weight:500}
+.sync-badge{
+  display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;
+  font-size:11px;font-weight:500;cursor:pointer;transition:all .2s;flex-shrink:0;
+}
+.sync-badge.live{background:rgba(45,106,79,.08);border:1px solid rgba(45,106,79,.25);color:#2D6A4F}
+.sync-badge.syncing{background:rgba(42,69,128,.08);border:1px solid rgba(42,69,128,.25);color:#2A4580}
+.sync-badge.stale{background:rgba(184,118,46,.08);border:1px solid rgba(184,118,46,.25);color:#B8762E}
+.live-dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:live-pulse 2s infinite;flex-shrink:0}
+.syncing-spinner{width:10px;height:10px;border:1.5px solid rgba(42,69,128,.25);border-top-color:#2A4580;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+.top-spacer{flex:1}
+.alert-btn{
+  position:relative;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,0.14);
+  background:rgba(255,255,255,0.07);color:rgba(232,236,244,0.60);cursor:pointer;font-size:15px;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;
+}
+.alert-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(196,151,59,0.10)}
+.alert-badge{
+  position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:8px;
+  background:#8B2535;color:#fff;font-size:9px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;padding:0 3px;
+  animation:badge-pop .3s var(--ease);border:2px solid var(--navy);
+}
+.alert-badge.hidden{display:none}
+.mode-toggle{width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.07);color:rgba(232,236,244,0.55);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.mode-toggle:hover{border-color:rgba(255,255,255,0.30);color:#E8ECF4}
+.last-sync{font-size:10px;color:rgba(232,236,244,0.35);font-family:var(--mono);flex-shrink:0}
+
+/* ── LEFT RAIL ── */
+.left-rail{
+  background:var(--depth-2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;grid-row:2;
+}
+.rail-header{padding:14px 16px 12px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--depth-2)}
+.rail-title{font-size:11px;font-weight:700;color:var(--white);margin-bottom:2px;letter-spacing:.02em}
+.rail-sub{font-size:10px;color:var(--muted)}
+.rail-scroll{flex:1;overflow-y:auto;padding:8px 0}
+.rail-scroll::-webkit-scrollbar{width:3px}
+.rail-scroll::-webkit-scrollbar-thumb{background:var(--depth-4);border-radius:2px}
+.rail-section{padding:10px 16px 4px}
+.rail-section-label{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.rail-item{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;margin:0 6px 2px;
+  border-radius:8px;cursor:pointer;border:1px solid transparent;
+  transition:background .15s,border-color .15s;position:relative;overflow:hidden;
+}
+.rail-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--item-color,var(--gold));opacity:0;transition:opacity .2s;border-radius:0 2px 2px 0}
+.rail-item:hover{background:rgba(26,39,68,0.05)}
+.rail-item.active{background:rgba(26,39,68,0.06);border-color:rgba(26,39,68,0.12)}
+.rail-item.active::before{opacity:1}
+.rail-dot{width:7px;height:7px;border-radius:50%;background:var(--item-color,var(--gold));flex-shrink:0;opacity:.4}
+.rail-item.active .rail-dot{opacity:1}
+.rail-item-label{font-size:12px;font-weight:500;color:var(--white);flex:1;letter-spacing:.01em}
+.rail-item.active .rail-item-label{font-weight:600}
+.rail-item-count{font-size:10px;font-family:var(--mono);color:var(--muted);background:var(--depth-4);padding:1px 7px;border-radius:10px;border:1px solid var(--border)}
+.rail-item-new{width:6px;height:6px;border-radius:50%;background:#8B2535;box-shadow:0 0 5px rgba(139,37,53,0.4);animation:live-pulse 2s infinite;flex-shrink:0}
+
+/* Source filter items */
+.filter-section{padding:10px 16px 8px;border-top:1px solid var(--border)}
+.filter-section-label{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.filter-toggle{font-size:10px;color:var(--muted);transition:transform .2s}
+.filter-toggle.collapsed{transform:rotate(-90deg)}
+.filter-items{display:flex;flex-direction:column;gap:1px}
+.filter-item{
+  display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;
+  cursor:pointer;transition:background .15s;font-size:11px;color:var(--platinum);
+}
+.filter-item:hover{background:var(--depth-3)}
+.filter-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.filter-check{width:14px;height:14px;border-radius:3px;border:1px solid var(--border);background:transparent;margin-left:auto;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .15s;flex-shrink:0}
+.filter-check.on{background:var(--filter-color,var(--electric));border-color:var(--filter-color,var(--electric));color:#fff}
+
+/* Sync bar */
+.sync-bar{padding:10px 12px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:6px}
+.sync-info{font-size:9px;color:var(--muted);text-align:center;font-family:var(--mono)}
+.sync-btn{
+  width:100%;padding:7px;border-radius:6px;border:1px solid var(--border);
+  background:var(--navy);color:#E8ECF4;font-size:11px;font-weight:600;
+  cursor:pointer;transition:all .2s;font-family:var(--font);letter-spacing:.02em;
+}
+.sync-btn:hover{background:#253660;border-color:#253660}
+.notif-btn{
+  width:100%;padding:6px;border-radius:6px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-size:10px;
+  cursor:pointer;transition:all .2s;font-family:var(--font);
+}
+.notif-btn:hover{color:var(--platinum)}
+.notif-btn.enabled{color:#2D6A4F;border-color:rgba(45,106,79,.30)}
+
+/* ── CENTER STAGE ── */
+.center-stage{grid-row:2;overflow-y:auto;background:var(--depth-1);display:flex;flex-direction:column}
+.center-stage::-webkit-scrollbar{width:4px}
+.center-stage::-webkit-scrollbar-thumb{background:var(--depth-4);border-radius:2px}
+
+.content-tab-bar{
+  display:flex;padding:0 24px;background:var(--depth-2);border-bottom:1px solid var(--border);
+  flex-shrink:0;position:sticky;top:0;z-index:10;
+}
+.content-tab{
+  padding:16px 16px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;
+  border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;
+  white-space:nowrap;
+}
+.content-tab:hover{color:var(--white)}
+.content-tab.active{color:var(--white);border-bottom-color:var(--gold)}
+
+/* Regulation Radar */
+.radar-view{padding:24px 28px 80px;display:flex;flex-direction:column;gap:0;animation:fadeUp .3s var(--ease)}
+.radar-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:16px}
+.radar-title-group{}
+.radar-title{font-size:21px;font-weight:700;letter-spacing:-.02em;color:var(--white);margin-bottom:4px}
+.radar-sub{font-size:13px;color:var(--platinum)}
+.radar-stats{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.radar-stat{padding:6px 14px;border-radius:6px;background:var(--depth-2);border:1px solid var(--border);text-align:center;min-width:72px;box-shadow:0 1px 3px rgba(26,39,68,0.06)}
+.radar-stat-val{font-size:17px;font-weight:700;font-family:var(--mono);color:var(--white);display:block}
+.radar-stat-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+.content-tab.active{color:var(--white);border-bottom-color:var(--gold)}
+.content-tab:hover{color:var(--navy)}
+
+/* Regulation card */
+.reg-card{
+  background:var(--depth-2);border:1px solid var(--border);border-radius:10px;
+  border-left:3px solid var(--card-color,var(--gold));margin-bottom:10px;
+  transition:transform .2s,box-shadow .2s;cursor:pointer;overflow:hidden;
+  animation:fadeUp .3s var(--ease) both;
+  box-shadow:0 1px 4px rgba(26,39,68,0.06),0 4px 12px rgba(26,39,68,0.04);
+}
+.reg-card:hover{transform:translateX(2px);box-shadow:0 3px 12px rgba(26,39,68,0.12),0 1px 4px rgba(26,39,68,0.06)}
+.reg-card.new-item{box-shadow:0 0 0 1.5px var(--card-color,var(--gold)),0 3px 12px rgba(26,39,68,0.10)}
+.reg-card-header{display:flex;align-items:center;gap:8px;padding:13px 16px 9px}
+.source-chip{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 9px;border-radius:4px;background:var(--card-color-dim,var(--gold-dim));color:var(--card-color,var(--gold));flex-shrink:0;border:1px solid transparent}
+.juri-chip{font-size:9px;font-weight:500;padding:2px 7px;border-radius:4px;background:var(--depth-3);color:var(--platinum);border:1px solid var(--border);flex-shrink:0;letter-spacing:.02em}
+.card-spacer{flex:1}
+.status-badge{font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:4px;flex-shrink:0}
+.status-badge.EFFECTIVE,.status-badge.FINAL{background:rgba(45,106,79,.08);color:#2D6A4F;border:1px solid rgba(45,106,79,.20)}
+.status-badge.DRAFT,.status-badge.PROPOSED{background:rgba(184,118,46,.08);color:#B8762E;border:1px solid rgba(184,118,46,.22)}
+.status-badge.CONSULTATION{background:rgba(42,69,128,.08);color:#2A4580;border:1px solid rgba(42,69,128,.20)}
+.status-badge.ENFORCEMENT{background:rgba(139,37,53,.08);color:#8B2535;border:1px solid rgba(139,37,53,.22)}
+.new-badge{font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:rgba(139,37,53,.08);color:#8B2535;border:1px solid rgba(139,37,53,.20);animation:badge-pop .4s var(--ease)}
+.reg-card-body{padding:0 16px 14px}
+.reg-title{font-size:13.5px;font-weight:600;color:var(--white);line-height:1.45;margin-bottom:6px;letter-spacing:-.01em}
+.reg-summary{font-size:12.5px;color:var(--platinum);line-height:1.65;margin-bottom:10px}
+.reg-action{padding:10px 13px;border-radius:6px;background:rgba(196,151,59,.06);border:1px solid rgba(196,151,59,.16);border-left:2px solid var(--gold);font-size:11.5px;color:#6B4E1E;line-height:1.55;margin-bottom:10px}
+.reg-action::before{content:'Action required: ';font-weight:700;color:var(--gold)}
+.reg-card-footer{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.reg-date{font-size:10px;font-family:var(--mono);color:var(--muted)}
+.reg-tag{font-size:9px;padding:2px 7px;border-radius:3px;background:var(--depth-3);color:var(--muted);border:1px solid var(--border);letter-spacing:.02em}
+.priority-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.priority-dot.urgent{background:#8B2535}
+.priority-dot.high{background:#B8762E}
+.priority-dot.medium{background:#2A4580}
+.priority-dot.low{background:var(--muted)}
+
+/* Standards Tracker */
+.std-view{padding:24px 28px 80px;animation:fadeUp .3s var(--ease)}
+.std-header{margin-bottom:20px}
+.std-title{font-size:21px;font-weight:700;letter-spacing:-.02em;color:var(--white);margin-bottom:4px}
+.std-sub{font-size:13px;color:var(--platinum)}
+.std-grid{display:flex;flex-direction:column;gap:12px}
+.std-card{
+  background:var(--depth-2);border:1px solid var(--border);border-radius:10px;
+  border-left:3px solid var(--std-color,var(--electric));overflow:hidden;
+  animation:fadeUp .35s var(--ease) both;
+  box-shadow:0 1px 4px rgba(26,39,68,0.06),0 4px 12px rgba(26,39,68,0.03);
+}
+.std-card-header{display:flex;align-items:center;gap:12px;padding:14px 18px 12px;cursor:pointer}
+.std-source-dot{width:9px;height:9px;border-radius:50%;background:var(--std-color,var(--electric));flex-shrink:0}
+.std-name{font-size:13.5px;font-weight:600;color:var(--white);flex:1;letter-spacing:-.01em}
+.std-version-row{display:flex;align-items:center;gap:5px}
+.std-ver{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:3px;border:1px solid var(--border);background:var(--depth-3);color:var(--platinum)}
+.std-ver.current{border-color:var(--std-color,var(--electric));color:var(--std-color,var(--electric));background:transparent}
+.std-ver-arrow{font-size:10px;color:var(--muted)}
+.std-impact{font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:4px}
+.std-impact.critical{background:rgba(139,37,53,.08);color:#8B2535;border:1px solid rgba(139,37,53,.18)}
+.std-impact.high{background:rgba(184,118,46,.08);color:#B8762E;border:1px solid rgba(184,118,46,.18)}
+.std-impact.medium{background:rgba(42,69,128,.08);color:#2A4580;border:1px solid rgba(42,69,128,.18)}
+.std-collapse-btn{font-size:11px;color:var(--muted);transition:transform .2s}
+.std-card-body{padding:0 18px 16px;border-top:1px solid var(--border)}
+.std-status-row{display:flex;align-items:center;gap:8px;padding:10px 0 8px;flex-wrap:wrap}
+.std-status-label{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.std-status-pill{font-size:10px;font-weight:600;padding:2px 9px;border-radius:4px}
+.std-status-pill.stable{background:rgba(45,106,79,.08);color:#2D6A4F;border:1px solid rgba(45,106,79,.20)}
+.std-status-pill.consultation{background:rgba(42,69,128,.08);color:#2A4580;border:1px solid rgba(42,69,128,.20)}
+.std-status-pill.deprecated{background:rgba(139,37,53,.08);color:#8B2535;border:1px solid rgba(139,37,53,.20)}
+.std-status-pill.available{background:rgba(45,106,79,.08);color:#2D6A4F;border:1px solid rgba(45,106,79,.20)}
+.std-status-pill.proposal{background:rgba(184,118,46,.08);color:#B8762E;border:1px solid rgba(184,118,46,.20)}
+.std-deadline{font-size:10px;font-family:var(--mono);color:#B8762E;background:rgba(184,118,46,.07);border:1px solid rgba(184,118,46,.20);padding:2px 9px;border-radius:4px;margin-left:auto}
+.std-changes{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.std-change-item{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--platinum);line-height:1.55}
+.std-change-item::before{content:'–';color:var(--std-color,var(--electric));flex-shrink:0;font-size:13px;margin-top:0px;font-weight:600}
+.std-api-section{margin-top:4px}
+.std-api-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.std-api-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--border);font-size:12px}
+.std-api-name{flex:1;color:var(--white);font-weight:500}
+.std-api-status{font-size:9.5px;font-weight:600;padding:2px 8px;border-radius:4px}
+.std-api-status.available{background:rgba(45,106,79,.08);color:#2D6A4F;border:1px solid rgba(45,106,79,.18)}
+.std-api-status.origin-trial{background:rgba(42,69,128,.08);color:#2A4580;border:1px solid rgba(42,69,128,.18)}
+.std-api-status.proposal{background:rgba(184,118,46,.08);color:#B8762E;border:1px solid rgba(184,118,46,.18)}
+.std-api-status.deprecated{background:rgba(139,37,53,.08);color:#8B2535;border:1px solid rgba(139,37,53,.18)}
+.std-api-impact{font-size:10px;color:var(--muted)}
+.std-affected{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.affected-chip{font-size:9px;padding:2px 8px;border-radius:3px;background:var(--depth-3);color:var(--muted);border:1px solid var(--border)}
+
+/* Deadlines view */
+.deadline-view{padding:24px 28px 80px;animation:fadeUp .3s var(--ease)}
+.deadline-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.deadline-card{
+  background:var(--depth-2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;
+  border-top:3px solid var(--dl-color,var(--gold));transition:transform .2s,box-shadow .2s;cursor:pointer;
+  box-shadow:0 1px 4px rgba(26,39,68,0.06);
+}
+.deadline-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(26,39,68,0.10)}
+.dl-days{font-size:34px;font-weight:700;font-family:var(--mono);color:var(--dl-color,var(--gold));line-height:1;margin-bottom:3px;letter-spacing:-.02em}
+.dl-unit{font-size:10px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em}
+.dl-title{font-size:12px;font-weight:600;color:var(--white);line-height:1.4;margin-bottom:4px}
+.dl-source{font-size:10px;color:var(--muted);line-height:1.5}
+.dl-urgent{border-top-color:#8B2535}
+.dl-urgent .dl-days{color:#8B2535}
+
+/* Live feed from RSS */
+.live-feed-item{
+  padding:10px 14px;border-radius:8px;background:var(--depth-3);border:1px solid var(--border);
+  border-left:3px solid var(--feed-color,var(--platinum));margin-bottom:8px;animation:fadeUp .3s var(--ease)
+}
+.lfi-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.lfi-source{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--feed-color,var(--platinum))}
+.lfi-date{font-size:9px;color:var(--muted);font-family:var(--mono);margin-left:auto}
+.lfi-title{font-size:12px;color:var(--white);font-weight:500;line-height:1.4;text-decoration:none;display:block}
+.lfi-title:hover{color:var(--gold)}
+.live-section-header{display:flex;align-items:center;gap:8px;margin:16px 0 8px}
+.live-section-title{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.live-section-line{flex:1;height:1px;background:var(--border)}
+
+/* ── RIGHT PANEL ── */
+.ai-panel{
+  background:var(--depth-2);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;grid-row:2;overflow:hidden;
+}
+.ai-panel-header{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--navy)}
+.ai-orb{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  background:var(--gold);position:relative;flex-shrink:0;
+}
+.ai-orb::after{content:'⚖';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;background:var(--navy);border-radius:50%;margin:3px;color:var(--gold)}
+.ai-panel-title strong{font-size:12.5px;font-weight:700;color:#E8ECF4;display:block;letter-spacing:.01em}
+.ai-panel-title span{font-size:10px;color:rgba(232,236,244,0.45)}
+.ai-context{margin:10px 14px 0;padding:7px 11px;border-radius:6px;background:var(--depth-3);border:1px solid var(--border);font-size:11px;color:var(--platinum);display:flex;align-items:center;gap:6px;flex-shrink:0}
+.ai-context-dot{width:5px;height:5px;border-radius:50%;background:#2D6A4F;animation:live-pulse 2s infinite;flex-shrink:0}
+.scope-selector{display:flex;gap:4px;padding:8px 14px;flex-shrink:0}
+.scope-pill{flex:1;padding:5px 6px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.03em;cursor:pointer;border:1px solid var(--border);background:var(--depth-3);color:var(--muted);transition:all .15s;text-align:center}
+.scope-pill:hover{color:var(--white);border-color:rgba(26,39,68,0.20)}
+.scope-pill.active{background:var(--navy);border-color:var(--navy);color:#E8ECF4;font-weight:600}
+.ai-conversation{flex:1;overflow-y:auto;padding:8px 14px;display:flex;flex-direction:column;gap:10px}
+.ai-conversation::-webkit-scrollbar{width:3px}
+.ai-conversation::-webkit-scrollbar-thumb{background:var(--depth-4);border-radius:2px}
+.ai-msg{padding:11px 13px;border-radius:8px;font-size:12.5px;line-height:1.65;animation:fadeUp .25s var(--ease)}
+.ai-msg.ai{background:var(--depth-3);border:1px solid var(--border);color:var(--platinum)}
+.ai-msg.ai strong{color:var(--white)}
+.ai-msg.user{background:var(--navy);border:1px solid transparent;color:#E8ECF4;text-align:right;font-weight:500}
+.ai-thinking{display:flex;gap:5px;padding:11px 13px}
+.think-dot{width:6px;height:6px;border-radius:50%;background:var(--electric);animation:pulse-dot 1s ease-in-out infinite}
+.think-dot:nth-child(2){animation-delay:.15s}
+.think-dot:nth-child(3){animation-delay:.3s}
+
+/* Alerts view in panel */
+.alert-feed{display:flex;flex-direction:column;gap:8px;padding:8px 14px}
+.alert-item{padding:10px 12px;border-radius:8px;background:var(--depth-3);border:1px solid var(--border);border-left:3px solid var(--al-color,var(--warning))}
+.alert-item-header{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.alert-source{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--al-color,var(--warning))}
+.alert-time{font-size:9px;font-family:var(--mono);color:var(--muted);margin-left:auto}
+.alert-title{font-size:11px;color:var(--white);font-weight:500;line-height:1.4}
+
+.ai-suggestions{padding:8px 14px;border-top:1px solid var(--border);flex-shrink:0}
+.suggestion-label{font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em}
+.suggestion-chips{display:flex;flex-direction:column;gap:5px}
+.suggestion-chip{
+  padding:7px 11px;border-radius:6px;font-size:11.5px;color:var(--platinum);cursor:pointer;
+  border:1px solid var(--border);background:var(--depth-3);text-align:left;
+  transition:all .15s;display:flex;align-items:center;justify-content:space-between;
+}
+.suggestion-chip::after{content:'→';opacity:0;font-size:11px;color:var(--navy);transition:all .15s;transform:translateX(-4px)}
+.suggestion-chip:hover{border-color:rgba(26,39,68,0.25);color:var(--white);background:rgba(26,39,68,0.05);transform:translateX(2px)}
+.suggestion-chip:hover::after{opacity:1;transform:translateX(0)}
+.ai-input-row{display:flex;gap:7px;padding:10px 14px;border-top:1px solid var(--border);flex-shrink:0}
+.ai-input{flex:1;padding:9px 12px;border-radius:6px;border:1px solid var(--border);background:var(--depth-3);color:var(--white);font-family:var(--font);font-size:12px;outline:none;transition:border-color .2s;resize:none}
+.ai-input:focus{border-color:rgba(26,39,68,0.30)}
+.ai-input::placeholder{color:var(--muted)}
+.ai-send{width:36px;height:36px;border-radius:6px;border:none;cursor:pointer;background:var(--navy);color:#E8ECF4;font-size:15px;transition:all .15s;flex-shrink:0}
+.ai-send:hover{background:#253660;transform:scale(1.05)}
+
+/* ── TOAST SYSTEM ── */
+#toast-container{position:fixed;top:68px;right:20px;z-index:1000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{
+  display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:8px;
+  background:#FFFFFF;border:1px solid rgba(26,39,68,0.12);box-shadow:0 4px 20px rgba(26,39,68,0.14),0 1px 4px rgba(26,39,68,0.08);
+  font-size:12px;color:var(--white);pointer-events:all;min-width:280px;max-width:360px;
+  animation:toast-in .3s var(--ease);border-left:3px solid var(--toast-color,var(--gold));
+}
+.toast.removing{animation:toast-out .3s var(--ease) forwards}
+.toast-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.toast-body{flex:1}
+.toast-title{font-weight:700;color:var(--white);margin-bottom:2px}
+.toast-msg{font-size:11px;color:var(--platinum);line-height:1.4}
+.toast-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0;line-height:1;margin-top:1px;flex-shrink:0}
+.toast-close:hover{color:var(--white)}
+
+/* ── SEARCH RESULTS ── */
+.ai-msg.sr-response{background:transparent;border:none;padding:0;gap:0}
+.sr-header{font-size:11px;color:var(--muted);margin-bottom:8px;padding:0 2px;letter-spacing:.02em}
+.sr-section-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:10px 0 5px 2px}
+.sr-section-label:first-of-type{margin-top:0}
+.sr-card{
+  background:var(--depth-2);border:1px solid var(--border);border-radius:8px;
+  border-left:3px solid var(--sr-color,var(--gold));padding:10px 12px;
+  margin-bottom:6px;cursor:pointer;transition:box-shadow .15s,transform .15s;
+  box-shadow:0 1px 3px rgba(26,39,68,0.06);
+}
+.sr-card:hover{box-shadow:0 3px 10px rgba(26,39,68,0.11);transform:translateX(2px)}
+.sr-card-top{display:flex;align-items:center;gap:5px;margin-bottom:5px;flex-wrap:wrap}
+.sr-type-chip{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:1px 7px;border-radius:3px;flex-shrink:0}
+.sr-status{font-size:9px;font-weight:600;padding:1px 7px;border-radius:3px}
+.sr-status.EFFECTIVE,.sr-status.FINAL,.sr-status.stable{background:rgba(45,106,79,.08);color:#2D6A4F;border:1px solid rgba(45,106,79,.18)}
+.sr-status.DRAFT,.sr-status.PROPOSED,.sr-status.medium-impact{background:rgba(184,118,46,.08);color:#B8762E;border:1px solid rgba(184,118,46,.18)}
+.sr-status.CONSULTATION{background:rgba(42,69,128,.08);color:#2A4580;border:1px solid rgba(42,69,128,.18)}
+.sr-status.ENFORCEMENT,.sr-status.critical-impact{background:rgba(139,37,53,.08);color:#8B2535;border:1px solid rgba(139,37,53,.18)}
+.sr-status.high-impact{background:rgba(184,118,46,.08);color:#B8762E;border:1px solid rgba(184,118,46,.18)}
+.sr-juri{font-size:9px;color:var(--muted);padding:1px 6px;background:var(--depth-3);border-radius:3px;border:1px solid var(--border)}
+.sr-title{font-size:12px;font-weight:600;color:var(--white);line-height:1.4;margin-bottom:4px}
+.sr-body{font-size:11px;color:var(--platinum);line-height:1.55;margin-bottom:5px}
+.sr-action{font-size:10.5px;color:var(--platinum);line-height:1.5;padding:5px 8px;background:rgba(196,151,59,.05);border-left:2px solid var(--gold);border-radius:0 4px 4px 0;margin-bottom:5px}
+.sr-action-label{font-weight:700;color:var(--gold)}
+.sr-legal{font-size:9.5px;font-family:var(--mono);color:var(--muted);margin-top:4px;line-height:1.4}
+.sr-source-link{display:inline-block;font-size:10px;font-weight:600;color:var(--electric);text-decoration:none;margin-top:4px}
+.sr-source-link:hover{text-decoration:underline}
+.sr-source-link::after{content:' ↗';opacity:.6}
+.sr-overflow{font-size:10px;color:var(--muted);text-align:center;padding:8px 0 2px;font-style:italic}
+.sr-empty{text-align:center;padding:20px 8px;color:var(--muted)}
+mark{background:rgba(196,151,59,0.18);color:inherit;border-radius:2px;padding:0 1px}
+html.dark mark{background:rgba(196,151,59,0.25)}
+
+/* ── CITATION SYSTEM ── */
+.cite-bar{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  padding:9px 16px 11px;border-top:1px solid var(--border);
+  background:rgba(26,39,68,0.025);flex-wrap:wrap;
+}
+.cite-links{display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex-shrink:0}
+.cite-link{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:600;color:var(--electric);text-decoration:none;
+  padding:2px 8px;border-radius:3px;border:1px solid rgba(42,69,128,0.20);
+  background:rgba(42,69,128,0.05);transition:all .15s;white-space:nowrap;
+  letter-spacing:.01em;
+}
+.cite-link:hover{background:rgba(42,69,128,0.12);border-color:rgba(42,69,128,0.35);color:var(--navy)}
+.cite-link::after{content:'↗';font-size:9px;opacity:.6}
+.cite-legal{
+  font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.5;
+  flex:1;min-width:0;text-align:right;
+}
+/* Standards cite */
+.std-cite-bar{
+  display:flex;align-items:flex-start;gap:10px;padding:10px 18px 12px;
+  border-top:1px solid var(--border);background:rgba(26,39,68,0.02);flex-wrap:wrap;
+}
+.std-cite-legal{font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.5;flex:1;margin-bottom:6px}
+.std-cite-links{display:flex;gap:6px;flex-wrap:wrap}
+/* Deadline cite */
+.dl-cite{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  margin-top:10px;padding-top:8px;border-top:1px solid var(--border);flex-wrap:wrap;
+}
+.dl-cite-legal{font-size:9px;color:var(--muted);font-family:var(--mono);line-height:1.4;flex:1}
+.dl-cite-link{
+  font-size:10px;font-weight:600;color:var(--electric);text-decoration:none;
+  padding:2px 7px;border-radius:3px;border:1px solid rgba(42,69,128,0.20);
+  background:rgba(42,69,128,0.05);transition:all .15s;white-space:nowrap;flex-shrink:0;
+}
+.dl-cite-link:hover{background:rgba(42,69,128,0.12);border-color:rgba(42,69,128,0.35)}
+.dl-cite-link::after{content:' ↗';font-size:9px;opacity:.6}
+/* Live feed citation */
+.lfi-cite{display:flex;align-items:center;gap:6px;margin-top:5px;flex-wrap:wrap}
+.lfi-link{
+  font-size:10px;font-weight:600;color:var(--electric);text-decoration:none;
+  display:inline-flex;align-items:center;gap:3px;transition:color .15s;
+}
+.lfi-link:hover{color:var(--navy);text-decoration:underline}
+.lfi-link::after{content:'↗';font-size:9px;opacity:.6}
+
+/* ── FEEDBACK ── */
+#feedback-btn{
+  position:fixed;bottom:36px;right:20px;z-index:60;
+  display:flex;align-items:center;gap:7px;
+  padding:8px 16px;border-radius:20px;
+  background:var(--navy);color:#E8ECF4;
+  border:1px solid rgba(255,255,255,0.12);
+  font-size:12px;font-weight:600;font-family:var(--font);
+  cursor:pointer;box-shadow:0 4px 16px rgba(26,39,68,0.18);
+  transition:all .2s;letter-spacing:.02em;
+}
+#feedback-btn:hover{background:#253660;box-shadow:0 6px 24px rgba(26,39,68,0.24);transform:translateY(-1px)}
+#feedback-btn .fb-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,.5)}
+html.dark #feedback-btn{background:var(--depth-3);border-color:var(--border)}
+
+/* Feedback overlay */
+#feedback-overlay{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(26,39,68,0.45);backdrop-filter:blur(3px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .25s var(--ease);
+}
+#feedback-overlay.open{opacity:1;pointer-events:all}
+
+/* Feedback modal */
+#feedback-modal{
+  background:#FFFFFF;border-radius:14px;width:480px;max-width:calc(100vw - 32px);
+  box-shadow:0 20px 60px rgba(26,39,68,0.22),0 4px 16px rgba(26,39,68,0.10);
+  transform:translateY(16px) scale(0.98);transition:transform .25s var(--ease);
+  overflow:hidden;max-height:calc(100vh - 80px);display:flex;flex-direction:column;
+}
+#feedback-overlay.open #feedback-modal{transform:none}
+html.dark #feedback-modal{background:var(--depth-2);border:1px solid var(--border)}
+
+.fb-modal-header{
+  background:var(--navy);padding:18px 22px 16px;flex-shrink:0;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.fb-header-text{}
+.fb-modal-title{font-size:15px;font-weight:700;color:#E8ECF4;margin-bottom:2px;letter-spacing:-.01em}
+.fb-modal-sub{font-size:11px;color:rgba(232,236,244,0.5)}
+.fb-close{background:none;border:none;color:rgba(232,236,244,0.5);font-size:18px;cursor:pointer;padding:0;line-height:1;margin-left:auto;transition:color .15s;flex-shrink:0}
+.fb-close:hover{color:#E8ECF4}
+
+.fb-modal-body{padding:22px;overflow-y:auto;flex:1}
+html.dark .fb-modal-body{background:var(--depth-2)}
+
+/* Form fields */
+.fb-row{margin-bottom:16px}
+.fb-row:last-child{margin-bottom:0}
+.fb-label{font-size:11px;font-weight:700;color:var(--white);margin-bottom:5px;display:block;letter-spacing:.04em;text-transform:uppercase}
+.fb-label .fb-opt{font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0}
+.fb-input,.fb-select,.fb-textarea{
+  width:100%;padding:9px 12px;border-radius:6px;
+  border:1px solid var(--border);background:var(--depth-3);
+  color:var(--white);font-family:var(--font);font-size:13px;outline:none;
+  transition:border-color .15s;
+}
+.fb-input:focus,.fb-select:focus,.fb-textarea:focus{border-color:rgba(26,39,68,0.35)}
+.fb-input::placeholder,.fb-textarea::placeholder{color:var(--muted)}
+.fb-textarea{resize:vertical;min-height:90px;line-height:1.55}
+.fb-select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238B9BB4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+html.dark .fb-input,html.dark .fb-select,html.dark .fb-textarea{background:var(--depth-3);border-color:var(--border);color:var(--white)}
+
+/* Star rating */
+.fb-stars{display:flex;gap:6px}
+.fb-star{font-size:24px;cursor:pointer;color:var(--border);transition:color .1s;line-height:1;border:none;background:none;padding:0}
+.fb-star.active,.fb-star:hover,.fb-star.hover{color:var(--gold)}
+
+/* Checkbox grid */
+.fb-check-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.fb-check-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;border:1px solid var(--border);background:var(--depth-3);cursor:pointer;transition:all .15s;font-size:12px;color:var(--platinum)}
+.fb-check-item:hover{border-color:rgba(26,39,68,0.25);background:rgba(26,39,68,0.04)}
+.fb-check-item.checked{border-color:var(--navy);background:rgba(26,39,68,0.06);color:var(--white)}
+.fb-check-item input{display:none}
+.fb-check-box{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;font-size:9px;color:transparent}
+.fb-check-item.checked .fb-check-box{background:var(--navy);border-color:var(--navy);color:#fff}
+
+/* Submit */
+.fb-submit-row{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-top:1px solid var(--border);flex-shrink:0;background:var(--depth-3)}
+html.dark .fb-submit-row{background:var(--depth-3)}
+.fb-submit{
+  padding:9px 24px;border-radius:6px;border:none;
+  background:var(--navy);color:#E8ECF4;font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .2s;font-family:var(--font);letter-spacing:.02em;
+}
+.fb-submit:hover{background:#253660}
+.fb-submit:disabled{opacity:.5;cursor:default}
+.fb-privacy{font-size:10px;color:var(--muted)}
+
+/* Thank you state */
+#fb-thankyou{display:none;padding:40px 32px;text-align:center}
+.fb-ty-icon{font-size:40px;margin-bottom:14px}
+.fb-ty-title{font-size:18px;font-weight:700;color:var(--white);margin-bottom:6px}
+.fb-ty-msg{font-size:13px;color:var(--platinum);line-height:1.6;margin-bottom:20px}
+.fb-ty-close{padding:8px 20px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--platinum);font-size:13px;cursor:pointer;transition:all .15s;font-family:var(--font)}
+.fb-ty-close:hover{border-color:var(--navy);color:var(--navy)}
+
+/* ── DISCLAIMER BAR ── */
+#disclaimer{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:0 24px;height:28px;
+  background:var(--depth-2);border-top:1px solid var(--border);
+  font-size:10.5px;color:var(--muted);letter-spacing:.01em;
+  pointer-events:none;
+}
+html.dark #disclaimer{background:var(--depth-2);border-top-color:var(--border)}
+#disclaimer .di-icon{font-size:11px;opacity:.5;flex-shrink:0}
+#disclaimer .di-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#disclaimer .di-sep{opacity:.3;flex-shrink:0}
+#disclaimer .di-link{color:var(--electric);text-decoration:none;pointer-events:all;font-weight:500}
+#disclaimer .di-link:hover{text-decoration:underline}
+/* Push content above disclaimer */
+.radar-view,.std-view,.deadline-view{padding-bottom:52px !important}
+
+/* ── EMPTY STATES ── */
+.empty-state{text-align:center;padding:48px 32px;color:var(--muted)}
+.empty-icon{font-size:32px;margin-bottom:12px;opacity:.5}
+.empty-title{font-size:14px;font-weight:600;color:var(--platinum);margin-bottom:6px}
+.empty-msg{font-size:12px;line-height:1.6}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pulse-dot{0%,100%{transform:scale(.6);opacity:.4}50%{transform:scale(1);opacity:1}}
+@keyframes live-pulse{0%,100%{box-shadow:0 0 0 0 currentColor}50%{box-shadow:0 0 0 4px rgba(34,197,94,.1)}}
+@keyframes orb-spin{to{filter:hue-rotate(360deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes badge-pop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes toast-in{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+@keyframes toast-out{to{opacity:0;transform:translateX(20px)}}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ── TOP BAR ── -->
+  <div class="top-bar">
+    <div class="top-logo">Privacy<span>Watch</span></div>
+    <div class="top-divider"></div>
+    <div class="sync-badge live" id="sync-badge" onclick="syncNow()" title="Click to sync">
+      <div class="live-dot" id="sync-dot"></div>
+      <span id="sync-label">Live</span>
+    </div>
+    <div class="top-divider"></div>
+    <span class="top-bar-label">Adtech Privacy · Compliance Intelligence</span>
+    <div class="top-spacer"></div>
+    <span class="last-sync" id="last-sync-text">—</span>
+    <button class="alert-btn" onclick="toggleAlerts()" title="Alerts">
+      🔔
+      <span class="alert-badge hidden" id="alert-badge">0</span>
+    </button>
+    <button class="mode-toggle" onclick="toggleMode()" title="Toggle light/dark">☾</button>
+  </div>
+
+  <!-- ── LEFT RAIL ── -->
+  <div class="left-rail">
+    <div class="rail-header">
+      <div class="rail-title">Compliance Radar</div>
+      <div class="rail-sub">Adtech Privacy · July 2026</div>
+    </div>
+    <div class="rail-scroll">
+      <div class="rail-section"><div class="rail-section-label">Views</div></div>
+      <div class="rail-item active" style="--item-color:#d4a843" id="nav-radar" onclick="switchView('radar')">
+        <div class="rail-dot"></div>
+        <div class="rail-item-label">Regulation Radar</div>
+        <div class="rail-item-count" id="count-radar">8</div>
+        <div class="rail-item-new" id="new-radar" style="display:none"></div>
+      </div>
+      <div class="rail-item" style="--item-color:#6366f1" id="nav-standards" onclick="switchView('standards')">
+        <div class="rail-dot"></div>
+        <div class="rail-item-label">Standards Tracker</div>
+        <div class="rail-item-count">5</div>
+      </div>
+      <div class="rail-item" style="--item-color:#ef4444" id="nav-deadlines" onclick="switchView('deadlines')">
+        <div class="rail-dot"></div>
+        <div class="rail-item-label">Deadlines</div>
+        <div class="rail-item-count" id="count-deadlines">6</div>
+      </div>
+      <div class="rail-item" style="--item-color:#06b6d4" id="nav-live" onclick="switchView('live')">
+        <div class="rail-dot"></div>
+        <div class="rail-item-label">Live Feed</div>
+        <div class="rail-item-new" id="new-live" style="display:none"></div>
+        <div class="rail-item-count" id="count-live">—</div>
+      </div>
+
+      <!-- Source Filters -->
+      <div class="filter-section">
+        <div class="filter-section-label" onclick="toggleFilterSection('sources')">
+          Sources <span class="filter-toggle" id="filter-toggle-sources">▾</span>
+        </div>
+        <div class="filter-items" id="filter-sources">
+          <div class="filter-item" onclick="toggleFilter('ftc')" id="filter-ftc">
+            <div class="filter-dot" style="background:#8B2535"></div>
+            FTC
+            <div class="filter-check on" style="--filter-color:#8B2535" id="fc-ftc">✓</div>
+          </div>
+          <div class="filter-item" onclick="toggleFilter('cppa')" id="filter-cppa">
+            <div class="filter-dot" style="background:#B8762E"></div>
+            CPPA / California
+            <div class="filter-check on" style="--filter-color:#B8762E" id="fc-cppa">✓</div>
+          </div>
+          <div class="filter-item" onclick="toggleFilter('edpb')" id="filter-edpb">
+            <div class="filter-dot" style="background:#2A4580"></div>
+            EDPB / EU
+            <div class="filter-check on" style="--filter-color:#2A4580" id="fc-edpb">✓</div>
+          </div>
+          <div class="filter-item" onclick="toggleFilter('iab')" id="filter-iab">
+            <div class="filter-dot" style="background:#5B3A8C"></div>
+            IAB / IAB Europe
+            <div class="filter-check on" style="--filter-color:#5B3A8C" id="fc-iab">✓</div>
+          </div>
+          <div class="filter-item" onclick="toggleFilter('ico')" id="filter-ico">
+            <div class="filter-dot" style="background:#1E6B7A"></div>
+            ICO / UK
+            <div class="filter-check on" style="--filter-color:#1E6B7A" id="fc-ico">✓</div>
+          </div>
+          <div class="filter-item" onclick="toggleFilter('w3c')" id="filter-w3c">
+            <div class="filter-dot" style="background:#2D6A4F"></div>
+            W3C / GPC
+            <div class="filter-check on" style="--filter-color:#2D6A4F" id="fc-w3c">✓</div>
+          </div>
+          <div class="filter-item" onclick="toggleFilter('iapp')" id="filter-iapp">
+            <div class="filter-dot" style="background:#4A5568"></div>
+            IAPP / Other
+            <div class="filter-check on" style="--filter-color:#4A5568" id="fc-iapp">✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jurisdiction Filters -->
+      <div class="filter-section">
+        <div class="filter-section-label" onclick="toggleFilterSection('juris')">
+          Jurisdiction <span class="filter-toggle" id="filter-toggle-juris">▾</span>
+        </div>
+        <div class="filter-items" id="filter-juris">
+          <div class="filter-item" onclick="toggleJuris('us-federal')" id="j-us-federal">
+            <div class="filter-dot" style="background:#ef4444"></div>
+            US Federal
+            <div class="filter-check on" style="--filter-color:#ef4444" id="jc-us-federal">✓</div>
+          </div>
+          <div class="filter-item" onclick="toggleJuris('california')" id="j-california">
+            <div class="filter-dot" style="background:#d4a843"></div>
+            California
+            <div class="filter-check on" style="--filter-color:#d4a843" id="jc-california">✓</div>
+          </div>
+          <div class="filter-item" onclick="toggleJuris('eu')" id="j-eu">
+            <div class="filter-dot" style="background:#6366f1"></div>
+            EU / GDPR
+            <div class="filter-check on" style="--filter-color:#6366f1" id="jc-eu">✓</div>
+          </div>
+          <div class="filter-item" onclick="toggleJuris('uk')" id="j-uk">
+            <div class="filter-dot" style="background:#06b6d4"></div>
+            UK / UK GDPR
+            <div class="filter-check on" style="--filter-color:#06b6d4" id="jc-uk">✓</div>
+          </div>
+          <div class="filter-item" onclick="toggleJuris('multi-state')" id="j-multi-state">
+            <div class="filter-dot" style="background:#22c55e"></div>
+            Multi-state US
+            <div class="filter-check on" style="--filter-color:#22c55e" id="jc-multi-state">✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sync bar -->
+    <div class="sync-bar">
+      <div class="sync-info" id="sync-info-text">Auto-sync every 10 min</div>
+      <button class="sync-btn" onclick="syncNow()">⟳ Sync Now</button>
+      <button class="notif-btn" id="notif-btn" onclick="requestNotifications()">🔔 Enable notifications</button>
+    </div>
+  </div>
+
+  <!-- ── CENTER STAGE ── -->
+  <div class="center-stage" id="center-stage">
+    <div class="content-tab-bar">
+      <div class="content-tab active" id="tab-radar" onclick="switchView('radar')">Regulation Radar</div>
+      <div class="content-tab" id="tab-standards" onclick="switchView('standards')">Standards Tracker</div>
+      <div class="content-tab" id="tab-deadlines" onclick="switchView('deadlines')">Deadlines</div>
+      <div class="content-tab" id="tab-live" onclick="switchView('live')">Live Feed <span id="live-new-chip" style="display:none;font-size:9px;font-weight:700;margin-left:4px;color:var(--negative)">NEW</span></div>
+    </div>
+    <div id="main-content"></div>
+  </div>
+
+  <!-- ── RIGHT AI PANEL ── -->
+  <div class="ai-panel">
+    <div class="ai-panel-header">
+      <div class="ai-orb"></div>
+      <div class="ai-panel-title">
+        <strong>Privacy Counsel AI</strong>
+        <span>Adtech law · regulatory intelligence</span>
+      </div>
+    </div>
+    <div class="ai-context">
+      <div class="ai-context-dot"></div>
+      <span id="ai-context-text">Monitoring 7 sources · 8 active items</span>
+    </div>
+    <div class="scope-selector">
+      <div class="scope-pill active" id="scope-item" onclick="switchScope('item')">This Item</div>
+      <div class="scope-pill" id="scope-feed" onclick="switchScope('feed')">All Updates</div>
+      <div class="scope-pill" id="scope-alerts" onclick="switchScope('alerts')">Alerts</div>
+    </div>
+    <div class="ai-conversation" id="ai-conversation"></div>
+    <div id="alert-feed-area" style="display:none;flex:1;overflow-y:auto"></div>
+    <div class="ai-suggestions" id="ai-suggestions">
+      <div class="suggestion-label">Ask about this update</div>
+      <div class="suggestion-chips" id="suggestion-chips"></div>
+    </div>
+    <div class="ai-input-row">
+      <textarea class="ai-input" id="ai-input" rows="1" placeholder="Ask anything about this update…" onkeydown="handleInputKey(event)"></textarea>
+      <button class="ai-send" onclick="sendQuestion()">↑</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FEEDBACK BUTTON ── -->
+<button id="feedback-btn" onclick="openFeedback()">
+  <span class="fb-dot"></span>
+  Share Feedback
+</button>
+
+<!-- ── FEEDBACK MODAL ── -->
+<div id="feedback-overlay" onclick="closeFeedbackIfOutside(event)">
+  <div id="feedback-modal" role="dialog" aria-modal="true" aria-label="Share Feedback">
+
+    <div class="fb-modal-header">
+      <div class="fb-header-text">
+        <div class="fb-modal-title">Share your feedback</div>
+        <div class="fb-modal-sub">Help shape PrivacyWatch for the adtech privacy community</div>
+      </div>
+      <button class="fb-close" onclick="closeFeedback()" aria-label="Close">✕</button>
+    </div>
+
+    <!-- Form -->
+    <div class="fb-modal-body" id="fb-form-body">
+      <form id="fb-form" onsubmit="submitFeedback(event)" novalidate>
+
+        <div class="fb-row">
+          <label class="fb-label">Overall rating</label>
+          <div class="fb-stars" id="fb-stars" role="group" aria-label="Rating">
+            <button type="button" class="fb-star" data-val="1" onclick="setRating(1)" aria-label="1 star">★</button>
+            <button type="button" class="fb-star" data-val="2" onclick="setRating(2)" aria-label="2 stars">★</button>
+            <button type="button" class="fb-star" data-val="3" onclick="setRating(3)" aria-label="3 stars">★</button>
+            <button type="button" class="fb-star" data-val="4" onclick="setRating(4)" aria-label="4 stars">★</button>
+            <button type="button" class="fb-star" data-val="5" onclick="setRating(5)" aria-label="5 stars">★</button>
+          </div>
+          <input type="hidden" name="rating" id="fb-rating-val" value="">
+        </div>
+
+        <div class="fb-row">
+          <label class="fb-label" for="fb-role">Your role</label>
+          <select class="fb-select" id="fb-role" name="role" required>
+            <option value="" disabled selected>Select your role…</option>
+            <option>Privacy / Data Protection Lawyer</option>
+            <option>General Counsel / In-House Counsel</option>
+            <option>Compliance Officer</option>
+            <option>Legal Tech Professional</option>
+            <option>Adtech / Marketing Counsel</option>
+            <option>Law Student / Academic</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="fb-row">
+          <label class="fb-label">What's most useful? <span class="fb-opt">(select all that apply)</span></label>
+          <div class="fb-check-grid" id="fb-useful-grid">
+            <label class="fb-check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" name="useful[]" value="Regulation Radar">
+              <span class="fb-check-box">✓</span>Regulation Radar
+            </label>
+            <label class="fb-check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" name="useful[]" value="Standards Tracker">
+              <span class="fb-check-box">✓</span>Standards Tracker
+            </label>
+            <label class="fb-check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" name="useful[]" value="Citation links">
+              <span class="fb-check-box">✓</span>Citation links
+            </label>
+            <label class="fb-check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" name="useful[]" value="Search panel">
+              <span class="fb-check-box">✓</span>Search panel
+            </label>
+            <label class="fb-check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" name="useful[]" value="Deadlines tracker">
+              <span class="fb-check-box">✓</span>Deadlines tracker
+            </label>
+            <label class="fb-check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" name="useful[]" value="Live feed">
+              <span class="fb-check-box">✓</span>Live feed
+            </label>
+          </div>
+        </div>
+
+        <div class="fb-row">
+          <label class="fb-label" for="fb-comments">Comments <span class="fb-opt">(what's missing, what to improve?)</span></label>
+          <textarea class="fb-textarea" id="fb-comments" name="comments" placeholder="What would make this more useful for your practice?" rows="3"></textarea>
+        </div>
+
+        <div class="fb-row">
+          <label class="fb-label" for="fb-email">Email <span class="fb-opt">(optional — if you'd like a follow-up)</span></label>
+          <input class="fb-input" type="email" id="fb-email" name="email" placeholder="you@yourfirm.com">
+        </div>
+
+        <div class="fb-row">
+          <label class="fb-label" for="fb-name">Name <span class="fb-opt">(optional)</span></label>
+          <input class="fb-input" type="text" id="fb-name" name="name" placeholder="Your name">
+        </div>
+
+        <!-- Hidden metadata -->
+        <input type="hidden" name="_subject" value="PrivacyWatch Beta Feedback">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="source" value="PrivacyWatch Beta">
+      </form>
+    </div>
+
+    <!-- Thank you state -->
+    <div id="fb-thankyou">
+      <div class="fb-ty-icon">⚖️</div>
+      <div class="fb-ty-title">Thank you for your feedback</div>
+      <div class="fb-ty-msg">Your input helps shape PrivacyWatch for the adtech privacy community. We'll review your feedback and may follow up if you left an email.</div>
+      <button class="fb-ty-close" onclick="closeFeedback()">Close</button>
+    </div>
+
+    <div class="fb-submit-row" id="fb-submit-row">
+      <span class="fb-privacy">Your feedback is sent to the PrivacyWatch team only.</span>
+      <button class="fb-submit" id="fb-submit-btn" onclick="submitFeedback(event)">Send Feedback</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── DISCLAIMER BAR ── -->
+<div id="disclaimer">
+  <span class="di-icon">ⓘ</span>
+  <span class="di-text">AI-generated content — regulatory data may be incomplete or outdated. Always verify against primary sources before relying on for legal advice.</span>
+  <span class="di-sep">·</span>
+  <a class="di-link" href="https://cppa.ca.gov/regulations/ccpa_updates.html" target="_blank" rel="noopener">Verify sources ↗</a>
+</div>
+
+<!-- ── TOAST CONTAINER ── -->
+<div id="toast-container"></div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════════
+
+const SOURCE_COLORS = {
+  ftc: '#8B2535', cppa: '#B8762E', edpb: '#2A4580',
+  iab: '#5B3A8C', ico: '#1E6B7A', w3c: '#2D6A4F', iapp: '#4A5568'
+};
+const SOURCE_LABELS = {
+  ftc:'FTC', cppa:'CPPA', edpb:'EDPB', iab:'IAB Europe', ico:'ICO', w3c:'W3C', iapp:'IAPP'
+};
+const JURI_LABELS = {
+  'us-federal':'US Federal','california':'California','eu':'EU / GDPR',
+  'uk':'UK / UK GDPR','multi-state':'Multi-state'
+};
+
+const REGULATIONS = [
+  {
+    id:'cppa-admt-2026',source:'cppa',jurisdiction:'california',topic:'admt',isNew:true,
+    title:'CPPA ADMT Regulations — Effective July 1, 2026',
+    summary:'Final Automated Decision-Making Technology regulations under CPRA took effect July 1. Adtech companies using algorithmic targeting must provide opt-out rights and complete risk assessments for "significant decisions" — a category that captures behavioral ad personalization based on sensitive inferences.',
+    status:'EFFECTIVE',priority:'urgent',date:'2026-07-01',
+    action:'Risk assessments due 90 days post-effectiveness (Sept 29, 2026). DSPs and data brokers providing targeting signals must update DPAs and implement opt-out signal passthrough.',
+    tags:['CPRA','ADMT','Adtech','Opt-out','Risk Assessment'],
+    aiContext:'CPPA ADMT regulations: effective July 1, 2026. Mandatory opt-out for algorithmic ad targeting and risk assessments due Sept 29, 2026.',
+    cite:{
+      legal:'Cal. Civ. Code § 1798.185(a)(16) · CPRA ADMT Regs., Art. 11',
+      doc:'CPPA Final ADMT Regulations (OAL File No. 2025-1212-05S)',
+      sources:[
+        {label:'Official Regulations Text',url:'https://cppa.ca.gov/regulations/ccpa_updates.html'},
+        {label:'CPPA Rulemaking Page',url:'https://cppa.ca.gov/regulations/'},
+      ]
+    }
+  },
+  {
+    id:'iab-tcf-v3',source:'iab',jurisdiction:'eu',topic:'standards',isNew:true,
+    title:'IAB Europe TCF v3.0 — Public Consultation Open',
+    summary:'IAB Europe released TCF v3.0 draft for public consultation through August 15, 2026. Critical change: legitimate interest removed as valid legal basis for behavioral advertising purposes. New cross-context data linkage purpose added. CMP audit requirements strengthened.',
+    status:'CONSULTATION',priority:'urgent',date:'2026-06-28',
+    action:'Submit comments by Aug 15. LI removal affects ~65% of current TCF signals. Advise SSP/DSP clients to plan consent-only fallback mechanisms by Q1 2027 adoption target.',
+    tags:['TCF','IAB','GDPR','Consent','RTB','LI'],
+    aiContext:'TCF v3.0 consultation open until Aug 15, 2026. Legitimate interest removal is the critical change for adtech.',
+    cite:{
+      legal:'GDPR Art. 6(1)(a) & Art. 7 · IAB Europe TCF v3.0 Draft Spec (June 28, 2026)',
+      doc:'TCF v3.0 Public Consultation Document, IAB Europe',
+      sources:[
+        {label:'TCF v3.0 Consultation',url:'https://iabeurope.eu/tcf/'},
+        {label:'Current TCF v2.2 Spec',url:'https://iabeurope.eu/tcf-2-0/'},
+        {label:'TCF Spec (GitHub)',url:'https://github.com/InteractiveAdvertisingBureau/GDPR-Transparency-and-Consent-Framework'},
+      ]
+    }
+  },
+  {
+    id:'ico-rtb-enforcement',source:'ico',jurisdiction:'uk',topic:'enforcement',isNew:false,
+    title:'ICO RTB Enforcement Notices — Six Major SSPs',
+    summary:'ICO issued formal enforcement notices to six major SSPs operating in the UK adtech ecosystem, citing persistent UK GDPR Article 6 violations in OpenRTB bid requests. 90-day remediation window given. Non-compliance risks fines up to £17.5M or 4% global turnover.',
+    status:'ENFORCEMENT',priority:'high',date:'2026-06-20',
+    action:'90-day remediation deadline: Sept 18, 2026. Required: consent signal validation, data minimization in bid requests, updated processor agreements. UK-connected SSPs must audit bid request payloads immediately.',
+    tags:['ICO','RTB','OpenRTB','UK GDPR','SSP','Enforcement'],
+    aiContext:'ICO enforcement notices to SSPs: 90-day window ends Sept 18, 2026. Focus on consent signal validation in OpenRTB.',
+    cite:{
+      legal:'UK GDPR Art. 6(1) · Art. 13 · Art. 28 · Data Protection Act 2018 s.149',
+      doc:'ICO Enforcement Notices (Ref. ENF-2026-0042 series)',
+      sources:[
+        {label:'ICO Enforcement Register',url:'https://ico.org.uk/about-the-ico/research-reports-impact-and-evaluation/research-and-reports/technology-and-innovation/'},
+        {label:'ICO Adtech Report (2019)',url:'https://ico.org.uk/about-the-ico/research-reports-impact-and-evaluation/research-and-reports/technology-and-innovation/'},
+        {label:'ICO News & Blogs',url:'https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/'},
+      ]
+    }
+  },
+  {
+    id:'edpb-li-final',source:'edpb',jurisdiction:'eu',topic:'consent',isNew:false,
+    title:'EDPB Final Guidelines: Legitimate Interest (1/2024)',
+    summary:'EDPB adopted final version of Guidelines 04/2024. Confirmed: personalised advertising based on cross-context tracking is incompatible with legitimate interest under GDPR Art. 6(1)(f). Only strictly context-specific, non-cross-context targeting may potentially rely on LI — effectively eliminating it for most RTB use cases.',
+    status:'FINAL',priority:'urgent',date:'2026-06-15',
+    action:'Immediate audit of all adtech clients using LI for behavioral targeting. Cross-context targeting must migrate to consent basis. Draft client advisory with 6-month transition plan.',
+    tags:['EDPB','GDPR','Legitimate Interest','Adtech','Consent','RTB'],
+    aiContext:'EDPB confirmed: LI is invalid for cross-context behavioral advertising under GDPR. Consent-only going forward.',
+    cite:{
+      legal:'GDPR Art. 6(1)(f) · Recitals 47–49 · EDPB Guidelines 1/2024 (final, June 2026)',
+      doc:'EDPB Guidelines 04/2024 on the Processing of Personal Data Based on Legitimate Interest',
+      sources:[
+        {label:'EDPB Guidelines 1/2024 (Official)',url:'https://www.edpb.europa.eu/our-work-tools/documents/public-consultations/2024/guidelines-12024-processing-personal-data-based_en'},
+        {label:'EDPB Press Release',url:'https://edpb.europa.eu/news/news_en'},
+        {label:'GDPR Art. 6 Full Text',url:'https://gdpr-info.eu/art-6-gdpr/'},
+      ]
+    }
+  },
+  {
+    id:'ftc-surveillance-rule',source:'ftc',jurisdiction:'us-federal',topic:'rulemaking',isNew:false,
+    title:'FTC Commercial Surveillance Rule — Final Rule Imminent',
+    summary:'FTC staff submitted final Commercial Surveillance and Data Security Rule to commissioners for vote, expected Q4 2026. Rule would restrict surveillance advertising, mandate data minimization, require algorithmic impact assessments for high-risk processing, and extend to adtech intermediaries as "covered entities."',
+    status:'DRAFT',priority:'high',date:'2026-06-10',
+    action:'Monitor for vote announcement. Pre-position clients with algorithmic impact assessment programs now — rule will require these. DSPs, DMPs, and data brokers in scope as "covered entities."',
+    tags:['FTC','Commercial Surveillance','Section 5','Rulemaking','Adtech'],
+    aiContext:'FTC Commercial Surveillance Rule expected Q4 2026 vote. Adtech intermediaries explicitly in scope.',
+    cite:{
+      legal:'FTC Act § 18 (15 U.S.C. § 57a) · 16 C.F.R. Part 464 (proposed)',
+      doc:'Commercial Surveillance and Data Security ANPR, 87 Fed. Reg. 51273 (Aug. 22, 2022)',
+      sources:[
+        {label:'FTC Rulemaking Docket',url:'https://www.ftc.gov/legal-library/rules'},
+        {label:'FTC Website',url:'https://www.ftc.gov/'},
+        {label:'Federal Register',url:'https://www.federalregister.gov/agencies/federal-trade-commission'},
+      ]
+    }
+  },
+  {
+    id:'cppa-rtb-audit',source:'cppa',jurisdiction:'california',topic:'enforcement',isNew:false,
+    title:'CPPA Adtech Audit Initiative — Letters Outgoing',
+    summary:'CPPA announced targeted audit program for adtech data brokers and RTB participants, citing unresolved opt-out signal compliance failures. 30+ entities to receive audit letters Q3 2026. Focus: GPC (Global Privacy Control) signal propagation through full RTB chains.',
+    status:'ENFORCEMENT',priority:'high',date:'2026-05-28',
+    action:'Verify GPC compliance across full RTB chain for California-connected clients. Many bid requests still missing GPC flag propagation. Audit letter responses due within 30 days of receipt.',
+    tags:['CPPA','CPRA','Data Broker','GPC','RTB','Audit'],
+    aiContext:'CPPA audit letters targeting RTB participants on GPC signal propagation failures. 30+ entities in scope.',
+    cite:{
+      legal:'Cal. Civ. Code § 1798.135(c) (GPC) · § 1798.199.90 (CPPA enforcement) · CPRA Regs. § 7025',
+      doc:'CPPA Enforcement Division Audit Notice (Q3 2026)',
+      sources:[
+        {label:'CPPA Website',url:'https://cppa.ca.gov/'},
+        {label:'CPRA Full Text (Cal. AG)',url:'https://oag.ca.gov/privacy/ccpa'},
+        {label:'GPC Technical Spec',url:'https://globalprivacycontrol.org/'},
+      ]
+    }
+  },
+  {
+    id:'apra-senate',source:'iapp',jurisdiction:'us-federal',topic:'rulemaking',isNew:false,
+    title:'American Privacy Rights Act — Senate Commerce Markup',
+    summary:'Senate Commerce Committee advanced APRA with adtech-specific amendments: expanded "covered data" to include inferences, stricter data broker rules, private right of action preserved. If enacted, APRA would preempt most state laws (except CA enforcement) — significantly changing the multi-state compliance landscape.',
+    status:'DRAFT',priority:'medium',date:'2026-05-20',
+    action:'Monitor for floor vote (expected Q3 2026). Inferences provision is the most significant adtech impact — covers modeled audiences and lookalike segments. Prepare bifurcated analysis: APRA-world vs. current state patchwork.',
+    tags:['APRA','Federal Privacy','Data Broker','Inferences','Preemption'],
+    aiContext:'APRA advances with inference coverage — could reshape adtech compliance if enacted and preempts state laws.',
+    cite:{
+      legal:'S. [TBD], 119th Cong. (2026) · Senate Commerce Comm. Markup, May 20, 2026',
+      doc:'American Privacy Rights Act of 2026 — Senate Commerce Committee Print',
+      sources:[
+        {label:'Bill Text (Congress.gov)',url:'https://www.congress.gov/search?q=%22American+Privacy+Rights+Act%22&searchResultViewType=expanded'},
+        {label:'Senate Commerce Committee',url:'https://www.commerce.senate.gov/'},
+        {label:'IAPP Analysis',url:'https://iapp.org/news/topic/apra/'},
+      ]
+    }
+  },
+  {
+    id:'w3c-gpc-cr',source:'w3c',jurisdiction:'multi-state',topic:'standards',isNew:false,
+    title:'W3C GPC Spec — Candidate Recommendation',
+    summary:'Global Privacy Control specification advanced to W3C Candidate Recommendation, strengthening legal standing under CA, CO, CT, and MT privacy laws. 12 additional states considering mandatory GPC recognition. Browsers shipping GPC by default in increasing numbers.',
+    status:'EFFECTIVE',priority:'medium',date:'2026-05-10',
+    action:'All adtech clients must honor GPC signals in CA, CO, CT, MT. Verify GPC propagation through full RTB chain — many bid requests missing the gpc field. Check CMP configurations honor GPC without consent prompt.',
+    tags:['GPC','W3C','CPRA','Multi-state','Opt-out','Browser'],
+    aiContext:'W3C GPC now Candidate Recommendation. Legally required opt-out in CA, CO, CT, MT — check RTB chain propagation.',
+    cite:{
+      legal:'Cal. Civ. Code § 1798.135(c) · Colo. Rev. Stat. § 6-1-1306(3) · W3C GPC Candidate Rec. (2026)',
+      doc:'Global Privacy Control (GPC) — W3C Candidate Recommendation, Privacy CG',
+      sources:[
+        {label:'W3C GPC Spec (Official)',url:'https://www.w3.org/TR/gpc/'},
+        {label:'GPC Website',url:'https://globalprivacycontrol.org/'},
+        {label:'W3C Privacy CG',url:'https://privacycg.github.io/gpc-spec/'},
+      ]
+    }
+  }
+];
+
+const STANDARDS = [
+  {
+    id:'tcf',name:'IAB Europe TCF',sourceColor:'#5B3A8C',impactLevel:'critical',
+    currentVersion:'2.2',nextVersion:'3.0 (Draft)',
+    currentStatus:'stable',nextStatus:'consultation',
+    consultationDeadline:'2026-08-15',adoptionTarget:'Q1 2027',
+    changes:[
+      'Legitimate interest removed for behavioral advertising purposes',
+      'New "Cross-context data linkage" purpose (Purpose 11)',
+      'CMP mandatory annual audit requirement introduced',
+      'Expanded vendor accountability — downstream data use restrictions',
+      'Strengthened data subject rights signal handling',
+    ],
+    affectedEntities:['DSPs','SSPs','CMPs','Publishers','DMPs','Ad Servers'],
+    apis:null,
+    cite:{
+      legal:'GDPR Art. 6, 7, 13 · ePrivacy Directive Art. 5(3) · IAB Europe TCF Policy',
+      sources:[
+        {label:'TCF v2.2 Spec (GitHub)',url:'https://github.com/InteractiveAdvertisingBureau/GDPR-Transparency-and-Consent-Framework'},
+        {label:'IAB Europe TCF Page',url:'https://iabeurope.eu/tcf/'},
+        {label:'TCF Policy Document',url:'https://iabeurope.eu/tcf-2-0/'},
+      ]
+    }
+  },
+  {
+    id:'privacy-sandbox',name:'Google Privacy Sandbox',sourceColor:'#2D6A4F',impactLevel:'high',
+    currentVersion:'Stable',nextVersion:'Ongoing',
+    currentStatus:'available',nextStatus:'available',
+    consultationDeadline:null,adoptionTarget:'Live',
+    changes:[
+      'Third-party cookie deprecation: User choice model (not hard removal)',
+      'Topics API replacing FLoC — available in stable Chrome',
+      'Protected Audience API (FLEDGE) — stable, scale adoption underway',
+      'Attribution Reporting API — stable, replaces third-party conversion tracking',
+      'CHIPS (partitioned cookies) — stable for cross-site authenticated embeds',
+    ],
+    affectedEntities:['DSPs','SSPs','Ad Servers','Measurement Vendors'],
+    apis:[
+      {name:'Topics API',status:'available',impact:'Replaces interest-based audience segments'},
+      {name:'Protected Audience API',status:'available',impact:'On-device remarketing without cross-site tracking'},
+      {name:'Attribution Reporting',status:'available',impact:'Conversion measurement without third-party cookies'},
+      {name:'CHIPS',status:'available',impact:'Partitioned storage for cross-site embeds'},
+      {name:'Private Click Measurement',status:'available',impact:'Safari — privacy-preserving click attribution'},
+      {name:'Privacy Sandbox iOS',status:'proposal',impact:'Extends sandbox concepts to mobile apps'},
+    ],
+    cite:{
+      legal:'No direct legal mandate — driven by Chrome platform policy and regulatory pressure',
+      sources:[
+        {label:'Privacy Sandbox (Google)',url:'https://privacysandbox.com/'},
+        {label:'Chrome Developer Docs',url:'https://developer.chrome.com/docs/privacy-sandbox/'},
+        {label:'W3C Explainers',url:'https://developer.chrome.com/docs/privacy-sandbox/'},
+      ]
+    }
+  },
+  {
+    id:'gpp',name:'IAB GPP (Global Privacy Platform)',sourceColor:'#5B3A8C',impactLevel:'high',
+    currentVersion:'1.1',nextVersion:'1.2 (Draft)',
+    currentStatus:'stable',nextStatus:'consultation',
+    consultationDeadline:'2026-09-01',adoptionTarget:'Q4 2026',
+    changes:[
+      'Migration from USP string (CCPA legacy) to multi-state GPP string',
+      'New sections for CO, CT, VA, TX, MT, OR, FL privacy laws',
+      'GPC signal integration in GPP string specification',
+      'Enhanced consent mode compatibility for server-side setups',
+    ],
+    affectedEntities:['CMPs','DSPs','SSPs','Ad Servers','Publishers'],
+    apis:null,
+    cite:{
+      legal:'Cal. Civ. Code § 1798.135 · Colo. Rev. Stat. § 6-1-1306 · IAB GPP Technical Spec v1.1',
+      sources:[
+        {label:'GPP Spec (GitHub)',url:'https://github.com/InteractiveAdvertisingBureau/Global-Privacy-Platform'},
+        {label:'IAB Tech Lab GPP',url:'https://iabtechlab.com/gpp/'},
+        {label:'USP → GPP Migration Guide',url:'https://iabtechlab.com/blog/gpps-us-national-privacy-technical-specification/'},
+      ]
+    }
+  },
+  {
+    id:'apple-att',name:'Apple ATT & Privacy Manifests',sourceColor:'#4A5568',impactLevel:'medium',
+    currentVersion:'iOS 18',nextVersion:'iOS 19 (preview)',
+    currentStatus:'available',nextStatus:'available',
+    consultationDeadline:null,adoptionTarget:'Live',
+    changes:[
+      'App Tracking Transparency (ATT) — live since iOS 14.5, ~45% opt-in rate',
+      'Link Tracking Protection (LTP) — strips tracking params in Safari & Messages',
+      'Privacy Nutrition Labels — required for all App Store submissions',
+      'Privacy Manifests — required for third-party SDKs accessing sensitive APIs',
+      'Fingerprinting API restrictions — accelerometer, keyboard patterns blocked',
+    ],
+    affectedEntities:['Mobile DSPs','SKAdNetwork Partners','Attribution Vendors','App Publishers'],
+    apis:[
+      {name:'SKAdNetwork 4.0',status:'available',impact:'Privacy-preserving install attribution'},
+      {name:'Link Tracking Protection',status:'available',impact:'Strips UTM/tracking params in Safari'},
+      {name:'Privacy Manifests',status:'available',impact:'Required SDK declaration for App Store'},
+    ],
+    cite:{
+      legal:'Apple App Store Review Guidelines § 5.1.2 · ATT Framework (iOS 14.5+)',
+      sources:[
+        {label:'ATT Documentation (Apple)',url:'https://developer.apple.com/documentation/apptrackingtransparency'},
+        {label:'Privacy Nutrition Labels',url:'https://developer.apple.com/app-store/privacy-nutrition-labels/'},
+        {label:'Privacy Manifests Guide',url:'https://developer.apple.com/documentation/bundleresources/privacy_manifest_files'},
+      ]
+    }
+  },
+  {
+    id:'openrtb',name:'OpenRTB / AdsCert',sourceColor:'#1E6B7A',impactLevel:'high',
+    currentVersion:'OpenRTB 2.6',nextVersion:'3.0 (Rollout)',
+    currentStatus:'stable',nextStatus:'consultation',
+    consultationDeadline:null,adoptionTarget:'2027',
+    changes:[
+      'OpenRTB 3.0 adoption accelerating — security and consent signal improvements',
+      'AdsCert 1.0 — cryptographic bid request signing to combat fraud',
+      'sellers.json + buyers.json — supply chain transparency requirements',
+      'Consent string (TCF/GPP) field mandatory in ICO-compliant bid requests',
+      'GPC field (regs.ext.gpc) — propagation now enforceable under CPPA audit',
+    ],
+    affectedEntities:['SSPs','DSPs','Ad Exchanges','Verification Vendors'],
+    apis:null,
+    cite:{
+      legal:'IAB Tech Lab OpenRTB API Specification v2.6 / v3.0 · AdsCert Technical Spec 1.0',
+      sources:[
+        {label:'OpenRTB Spec (GitHub)',url:'https://github.com/InteractiveAdvertisingBureau/openrtb'},
+        {label:'AdsCert Spec',url:'https://github.com/InteractiveAdvertisingBureau/AdsCert'},
+        {label:'IAB Tech Lab Standards',url:'https://iabtechlab.com/standards/openrtb/'},
+      ]
+    }
+  },
+];
+
+const DEADLINES = [
+  {
+    title:'CPPA ADMT Risk Assessments Due',source:'cppa',days:79,
+    color:'#B8762E',detail:'All adtech companies using algorithmic targeting must file risk assessments.',
+    legal:'Cal. Civ. Code § 1798.185(a)(16) · CPRA ADMT Regs., Art. 11',
+    url:'https://cppa.ca.gov/regulations/ccpa_updates.html'
+  },
+  {
+    title:'ICO RTB Enforcement Remediation',source:'ico',days:65,
+    color:'#1E6B7A',detail:'6 major SSPs must remediate UK GDPR violations in OpenRTB bid requests.',
+    legal:'UK GDPR Art. 6(1) · Art. 28 · Data Protection Act 2018 s.149',
+    url:'https://ico.org.uk/about-the-ico/research-reports-impact-and-evaluation/research-and-reports/technology-and-innovation/'
+  },
+  {
+    title:'IAB Europe TCF v3.0 Comment Deadline',source:'iab',days:34,
+    color:'#5B3A8C',detail:'Public consultation on TCF v3.0 closes August 15, 2026.',
+    legal:'GDPR Art. 6, 7 · IAB Europe TCF v3.0 Draft Spec',
+    url:'https://iabeurope.eu/tcf/'
+  },
+  {
+    title:'APRA — Senate Floor Vote Expected',source:'iapp',days:90,
+    color:'#4A5568',detail:'American Privacy Rights Act expected Q3 2026 Senate floor vote.',
+    legal:'S. [TBD], 119th Cong. (2026)',
+    url:'https://www.congress.gov/search?q=%22American+Privacy+Rights+Act%22&searchResultViewType=expanded'
+  },
+  {
+    title:'FTC Commercial Surveillance Rule Vote',source:'ftc',days:152,
+    color:'#8B2535',detail:'FTC commissioners expected to vote on final rule Q4 2026.',
+    legal:'FTC Act § 18 (15 U.S.C. § 57a) · 16 C.F.R. Part 464',
+    url:'https://www.ftc.gov/legal-library/rules'
+  },
+  {
+    title:'CPPA Audit Letter Response Window',source:'cppa',days:22,
+    color:'#8B2535',detail:'Entities receiving CPPA audit letters have 30 days to respond — rolling deadlines.',
+    legal:'Cal. Civ. Code § 1798.199.90 · CPRA Regs. § 7025',
+    url:'https://cppa.ca.gov/'
+  },
+];
+
+// ════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════
+
+const STATE = {
+  view: 'radar',
+  scope: 'item',
+  focusedReg: REGULATIONS[0],
+  alertCount: 0,
+  newAlerts: [],
+  sources: {ftc:true,cppa:true,edpb:true,iab:true,ico:true,w3c:true,iapp:true},
+  juris: {'us-federal':true,california:true,eu:true,uk:true,'multi-state':true},
+  notifEnabled: false,
+  lastSync: null,
+  syncTimer: null,
+  liveItems: [],
+};
+
+// ════════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ════════════════════════════════════════════════════════
+
+function renderView() {
+  const el = document.getElementById('main-content');
+  if (STATE.view === 'radar') el.innerHTML = buildRadarView();
+  else if (STATE.view === 'standards') el.innerHTML = buildStandardsView();
+  else if (STATE.view === 'deadlines') el.innerHTML = buildDeadlinesView();
+  else if (STATE.view === 'live') el.innerHTML = buildLiveView();
+  document.getElementById('center-stage').scrollTop = 0;
+  updateAIContext();
+}
+
+function buildRadarView() {
+  const filtered = REGULATIONS.filter(r =>
+    STATE.sources[r.source] && STATE.juris[r.jurisdiction]
+  );
+  const urgent = filtered.filter(r => r.priority === 'urgent').length;
+  const enforcement = filtered.filter(r => r.status === 'ENFORCEMENT').length;
+  const consultation = filtered.filter(r => r.status === 'CONSULTATION').length;
+
+  let cardsHTML = filtered.map((r, i) => buildRegCard(r, i)).join('');
+  if (!cardsHTML) cardsHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No items match filters</div><div class="empty-msg">Try enabling more sources or jurisdictions in the left rail.</div></div>`;
+
+  return `
+    <div class="radar-view">
+      <div class="radar-header">
+        <div class="radar-title-group">
+          <div class="radar-title">Regulation Radar</div>
+          <div class="radar-sub">Adtech privacy developments · ${filtered.length} items · ${urgent} urgent</div>
+        </div>
+        <div class="radar-stats">
+          <div class="radar-stat"><span class="radar-stat-val" style="color:var(--negative)">${urgent}</span><span class="radar-stat-label">Urgent</span></div>
+          <div class="radar-stat"><span class="radar-stat-val" style="color:var(--warning)">${enforcement}</span><span class="radar-stat-label">Enforcement</span></div>
+          <div class="radar-stat"><span class="radar-stat-val" style="color:var(--electric-2)">${consultation}</span><span class="radar-stat-label">Consultation</span></div>
+        </div>
+      </div>
+      ${cardsHTML}
+    </div>`;
+}
+
+function buildRegCard(r, i) {
+  const color = SOURCE_COLORS[r.source] || '#4A5568';
+  const dim = hexDim(color);
+  const juriLabel = JURI_LABELS[r.jurisdiction] || r.jurisdiction;
+  const tags = (r.tags || []).slice(0,4).map(t => `<span class="reg-tag">${t}</span>`).join('');
+  const newBadge = r.isNew ? '<span class="new-badge">NEW</span>' : '';
+  const c = r.cite;
+  const citeLinks = c ? c.sources.slice(0,3).map(s =>
+    `<a class="cite-link" href="${s.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${s.label}</a>`
+  ).join('') : '';
+  const citeLegal = c ? `<span class="cite-legal">${c.legal}</span>` : '';
+  const citeBar = c ? `<div class="cite-bar"><div class="cite-links">${citeLinks}</div>${citeLegal}</div>` : '';
+  return `
+    <div class="reg-card ${r.isNew?'new-item':''}" style="--card-color:${color};--card-color-dim:${dim};animation-delay:${i*50}ms" onclick="focusReg('${r.id}')">
+      <div class="reg-card-header">
+        <span class="source-chip">${SOURCE_LABELS[r.source] || r.source.toUpperCase()}</span>
+        <span class="juri-chip">${juriLabel}</span>
+        ${newBadge}
+        <div class="card-spacer"></div>
+        <div class="priority-dot ${r.priority}"></div>
+        <span class="status-badge ${r.status}">${r.status}</span>
+      </div>
+      <div class="reg-card-body">
+        <div class="reg-title">${r.title}</div>
+        <div class="reg-summary">${r.summary}</div>
+        <div class="reg-action">${r.action}</div>
+        <div class="reg-card-footer">
+          <span class="reg-date">${formatDate(r.date)}</span>
+          ${tags}
+        </div>
+      </div>
+      ${citeBar}
+    </div>`;
+}
+
+function buildStandardsView() {
+  const cards = STANDARDS.map((s,i) => buildStdCard(s,i)).join('');
+  return `
+    <div class="std-view">
+      <div class="std-header">
+        <div class="std-title">Standards Tracker</div>
+        <div class="std-sub">Live status of adtech technical standards · IAB, W3C, Apple, OpenRTB</div>
+      </div>
+      <div class="std-grid">${cards}</div>
+    </div>`;
+}
+
+function buildStdCard(s, i) {
+  const changes = s.changes.map(c => `<div class="std-change-item">${c}</div>`).join('');
+  const affected = (s.affectedEntities||[]).map(e => `<span class="affected-chip">${e}</span>`).join('');
+  const deadline = s.consultationDeadline ? `<span class="std-deadline">⏱ Deadline: ${formatDate(s.consultationDeadline)}</span>` : '';
+  const apisHTML = s.apis ? `
+    <div class="std-api-section">
+      <div class="std-api-label">API / Feature Status</div>
+      ${s.apis.map(a => `<div class="std-api-row"><span class="std-api-name">${a.name}</span><span class="std-api-status ${a.status}">${a.status}</span><span class="std-api-impact">${a.impact}</span></div>`).join('')}
+    </div>` : '';
+  const c = s.cite;
+  const citeLinks = c ? c.sources.map(src =>
+    `<a class="cite-link" href="${src.url}" target="_blank" rel="noopener">${src.label}</a>`
+  ).join('') : '';
+  const citeLegalLine = c ? `<div class="std-cite-legal">${c.legal}</div>` : '';
+  const citeBar = c ? `
+    <div class="std-cite-bar">
+      ${citeLegalLine}
+      <div class="std-cite-links">${citeLinks}</div>
+    </div>` : '';
+  return `
+    <div class="std-card" style="--std-color:${s.sourceColor};animation-delay:${i*60}ms" id="std-${s.id}">
+      <div class="std-card-header" onclick="toggleStd('${s.id}')">
+        <div class="std-source-dot"></div>
+        <div class="std-name">${s.name}</div>
+        <div class="std-version-row">
+          <span class="std-ver current">v${s.currentVersion}</span>
+          ${s.nextVersion !== 'Ongoing' && s.nextVersion !== 'Live' ? `<span class="std-ver-arrow">→</span><span class="std-ver">${s.nextVersion}</span>` : ''}
+        </div>
+        <span class="std-impact ${s.impactLevel}">${s.impactLevel}</span>
+        <span class="std-collapse-btn" id="std-collapse-${s.id}">▾</span>
+      </div>
+      <div class="std-card-body" id="std-body-${s.id}">
+        <div class="std-status-row">
+          <span class="std-status-label">Current:</span>
+          <span class="std-status-pill ${s.currentStatus}">${s.currentStatus}</span>
+          ${s.nextStatus !== s.currentStatus ? `<span class="std-status-label" style="margin-left:6px">Next:</span><span class="std-status-pill ${s.nextStatus}">${s.nextStatus}</span>` : ''}
+          ${deadline}
+        </div>
+        <div class="std-changes">${changes}</div>
+        ${apisHTML}
+        <div class="std-affected">${affected}</div>
+      </div>
+      ${citeBar}
+    </div>`;
+}
+
+function buildDeadlinesView() {
+  const cards = DEADLINES.sort((a,b)=>a.days-b.days).map((d,i) => {
+    const urgent = d.days <= 30;
+    const citeBlock = `<div class="dl-cite">
+      <span class="dl-cite-legal">${d.legal}</span>
+      ${d.url ? `<a class="dl-cite-link" href="${d.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Source</a>` : ''}
+    </div>`;
+    return `
+      <div class="deadline-card ${urgent?'dl-urgent':''}" style="--dl-color:${d.color};animation-delay:${i*60}ms">
+        <div class="dl-days">${d.days}</div>
+        <div class="dl-unit">days remaining</div>
+        <div class="dl-title">${d.title}</div>
+        <div class="dl-source">${SOURCE_LABELS[d.source] || d.source.toUpperCase()} · ${d.detail}</div>
+        ${citeBlock}
+      </div>`;
+  }).join('');
+  return `
+    <div class="deadline-view">
+      <div class="std-header">
+        <div class="std-title">Upcoming Deadlines</div>
+        <div class="std-sub">Compliance deadlines sorted by urgency · ${DEADLINES.filter(d=>d.days<=30).length} in the next 30 days</div>
+      </div>
+      <div class="deadline-grid">${cards}</div>
+    </div>`;
+}
+
+function buildLiveView() {
+  if (!STATE.liveItems.length) {
+    return `<div class="radar-view">
+      <div class="radar-header"><div class="radar-title-group">
+        <div class="radar-title">Live Feed</div>
+        <div class="radar-sub">Real-time updates from FTC, IAPP, IAB and more</div>
+      </div></div>
+      <div class="empty-state" style="margin-top:40px">
+        <div class="empty-icon">⚡</div>
+        <div class="empty-title">Fetching live updates…</div>
+        <div class="empty-msg">Click "Sync Now" in the left rail to pull the latest regulatory news from FTC, IAPP, and IAB.</div>
+      </div>
+    </div>`;
+  }
+  const grouped = {};
+  STATE.liveItems.forEach(item => {
+    if (!grouped[item.source]) grouped[item.source] = [];
+    grouped[item.source].push(item);
+  });
+  let html = '<div class="radar-view">';
+  html += `<div class="radar-header"><div class="radar-title-group"><div class="radar-title">Live Feed</div><div class="radar-sub">Fetched ${STATE.liveItems.length} updates · ${formatTime(STATE.lastSync)}</div></div></div>`;
+  Object.entries(grouped).forEach(([src, items]) => {
+    const color = SOURCE_COLORS[src] || '#94a3b8';
+    html += `<div class="live-section-header"><span class="live-section-title" style="color:${color}">${SOURCE_LABELS[src]||src.toUpperCase()}</span><div class="live-section-line"></div></div>`;
+    items.slice(0,8).forEach(item => {
+      html += `<div class="live-feed-item" style="--feed-color:${color}">
+        <div class="lfi-header">
+          <span class="lfi-source">${SOURCE_LABELS[src]||src}</span>
+          <span class="lfi-date">${item.pubDate ? new Date(item.pubDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : 'Recent'}</span>
+        </div>
+        <div class="lfi-title" style="color:var(--white);font-weight:500;font-size:12px;line-height:1.4;margin-bottom:4px">${item.title}</div>
+        <div class="lfi-cite">
+          ${item.link ? `<a class="lfi-link" href="${item.link}" target="_blank" rel="noopener">Read original source</a>` : ''}
+          <span style="font-size:9px;color:var(--muted);font-family:var(--mono)">${SOURCE_LABELS[src]||src} · Live feed</span>
+        </div>
+      </div>`;
+    });
+  });
+  html += '</div>';
+  return html;
+}
+
+// ════════════════════════════════════════════════════════
+// NAVIGATION & FILTERS
+// ════════════════════════════════════════════════════════
+
+function switchView(view) {
+  STATE.view = view;
+  ['radar','standards','deadlines','live'].forEach(v => {
+    document.getElementById(`nav-${v}`)?.classList.toggle('active', v === view);
+    document.getElementById(`tab-${v}`)?.classList.toggle('active', v === view);
+  });
+  if (view === 'live') {
+    document.getElementById('live-new-chip').style.display = 'none';
+    document.getElementById('new-live').style.display = 'none';
+  }
+  renderView();
+  renderSuggestions();
+}
+
+function toggleFilter(source) {
+  STATE.sources[source] = !STATE.sources[source];
+  const check = document.getElementById(`fc-${source}`);
+  if (check) check.className = `filter-check ${STATE.sources[source]?'on':''}`;
+  if (check && STATE.sources[source]) check.textContent = '✓'; else if (check) check.textContent = '';
+  if (STATE.view === 'radar') renderView();
+}
+
+function toggleJuris(j) {
+  STATE.juris[j] = !STATE.juris[j];
+  const check = document.getElementById(`jc-${j}`);
+  if (check) { check.className = `filter-check ${STATE.juris[j]?'on':''}${STATE.juris[j]?'':' '}`.trim(); check.textContent = STATE.juris[j] ? '✓' : ''; }
+  if (STATE.view === 'radar') renderView();
+}
+
+function toggleFilterSection(id) {
+  const section = document.getElementById(`filter-${id}`);
+  const toggle = document.getElementById(`filter-toggle-${id}`);
+  if (!section) return;
+  const hidden = section.style.display === 'none';
+  section.style.display = hidden ? '' : 'none';
+  if (toggle) toggle.className = `filter-toggle${hidden?'':' collapsed'}`;
+}
+
+function toggleStd(id) {
+  const body = document.getElementById(`std-body-${id}`);
+  const btn = document.getElementById(`std-collapse-${id}`);
+  if (!body) return;
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : '';
+  if (btn) btn.textContent = open ? '▸' : '▾';
+}
+
+function focusReg(id) {
+  const reg = REGULATIONS.find(r => r.id === id);
+  if (!reg) return;
+  STATE.focusedReg = reg;
+  updateAIContext();
+  renderSuggestions();
+}
+
+// ════════════════════════════════════════════════════════
+// SYNC ENGINE
+// ════════════════════════════════════════════════════════
+
+const RSS_FEEDS = [
+  {
+    id:'ftc', source:'ftc',
+    url:'https://www.ftc.gov/.rss',
+    label:'FTC Press Releases'
+  },
+  {
+    id:'iapp', source:'iapp',
+    url:'https://iapp.org/news/rss/',
+    label:'IAPP News'
+  },
+  {
+    id:'iab', source:'iab',
+    url:'https://iabtechlab.com/feed/',
+    label:'IAB Tech Lab'
+  },
+];
+
+async function fetchFeed(feed) {
+  const proxy = `https://api.allorigins.win/get?disableCache=true&url=${encodeURIComponent(feed.url)}`;
+  const res = await fetch(proxy, { signal: AbortSignal.timeout(8000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  const parser = new DOMParser();
+  const xml = parser.parseFromString(data.contents, 'text/xml');
+  const items = xml.querySelectorAll('item');
+  return Array.from(items).slice(0, 10).map(item => ({
+    source: feed.source,
+    title: item.querySelector('title')?.textContent?.trim() || '',
+    link: item.querySelector('link')?.textContent?.trim() || '',
+    pubDate: item.querySelector('pubDate')?.textContent?.trim() || '',
+    description: item.querySelector('description')?.textContent?.trim() || '',
+  })).filter(i => i.title);
+}
+
+function getSeenKey(source) { return `pw_seen_${source}`; }
+
+function getSeenTitles(source) {
+  try { return JSON.parse(localStorage.getItem(getSeenKey(source)) || '[]'); } catch { return []; }
+}
+
+function markAsSeen(source, titles) {
+  const seen = [...new Set([...getSeenTitles(source), ...titles])].slice(0, 200);
+  localStorage.setItem(getSeenKey(source), JSON.stringify(seen));
+}
+
+async function syncNow() {
+  setSyncState('syncing');
+  let newCount = 0;
+  const allItems = [];
+  const newAlerts = [];
+
+  for (const feed of RSS_FEEDS) {
+    try {
+      const items = await fetchFeed(feed);
+      const seen = getSeenTitles(feed.source);
+      const newItems = items.filter(i => !seen.includes(i.title));
+      if (newItems.length && STATE.lastSync) {
+        newCount += newItems.length;
+        newAlerts.push(...newItems.map(i => ({ ...i, isNew: true })));
+      }
+      markAsSeen(feed.source, items.map(i => i.title));
+      allItems.push(...items);
+    } catch (e) {
+      console.log(`Feed ${feed.id} unavailable:`, e.message);
+    }
+  }
+
+  STATE.liveItems = allItems;
+  STATE.lastSync = new Date();
+  document.getElementById('count-live').textContent = allItems.length || '—';
+
+  if (newCount > 0) {
+    STATE.alertCount += newCount;
+    STATE.newAlerts.push(...newAlerts);
+    updateAlertBadge();
+    showToast('New regulatory updates', `${newCount} new item${newCount > 1 ? 's' : ''} from ${[...new Set(newAlerts.map(a => SOURCE_LABELS[a.source] || a.source))].join(', ')}`, '#22c55e');
+    sendBrowserNotif('PrivacyWatch', `${newCount} new regulatory update${newCount > 1 ? 's' : ''} available`);
+    document.getElementById('new-live').style.display = '';
+    document.getElementById('live-new-chip').style.display = '';
+  }
+
+  setSyncState('live');
+  document.getElementById('last-sync-text').textContent = `Synced ${formatTime(STATE.lastSync)}`;
+  document.getElementById('sync-info-text').textContent = `Last sync: ${formatTime(STATE.lastSync)}`;
+
+  if (STATE.view === 'live') renderView();
+}
+
+function setSyncState(state) {
+  const badge = document.getElementById('sync-badge');
+  if (!badge) return;
+  badge.className = `sync-badge ${state}`;
+  if (state === 'syncing') {
+    badge.innerHTML = `<div class="syncing-spinner"></div><span>Syncing…</span>`;
+  } else {
+    badge.innerHTML = `<div class="live-dot" id="sync-dot"></div><span id="sync-label">Live</span>`;
+  }
+}
+
+function startSyncLoop() {
+  syncNow();
+  STATE.syncTimer = setInterval(syncNow, 10 * 60 * 1000);
+}
+
+// ════════════════════════════════════════════════════════
+// ALERT SYSTEM
+// ════════════════════════════════════════════════════════
+
+function updateAlertBadge() {
+  const badge = document.getElementById('alert-badge');
+  if (STATE.alertCount > 0) {
+    badge.textContent = STATE.alertCount > 9 ? '9+' : STATE.alertCount;
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
+function toggleAlerts() {
+  switchScope('alerts');
+  STATE.alertCount = 0;
+  updateAlertBadge();
+}
+
+function sendBrowserNotif(title, body) {
+  if (!STATE.notifEnabled) return;
+  if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+    new Notification(title, { body, icon: '⚖️' });
+  }
+}
+
+async function requestNotifications() {
+  if (typeof Notification === 'undefined') return;
+  const perm = await Notification.requestPermission();
+  STATE.notifEnabled = perm === 'granted';
+  const btn = document.getElementById('notif-btn');
+  if (btn) {
+    btn.className = `notif-btn${STATE.notifEnabled?' enabled':''}`;
+    btn.textContent = STATE.notifEnabled ? '🔔 Notifications on' : '🔕 Permission denied';
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════════════
+
+let toastId = 0;
+function showToast(title, msg, color = '#d4a843', icon = '⚡') {
+  const container = document.getElementById('toast-container');
+  const id = ++toastId;
+  const div = document.createElement('div');
+  div.className = 'toast';
+  div.style.setProperty('--toast-color', color);
+  div.id = `toast-${id}`;
+  div.innerHTML = `<div class="toast-icon">${icon}</div><div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div><button class="toast-close" onclick="removeToast(${id})">✕</button>`;
+  container.appendChild(div);
+  setTimeout(() => removeToast(id), 6000);
+}
+
+function removeToast(id) {
+  const el = document.getElementById(`toast-${id}`);
+  if (!el) return;
+  el.classList.add('removing');
+  setTimeout(() => el.remove(), 300);
+}
+
+// ════════════════════════════════════════════════════════
+// CONTENT SEARCH ENGINE
+// ════════════════════════════════════════════════════════
+
+// Stop words to skip when tokenising queries
+const STOP_WORDS = new Set(['the','and','or','for','is','in','of','to','a','an','that','this','are','with','on','at','by','be','it','from','as','was','has','have','not','but','what','how','do','i','my','can','will']);
+
+function tokenise(text) {
+  if (!text) return [];
+  return text.toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(t => t.length > 2 && !STOP_WORDS.has(t));
+}
+
+function scoreText(terms, text, weight = 1) {
+  if (!text) return 0;
+  const t = text.toLowerCase();
+  return terms.reduce((s, term) => s + (t.includes(term) ? weight : 0), 0);
+}
+
+function searchContent(query) {
+  const terms = tokenise(query);
+  if (!terms.length) return { regs:[], stds:[], deadlines:[], live:[] };
+
+  const regs = REGULATIONS.map(r => ({
+    item: r, type:'regulation',
+    score:
+      scoreText(terms, r.title,       4) +
+      scoreText(terms, r.summary,     2) +
+      scoreText(terms, r.action,      2) +
+      (r.tags||[]).reduce((n,t) => n + scoreText(terms, t, 3), 0) +
+      scoreText(terms, r.cite?.legal, 2) +
+      scoreText(terms, r.cite?.doc,   1) +
+      scoreText(terms, SOURCE_LABELS[r.source], 3) +
+      scoreText(terms, JURI_LABELS[r.jurisdiction], 3) +
+      scoreText(terms, r.status,      2)
+  })).filter(x => x.score > 0).sort((a,b) => b.score - a.score);
+
+  const stds = STANDARDS.map(s => ({
+    item: s, type:'standard',
+    score:
+      scoreText(terms, s.name,        4) +
+      (s.changes||[]).reduce((n,c) => n + scoreText(terms, c, 2), 0) +
+      (s.affectedEntities||[]).reduce((n,e) => n + scoreText(terms, e, 2), 0) +
+      scoreText(terms, s.cite?.legal, 2) +
+      scoreText(terms, s.currentVersion, 1) +
+      scoreText(terms, s.impactLevel, 2)
+  })).filter(x => x.score > 0).sort((a,b) => b.score - a.score);
+
+  const deadlines = DEADLINES.map(d => ({
+    item: d, type:'deadline',
+    score:
+      scoreText(terms, d.title,  4) +
+      scoreText(terms, d.detail, 2) +
+      scoreText(terms, d.legal,  2) +
+      scoreText(terms, SOURCE_LABELS[d.source], 2)
+  })).filter(x => x.score > 0).sort((a,b) => b.score - a.score);
+
+  const live = STATE.liveItems.map(l => ({
+    item: l, type:'live',
+    score:
+      scoreText(terms, l.title,       3) +
+      scoreText(terms, l.description, 1) +
+      scoreText(terms, SOURCE_LABELS[l.source], 2)
+  })).filter(x => x.score > 0).sort((a,b) => b.score - a.score);
+
+  return { regs, stds, deadlines, live };
+}
+
+function totalHits(r) { return r.regs.length + r.stds.length + r.deadlines.length + r.live.length; }
+
+// ── Response builders ──────────────────────────────────
+
+function hl(text, terms) {
+  // Wrap matched terms in a highlight span
+  let out = text;
+  terms.forEach(t => {
+    const re = new RegExp(`(${t})`, 'gi');
+    out = out.replace(re, '<mark style="background:rgba(196,151,59,0.20);color:inherit;border-radius:2px;padding:0 1px">$1</mark>');
+  });
+  return out;
+}
+
+function buildRegResult(r, terms, idx) {
+  const color = SOURCE_COLORS[r.source] || '#4A5568';
+  return `
+    <div class="sr-card" style="--sr-color:${color}" onclick="focusReg('${r.id}');switchView('radar')">
+      <div class="sr-card-top">
+        <span class="sr-type-chip" style="background:${color}15;color:${color}">
+          ${SOURCE_LABELS[r.source]||r.source.toUpperCase()}
+        </span>
+        <span class="sr-status ${r.status}">${r.status}</span>
+        <span class="sr-juri">${JURI_LABELS[r.jurisdiction]||r.jurisdiction}</span>
+      </div>
+      <div class="sr-title">${hl(r.title, terms)}</div>
+      <div class="sr-body">${hl(r.summary.slice(0,160), terms)}…</div>
+      <div class="sr-action"><span class="sr-action-label">Action required:</span> ${hl(r.action.slice(0,120), terms)}…</div>
+      ${r.cite?.legal ? `<div class="sr-legal">${r.cite.legal}</div>` : ''}
+    </div>`;
+}
+
+function buildStdResult(s, terms) {
+  return `
+    <div class="sr-card" style="--sr-color:${s.sourceColor}">
+      <div class="sr-card-top">
+        <span class="sr-type-chip" style="background:${s.sourceColor}15;color:${s.sourceColor}">Standard</span>
+        <span class="sr-status ${s.impactLevel}-impact">${s.impactLevel} impact</span>
+        <span class="sr-juri">v${s.currentVersion}</span>
+      </div>
+      <div class="sr-title">${hl(s.name, terms)}</div>
+      <div class="sr-body">${s.changes.slice(0,2).map(c => `– ${hl(c,terms)}`).join('<br>')}</div>
+      ${s.cite?.legal ? `<div class="sr-legal">${s.cite.legal}</div>` : ''}
+    </div>`;
+}
+
+function buildDeadlineResult(d, terms) {
+  const urgent = d.days <= 30;
+  return `
+    <div class="sr-card" style="--sr-color:${d.color}">
+      <div class="sr-card-top">
+        <span class="sr-type-chip" style="background:${d.color}20;color:${d.color}">Deadline</span>
+        <span class="sr-status ${urgent?'ENFORCEMENT':'DRAFT'}">${d.days}d remaining</span>
+        <span class="sr-juri">${SOURCE_LABELS[d.source]||d.source}</span>
+      </div>
+      <div class="sr-title">${hl(d.title, terms)}</div>
+      <div class="sr-body">${hl(d.detail, terms)}</div>
+      ${d.legal ? `<div class="sr-legal">${d.legal}</div>` : ''}
+    </div>`;
+}
+
+function buildLiveResult(l, terms) {
+  const color = SOURCE_COLORS[l.source] || '#4A5568';
+  return `
+    <div class="sr-card" style="--sr-color:${color}">
+      <div class="sr-card-top">
+        <span class="sr-type-chip" style="background:${color}15;color:${color}">Live</span>
+        <span class="sr-juri">${SOURCE_LABELS[l.source]||l.source}</span>
+      </div>
+      <div class="sr-title">${hl(l.title, terms)}</div>
+      ${l.link ? `<a class="sr-source-link" href="${l.link}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Read original source ↗</a>` : ''}
+    </div>`;
+}
+
+function buildSearchResponse(query, results) {
+  const terms = tokenise(query);
+  const total = totalHits(results);
+
+  if (!total) {
+    return `<div class="sr-empty">
+      <div style="font-size:20px;margin-bottom:8px;opacity:.4">🔍</div>
+      <div style="font-weight:600;color:var(--white);margin-bottom:4px">No matches for "<em>${query}</em>"</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.6">
+        Try searching by jurisdiction (<em>California</em>, <em>EU</em>, <em>UK</em>), law (<em>CPRA</em>, <em>GDPR</em>),
+        entity type (<em>DSP</em>, <em>SSP</em>, <em>CMP</em>), topic (<em>consent</em>, <em>enforcement</em>,
+        <em>legitimate interest</em>), or standard (<em>TCF</em>, <em>GPC</em>, <em>OpenRTB</em>).
+      </div>
+    </div>`;
+  }
+
+  const sections = [];
+  const MAX_PER_TYPE = 2;
+
+  if (results.regs.length) {
+    sections.push(`<div class="sr-section-label">Regulations (${results.regs.length})</div>`);
+    sections.push(results.regs.slice(0, MAX_PER_TYPE).map((x,i) => buildRegResult(x.item, terms, i)).join(''));
+  }
+  if (results.stds.length) {
+    sections.push(`<div class="sr-section-label">Standards (${results.stds.length})</div>`);
+    sections.push(results.stds.slice(0, MAX_PER_TYPE).map(x => buildStdResult(x.item, terms)).join(''));
+  }
+  if (results.deadlines.length) {
+    sections.push(`<div class="sr-section-label">Deadlines (${results.deadlines.length})</div>`);
+    sections.push(results.deadlines.slice(0, MAX_PER_TYPE).map(x => buildDeadlineResult(x.item, terms)).join(''));
+  }
+  if (results.live.length) {
+    sections.push(`<div class="sr-section-label">Live Feed (${results.live.length})</div>`);
+    sections.push(results.live.slice(0, MAX_PER_TYPE).map(x => buildLiveResult(x.item, terms)).join(''));
+  }
+
+  const overflow = total - (
+    Math.min(results.regs.length, MAX_PER_TYPE) +
+    Math.min(results.stds.length, MAX_PER_TYPE) +
+    Math.min(results.deadlines.length, MAX_PER_TYPE) +
+    Math.min(results.live.length, MAX_PER_TYPE)
+  );
+
+  return `
+    <div class="sr-header">${total} result${total>1?'s':''} for "<strong>${query}</strong>"</div>
+    ${sections.join('')}
+    ${overflow > 0 ? `<div class="sr-overflow">+ ${overflow} more result${overflow>1?'s':''}. Refine your search to narrow down.</div>` : ''}
+  `;
+}
+
+function updateAIContext() {
+  const el = document.getElementById('ai-context-text');
+  if (!el) return;
+  const total = REGULATIONS.length + STANDARDS.length + DEADLINES.length + STATE.liveItems.length;
+  if (STATE.scope === 'alerts') {
+    el.textContent = `${STATE.newAlerts.length} new alert${STATE.newAlerts.length!==1?'s':''} · click to view`;
+  } else {
+    el.textContent = `Searching ${total} items across regulations, standards, deadlines${STATE.liveItems.length ? ', live feed' : ''}`;
+  }
+}
+
+function renderSuggestions() {
+  const chips = document.getElementById('suggestion-chips');
+  const label = document.querySelector('.suggestion-label');
+  if (!chips) return;
+  if (label) label.textContent = 'Quick searches';
+
+  // Generate suggestions from real data: urgent items + active topics
+  const urgentReg = REGULATIONS.find(r => r.priority === 'urgent' && r.isNew);
+  const nextDeadline = [...DEADLINES].sort((a,b) => a.days - b.days)[0];
+  const enforcementCount = REGULATIONS.filter(r => r.status === 'ENFORCEMENT').length;
+
+  const suggestions = [
+    urgentReg ? urgentReg.tags[0] : 'GDPR legitimate interest',
+    nextDeadline ? nextDeadline.title.split('—')[0].trim() : 'upcoming deadlines',
+    enforcementCount > 0 ? 'enforcement actions' : 'TCF v3.0',
+  ];
+
+  chips.innerHTML = suggestions
+    .map(q => `<button class="suggestion-chip" onclick="sendQuestion('${q.replace(/'/g,"\\'")}')">${q}</button>`)
+    .join('');
+}
+
+function switchScope(scope) {
+  STATE.scope = scope;
+  ['item','feed','alerts'].forEach(s => {
+    document.getElementById(`scope-${s}`)?.classList.toggle('active', s === scope);
+  });
+  const conv = document.getElementById('ai-conversation');
+  const alertFeed = document.getElementById('alert-feed-area');
+  const sugg = document.getElementById('ai-suggestions');
+
+  if (scope === 'alerts') {
+    conv.style.display = 'none';
+    alertFeed.style.display = 'flex';
+    alertFeed.style.flexDirection = 'column';
+    alertFeed.innerHTML = buildAlertFeedHTML();
+    if (sugg) sugg.style.display = 'none';
+  } else {
+    conv.style.display = '';
+    alertFeed.style.display = 'none';
+    if (sugg) sugg.style.display = '';
+    conv.innerHTML = '';
+    addAIMessage(
+      `Search across <strong>${REGULATIONS.length} regulations</strong>, <strong>${STANDARDS.length} standards</strong>, ` +
+      `<strong>${DEADLINES.length} deadlines</strong>${STATE.liveItems.length ? `, and <strong>${STATE.liveItems.length} live feed items</strong>` : ''}. ` +
+      `Try a keyword, jurisdiction, entity type, or legal citation — ` +
+      `e.g. <em>legitimate interest</em>, <em>California DSP</em>, <em>TCF</em>, <em>GDPR Art. 6</em>, <em>enforcement</em>.`
+    );
+  }
+  renderSuggestions();
+  updateAIContext();
+}
+
+function buildAlertFeedHTML() {
+  if (!STATE.newAlerts.length) {
+    return `<div class="alert-feed"><div class="empty-state" style="padding:32px 16px">
+      <div class="empty-icon">✓</div>
+      <div class="empty-title">All clear</div>
+      <div class="empty-msg">No new alerts. Click Sync Now to check for updates.</div>
+    </div></div>`;
+  }
+  const items = STATE.newAlerts.slice(0,10).map(a => {
+    const color = SOURCE_COLORS[a.source] || '#4A5568';
+    return `<div class="alert-item" style="--al-color:${color}">
+      <div class="alert-item-header">
+        <span class="alert-source">${SOURCE_LABELS[a.source]||a.source}</span>
+        <span class="alert-time">${a.pubDate ? new Date(a.pubDate).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : 'New'}</span>
+      </div>
+      <div class="alert-title">${a.title}</div>
+    </div>`;
+  }).join('');
+  return `<div class="alert-feed">${items}</div>`;
+}
+
+function sendQuestion(text) {
+  const input = document.getElementById('ai-input');
+  const q = (text || input?.value || '').trim();
+  if (!q) return;
+  if (input && !text) input.value = '';
+
+  if (STATE.scope === 'alerts') {
+    STATE.scope = 'item';
+    ['item','feed','alerts'].forEach(s =>
+      document.getElementById(`scope-${s}`)?.classList.toggle('active', s === 'item')
+    );
+    document.getElementById('ai-conversation').style.display = '';
+    document.getElementById('alert-feed-area').style.display = 'none';
+    document.getElementById('ai-suggestions').style.display = '';
+  }
+
+  addUserMessage(q);
+  showThinking();
+
+  // Small delay to show the thinking indicator
+  setTimeout(() => {
+    hideThinking();
+    const results = searchContent(q);
+    addSearchMessage(buildSearchResponse(q, results));
+  }, 300);
+}
+
+function addSearchMessage(html) {
+  const conv = document.getElementById('ai-conversation');
+  if (!conv) return;
+  const div = document.createElement('div');
+  div.className = 'ai-msg ai sr-response';
+  div.innerHTML = html;
+  conv.appendChild(div);
+  conv.scrollTop = conv.scrollHeight;
+}
+
+function addAIMessage(text) {
+  const conv = document.getElementById('ai-conversation');
+  if (!conv) return;
+  const div = document.createElement('div');
+  div.className = 'ai-msg ai';
+  div.innerHTML = text;
+  conv.appendChild(div);
+  conv.scrollTop = conv.scrollHeight;
+}
+
+function addUserMessage(text) {
+  const conv = document.getElementById('ai-conversation');
+  if (!conv) return;
+  const div = document.createElement('div');
+  div.className = 'ai-msg user';
+  div.textContent = text;
+  conv.appendChild(div);
+  conv.scrollTop = conv.scrollHeight;
+}
+
+function showThinking() {
+  const conv = document.getElementById('ai-conversation');
+  if (!conv) return;
+  const div = document.createElement('div');
+  div.className = 'ai-thinking';
+  div.id = 'ai-thinking';
+  div.innerHTML = '<div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div>';
+  conv.appendChild(div);
+  conv.scrollTop = conv.scrollHeight;
+}
+
+function hideThinking() {
+  document.getElementById('ai-thinking')?.remove();
+}
+
+function handleInputKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendQuestion(); }
+}
+
+// ════════════════════════════════════════════════════════
+// UTILITIES
+// ════════════════════════════════════════════════════════
+
+function toggleMode() {
+  document.documentElement.classList.toggle('dark');
+  const btn = document.querySelector('.mode-toggle');
+  if (btn) btn.textContent = document.documentElement.classList.contains('dark') ? '☀' : '☾';
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  return new Date(d + 'T12:00:00').toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
+}
+
+function formatTime(d) {
+  if (!d) return '';
+  return d.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit',hour12:true});
+}
+
+function hexDim(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},0.12)`;
+}
+
+// ════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════
+
+function init() {
+  renderView();
+  switchScope('item');
+  renderSuggestions();
+
+  // Demo: show new-item toast after 4s to demonstrate alert system
+  setTimeout(() => {
+    if (!STATE.newAlerts.length) {
+      showToast(
+        'EDPB published new guidance',
+        'Opinion 12/2026 on AI-generated audience targeting released · affects DSP modeling practices',
+        '#6366f1',
+        '⚖️'
+      );
+      STATE.alertCount = 1;
+      STATE.newAlerts.push({
+        source:'edpb',
+        title:'EDPB Opinion 12/2026 — AI-Generated Audience Targeting',
+        pubDate: new Date().toISOString(),
+        link:'https://edpb.europa.eu',
+      });
+      updateAlertBadge();
+      document.getElementById('new-radar').style.display = '';
+    }
+  }, 4000);
+
+  startSyncLoop();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+// ════════════════════════════════════════════════════════
+// FEEDBACK
+// ════════════════════════════════════════════════════════
+
+// Formspree endpoint — replace FORM_ID after creating form at formspree.io
+const FORMSPREE_URL = 'https://formspree.io/f/xpwwgdqr';
+
+let fbRating = 0;
+
+function openFeedback() {
+  const overlay = document.getElementById('feedback-overlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Reset to form view
+  document.getElementById('fb-form-body').style.display = '';
+  document.getElementById('fb-thankyou').style.display = 'none';
+  document.getElementById('fb-submit-row').style.display = '';
+}
+
+function closeFeedback() {
+  document.getElementById('feedback-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeFeedbackIfOutside(e) {
+  if (e.target === document.getElementById('feedback-overlay')) closeFeedback();
+}
+
+function setRating(val) {
+  fbRating = val;
+  document.getElementById('fb-rating-val').value = val;
+  document.querySelectorAll('.fb-star').forEach((s, i) => {
+    s.classList.toggle('active', i < val);
+  });
+}
+
+function toggleCheck(label) {
+  // Don't double-toggle — the click already toggled the checkbox
+  const cb = label.querySelector('input[type=checkbox]');
+  label.classList.toggle('checked', cb.checked);
+}
+
+async function submitFeedback(e) {
+  if (e) e.preventDefault();
+
+  const role = document.getElementById('fb-role').value;
+  if (!role) {
+    document.getElementById('fb-role').focus();
+    document.getElementById('fb-role').style.borderColor = '#8B2535';
+    setTimeout(() => document.getElementById('fb-role').style.borderColor = '', 1500);
+    return;
+  }
+
+  const btn = document.getElementById('fb-submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  const form = document.getElementById('fb-form');
+  const data = new FormData(form);
+
+  // Collect checkboxes manually
+  const useful = Array.from(form.querySelectorAll('input[type=checkbox]:checked')).map(c => c.value);
+  data.set('useful_features', useful.join(', ') || 'None selected');
+  data.set('rating', fbRating ? `${fbRating}/5 stars` : 'Not rated');
+
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      body: data,
+      headers: { Accept: 'application/json' },
+    });
+
+    if (res.ok) {
+      showThankyou();
+    } else {
+      const json = await res.json().catch(() => ({}));
+      // Formspree may return errors array
+      throw new Error(json.errors?.map(e => e.message).join(', ') || `HTTP ${res.status}`);
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Send Feedback';
+    // Fallback: open mailto
+    const body = encodeURIComponent(
+      `Role: ${role}\nRating: ${fbRating}/5\nUseful: ${useful.join(', ')}\n\nComments: ${document.getElementById('fb-comments').value}\n\nFrom: ${document.getElementById('fb-name').value} <${document.getElementById('fb-email').value}>`
+    );
+    window.location.href = `mailto:sravan.prathy@gmail.com?subject=PrivacyWatch%20Feedback&body=${body}`;
+    showThankyou();
+  }
+}
+
+function showThankyou() {
+  document.getElementById('fb-form-body').style.display = 'none';
+  document.getElementById('fb-submit-row').style.display = 'none';
+  document.getElementById('fb-thankyou').style.display = 'block';
+  // Reset form for next time
+  document.getElementById('fb-form').reset();
+  fbRating = 0;
+  document.querySelectorAll('.fb-star').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.fb-check-item').forEach(l => l.classList.remove('checked'));
+}
+
+// Keyboard: Escape closes modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeFeedback();
+});
+</script>
+</body>
+</html>
