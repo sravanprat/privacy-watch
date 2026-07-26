@@ -1973,7 +1973,7 @@ function focusReg(id) {
 // ════════════════════════════════════════════════════════
 
 const RSS_FEEDS = [
-  {id:'ftc',   source:'ftc',   url:'https://www.ftc.gov/news-events/news/press-releases.rss', label:'FTC'},
+  {id:'ftc',   source:'ftc',   url:'https://www.ftc.gov/feeds/press-release.xml', label:'FTC'},
   {id:'iapp',  source:'iapp',  url:'https://iapp.org/news/rss/', label:'IAPP'},
   {id:'iab',   source:'iab',   url:'https://iabtechlab.com/feed/', label:'IAB Tech Lab'},
   {id:'cnil',  source:'cnil',  url:'https://www.cnil.fr/fr/rss.xml', label:'CNIL'},
@@ -1983,12 +1983,13 @@ const RSS_FEEDS = [
 ];
 
 async function fetchFeed(feed) {
-  const proxy = `https://api.allorigins.win/get?disableCache=true&url=${encodeURIComponent(feed.url)}`;
-  const res = await fetch(proxy, { signal: AbortSignal.timeout(8000) });
+  // Use our own Netlify serverless function to avoid CORS and proxy reliability issues
+  const endpoint = `/.netlify/functions/rss?url=${encodeURIComponent(feed.url)}`;
+  const res = await fetch(endpoint, { signal: AbortSignal.timeout(12000) });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const data = await res.json();
+  const text = await res.text();
   const parser = new DOMParser();
-  const xml = parser.parseFromString(data.contents, 'text/xml');
+  const xml = parser.parseFromString(text, 'text/xml');
   const items = xml.querySelectorAll('item');
   return Array.from(items).slice(0, 10).map(item => ({
     source: feed.source,
