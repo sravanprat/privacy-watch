@@ -2,7 +2,7 @@
 
 A real-time regulatory monitoring tool for privacy lawyers and compliance professionals who advise the adtech ecosystem. Tracks **32 sources** across US federal, US state AGs, EU DPAs, EU legislation, UK, international regulators, courts, industry standards bodies, and platforms — with citations to primary sources.
 
-**Live site:** [sravanprat.github.io/privacy-watch](https://sravanprat.github.io/privacy-watch/) · [About page](https://sravanprat.github.io/privacy-watch/about.html)
+**Live site:** [privacywatch.io](https://privacywatch.io) · [About page](https://privacywatch.io/about.html)
 
 ---
 
