@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — PrivacyWatch</title>
+<meta name="description" content="PrivacyWatch tracks adtech privacy regulations, enforcement actions, and technical standards for privacy lawyers and compliance professionals.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1A2744;--navy-mid:#253660;--navy-light:#344a7a;
+  --ivory:#F8F6F1;--cream:#FFFFFF;--warm-gray:#F4F1EA;--tan:#EDE9DF;
+  --border:rgba(26,39,68,0.10);
+  --gold:#C4973B;--gold-dim:rgba(196,151,59,0.10);--gold-border:rgba(196,151,59,0.25);
+  --slate:#2A4580;--slate-dim:rgba(42,69,128,0.08);
+  --text:#1A2744;--text-mid:#4A5568;--text-muted:#8B9BB4;
+  --green:#2D6A4F;--burgundy:#8B2535;--amber:#B8762E;
+  --font:'Inter',system-ui,sans-serif;--serif:'Lora',Georgia,serif;
+  --ease:cubic-bezier(0.4,0,0.2,1);
+}
+html,body{background:var(--ivory);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--slate);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── NAV ── */
+.site-nav{
+  background:var(--navy);padding:0 40px;height:52px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.nav-logo{font-size:11px;font-weight:800;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
+.nav-logo span{color:#E8ECF4;font-weight:600;letter-spacing:.15em}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-link{font-size:12px;font-weight:500;color:rgba(232,236,244,0.55);transition:color .15s;letter-spacing:.02em}
+.nav-link:hover{color:#E8ECF4;text-decoration:none}
+.nav-link.active{color:#E8ECF4}
+.nav-cta{
+  padding:6px 16px;border-radius:4px;background:var(--gold);color:var(--navy);
+  font-size:12px;font-weight:700;letter-spacing:.04em;transition:all .15s;
+}
+.nav-cta:hover{background:#D4A74B;text-decoration:none}
+
+/* ── PAGE SECTIONS ── */
+section{padding:80px 0}
+.container{max-width:860px;margin:0 auto;padding:0 40px}
+.container-wide{max-width:1100px;margin:0 auto;padding:0 40px}
+
+/* ── HERO ── */
+.hero{background:var(--navy);padding:96px 0 80px;position:relative;overflow:hidden}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 60% 50%, rgba(196,151,59,0.08) 0%, transparent 70%),
+              radial-gradient(ellipse 50% 80% at 10% 100%, rgba(42,69,128,0.15) 0%, transparent 60%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;
+}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:.7}
+.hero h1{
+  font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-.03em;
+  color:#E8ECF4;line-height:1.15;margin-bottom:20px;max-width:680px;
+}
+.hero h1 em{color:var(--gold);font-style:normal}
+.hero-deck{
+  font-size:18px;color:rgba(232,236,244,0.65);line-height:1.7;
+  max-width:560px;margin-bottom:36px;font-weight:300;
+}
+.hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;border-radius:6px;background:var(--gold);
+  color:var(--navy);font-size:13px;font-weight:700;letter-spacing:.03em;
+  transition:all .2s;border:none;cursor:pointer;
+}
+.btn-primary:hover{background:#D4A74B;transform:translateY(-1px);box-shadow:0 4px 16px rgba(196,151,59,0.3);text-decoration:none}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;border-radius:6px;
+  border:1px solid rgba(232,236,244,0.2);color:rgba(232,236,244,0.7);
+  font-size:13px;font-weight:500;transition:all .2s;
+}
+.btn-secondary:hover{border-color:rgba(232,236,244,0.45);color:#E8ECF4;text-decoration:none}
+.hero-note{font-size:11px;color:rgba(232,236,244,0.35);margin-top:14px;letter-spacing:.02em}
+
+/* ── STAT STRIP ── */
+.stat-strip{background:var(--cream);border-bottom:1px solid var(--border);border-top:1px solid var(--border);padding:32px 0}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.stat-item{padding:0 32px;border-right:1px solid var(--border);text-align:center}
+.stat-item:last-child{border-right:none}
+.stat-value{font-size:28px;font-weight:800;color:var(--navy);letter-spacing:-.02em;display:block;margin-bottom:4px}
+.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em}
+
+/* ── PROBLEM ── */
+.problem-section{background:var(--ivory)}
+.section-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.section-title{font-size:clamp(22px,3.5vw,32px);font-weight:700;letter-spacing:-.02em;color:var(--navy);line-height:1.3;margin-bottom:16px}
+.section-deck{font-size:16px;color:var(--text-mid);line-height:1.75;max-width:580px;margin-bottom:32px}
+.problem-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:40px}
+.problem-card{
+  padding:24px;border-radius:8px;background:var(--cream);
+  border:1px solid var(--border);border-top:3px solid var(--burgundy);
+  box-shadow:0 2px 8px rgba(26,39,68,0.05);
+}
+.problem-card.amber{border-top-color:var(--amber)}
+.problem-card.slate{border-top-color:var(--slate)}
+.problem-icon{font-size:22px;margin-bottom:12px}
+.problem-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.problem-body{font-size:13px;color:var(--text-mid);line-height:1.65}
+
+/* ── SOLUTION ── */
+.solution-section{background:var(--cream)}
+.solution-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.solution-visual{
+  background:var(--navy);border-radius:12px;padding:28px;
+  box-shadow:0 8px 32px rgba(26,39,68,0.15);position:relative;overflow:hidden;
+}
+.solution-visual::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 80% 20%, rgba(196,151,59,0.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+.sv-topbar{display:flex;align-items:center;gap:8px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sv-logo{font-size:9px;font-weight:800;letter-spacing:.25em;color:var(--gold);text-transform:uppercase}
+.sv-dot{width:5px;height:5px;border-radius:50%;background:#22c55e;box-shadow:0 0 4px rgba(34,197,94,.5);margin-left:auto}
+.sv-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:12px 14px;margin-bottom:8px;border-left:3px solid var(--sv-color,#C4973B)}
+.sv-card-label{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sv-color,#C4973B);margin-bottom:4px}
+.sv-card-title{font-size:11px;color:rgba(232,236,244,0.9);font-weight:500;line-height:1.4;margin-bottom:6px}
+.sv-card-cite{font-size:9px;color:rgba(232,236,244,0.35);font-family:monospace}
+.sv-card-link{display:inline-block;font-size:9px;font-weight:600;color:rgba(196,151,59,0.8);margin-top:5px}
+
+/* ── FOR WHO ── */
+.audience-section{background:var(--ivory)}
+.audience-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.audience-card{
+  background:var(--cream);border:1px solid var(--border);border-radius:10px;
+  padding:28px 24px;box-shadow:0 2px 8px rgba(26,39,68,0.05);
+  transition:transform .2s,box-shadow .2s;
+}
+.audience-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(26,39,68,0.10)}
+.audience-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--navy);display:flex;align-items:center;justify-content:center;
+  font-size:18px;margin-bottom:16px;flex-shrink:0;
+}
+.audience-role{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.audience-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:10px;letter-spacing:-.01em}
+.audience-body{font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:16px}
+.audience-gets{list-style:none;display:flex;flex-direction:column;gap:6px}
+.audience-gets li{font-size:12px;color:var(--text-mid);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.audience-gets li::before{content:'✓';color:var(--green);font-weight:700;font-size:11px;margin-top:1px;flex-shrink:0}
+
+/* ── FEATURES ── */
+.features-section{background:var(--cream)}
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
+.feature-card{
+  display:flex;gap:16px;padding:22px 20px;
+  background:var(--ivory);border:1px solid var(--border);border-radius:8px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.feature-card:hover{border-color:rgba(26,39,68,0.20);box-shadow:0 3px 12px rgba(26,39,68,0.07)}
+.feature-icon{
+  width:40px;height:40px;border-radius:8px;background:var(--navy);
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;
+}
+.feature-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.01em}
+.feature-body{font-size:12.5px;color:var(--text-mid);line-height:1.6}
+.feature-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-top:8px}
+.badge-live{background:rgba(45,106,79,.08);color:#2D6A4F;border:1px solid rgba(45,106,79,.2)}
+.badge-new{background:rgba(139,37,53,.08);color:#8B2535;border:1px solid rgba(139,37,53,.2)}
+.badge-beta{background:rgba(42,69,128,.08);color:#2A4580;border:1px solid rgba(42,69,128,.2)}
+
+/* ── SOURCES ── */
+.sources-section{background:var(--ivory)}
+.sources-intro{font-size:15px;color:var(--text-mid);line-height:1.75;max-width:580px;margin-bottom:40px}
+.sources-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.source-tile{
+  padding:18px 16px;border-radius:8px;background:var(--cream);
+  border:1px solid var(--border);border-top:3px solid var(--src-color,var(--navy));
+  box-shadow:0 1px 4px rgba(26,39,68,0.05);
+}
+.source-abbr{font-size:13px;font-weight:800;color:var(--src-color,var(--navy));letter-spacing:.03em;margin-bottom:3px}
+.source-name{font-size:11px;color:var(--text-muted);margin-bottom:6px;line-height:1.4}
+.source-what{font-size:11.5px;color:var(--text-mid);line-height:1.55}
+
+/* ── HOW IT WORKS ── */
+.how-section{background:var(--cream)}
+.how-steps{display:flex;flex-direction:column;gap:0;margin-top:40px;max-width:640px}
+.how-step{display:flex;gap:24px;padding:24px 0;border-bottom:1px solid var(--border);position:relative}
+.how-step:last-child{border-bottom:none}
+.step-num{
+  width:36px;height:36px;border-radius:50%;background:var(--navy);
+  color:#E8ECF4;font-size:13px;font-weight:800;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px;letter-spacing:-.01em;
+}
+.step-body{}
+.step-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:5px;letter-spacing:-.01em}
+.step-desc{font-size:13.5px;color:var(--text-mid);line-height:1.65}
+.step-note{font-size:11px;color:var(--text-muted);margin-top:6px;font-style:italic}
+
+/* ── DISCLAIMER ── */
+.disclaimer-section{
+  background:var(--warm-gray);border-top:1px solid var(--border);
+  padding:36px 0;
+}
+.disclaimer-box{
+  display:flex;gap:16px;align-items:flex-start;padding:20px 24px;
+  background:var(--cream);border:1px solid var(--border);border-left:3px solid var(--amber);
+  border-radius:8px;
+}
+.disclaimer-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.disclaimer-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.disclaimer-body{font-size:12.5px;color:var(--text-mid);line-height:1.65}
+.disclaimer-body a{color:var(--slate);font-weight:500}
+
+/* ── FOOTER ── */
+footer{background:var(--navy);padding:40px 0;color:rgba(232,236,244,0.5)}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-size:10px;font-weight:800;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
+.footer-logo span{color:rgba(232,236,244,0.5);font-weight:500;letter-spacing:.1em}
+.footer-links{display:flex;gap:20px}
+.footer-link{font-size:12px;color:rgba(232,236,244,0.4);transition:color .15s}
+.footer-link:hover{color:#E8ECF4;text-decoration:none}
+.footer-note{font-size:11px;color:rgba(232,236,244,0.3);width:100%;text-align:center;margin-top:8px;border-top:1px solid rgba(255,255,255,0.06);padding-top:20px}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .container,.container-wide{padding:0 20px}
+  section{padding:56px 0}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .stat-item{border-right:none;border-bottom:1px solid var(--border);padding:16px}
+  .stat-item:nth-child(odd){border-right:1px solid var(--border)}
+  .stat-item:last-child{border-bottom:none}
+  .problem-grid,.audience-grid{grid-template-columns:1fr}
+  .solution-layout{grid-template-columns:1fr}
+  .solution-visual{display:none}
+  .features-grid{grid-template-columns:1fr}
+  .sources-grid{grid-template-columns:1fr 1fr}
+  .footer-inner{flex-direction:column;text-align:center}
+  .footer-links{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="site-nav">
+  <div class="nav-logo">Privacy<span>Watch</span></div>
+  <div class="nav-links">
+    <a href="about.html" class="nav-link active">About</a>
+    <a href="index.html" class="nav-link">Radar</a>
+    <a href="index.html" class="nav-cta">Open App →</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Adtech Privacy Intelligence</div>
+    <h1>The regulatory radar built for <em>privacy lawyers</em> in adtech</h1>
+    <p class="hero-deck">
+      Adtech privacy law moves faster than any newsletter can track. PrivacyWatch monitors IAPP, IAB Europe, FTC, CPPA, EDPB, ICO, and W3C in real time — so you stay ahead of the next enforcement wave, not behind it.
+    </p>
+    <div class="hero-actions">
+      <a href="index.html" class="btn-primary">Open PrivacyWatch →</a>
+      <a href="#features" class="btn-secondary">See what's inside</a>
+    </div>
+    <p class="hero-note">Beta · AI-generated content · Always verify against primary sources</p>
+  </div>
+</section>
+
+<!-- ── STAT STRIP ── -->
+<div class="stat-strip">
+  <div class="container-wide">
+    <div class="stat-grid">
+      <div class="stat-item">
+        <span class="stat-value">7</span>
+        <span class="stat-label">Regulatory sources</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">8</span>
+        <span class="stat-label">Active adtech developments</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">5</span>
+        <span class="stat-label">Technical standards tracked</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">6</span>
+        <span class="stat-label">Upcoming deadlines</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROBLEM ── -->
+<section class="problem-section">
+  <div class="container">
+    <div class="section-eyebrow">The problem</div>
+    <h2 class="section-title">Adtech privacy law is a patchwork of overlapping jurisdictions, fast-moving standards, and simultaneous enforcement — and it never slows down</h2>
+    <p class="section-deck">Lawyers advising adtech clients today are expected to track California, the EU, the UK, and a dozen US states simultaneously — while standards bodies like the IAB and W3C rewrite the technical foundations every six months.</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">🌐</div>
+        <div class="problem-title">Six jurisdictions, one client</div>
+        <div class="problem-body">A single DSP client faces CPRA, GDPR, UK GDPR, and emerging state laws simultaneously — each with different rules on consent, legitimate interest, and data broker registration.</div>
+      </div>
+      <div class="problem-card amber">
+        <div class="problem-icon">⚡</div>
+        <div class="problem-title">Standards change mid-case</div>
+        <div class="problem-body">IAB Europe's TCF v3.0 is removing legitimate interest as a legal basis for behavioral advertising. W3C's GPC spec just became a Candidate Recommendation. Your advice has to keep up.</div>
+      </div>
+      <div class="problem-card slate">
+        <div class="problem-icon">🔍</div>
+        <div class="problem-title">Enforcement is escalating</div>
+        <div class="problem-body">CPPA, ICO, and EDPB are all actively auditing adtech simultaneously. Missing one enforcement wave means your clients get letters instead of preparation time.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOLUTION ── -->
+<section class="solution-section">
+  <div class="container">
+    <div class="solution-layout">
+      <div class="solution-text">
+        <div class="section-eyebrow">What PrivacyWatch does</div>
+        <h2 class="section-title">One place to watch everything that matters for adtech privacy counsel</h2>
+        <p class="section-deck">PrivacyWatch aggregates regulatory developments, enforcement actions, technical standards changes, and compliance deadlines — all in one tool, all with citations to primary sources so you can verify before you advise.</p>
+        <p style="font-size:13.5px;color:var(--text-mid);line-height:1.75;margin-bottom:16px">
+          Every item links directly to the official regulation text, guidance document, or enforcement notice. Nothing goes unsourced.
+        </p>
+        <p style="font-size:13.5px;color:var(--text-mid);line-height:1.75">
+          A built-in search panel lets you query across all content — type <em>legitimate interest</em>, <em>TCF</em>, or <em>GPC</em> and see every relevant regulation, standard, and deadline in seconds.
+        </p>
+      </div>
+      <div class="solution-visual" aria-hidden="true">
+        <div class="sv-topbar">
+          <div class="sv-logo">Privacy<span style="color:rgba(232,236,244,0.5)">Watch</span></div>
+          <div class="sv-dot"></div>
+        </div>
+        <div class="sv-card" style="--sv-color:#8B2535">
+          <div class="sv-card-label">CPPA · California · EFFECTIVE</div>
+          <div class="sv-card-title">ADMT Regulations — Effective July 1, 2026</div>
+          <div class="sv-card-cite">Cal. Civ. Code § 1798.185(a)(16) · CPRA ADMT Regs., Art. 11</div>
+          <div class="sv-card-link">↗ Official Regulations Text</div>
+        </div>
+        <div class="sv-card" style="--sv-color:#5B3A8C">
+          <div class="sv-card-label">IAB Europe · EU / GDPR · CONSULTATION</div>
+          <div class="sv-card-title">TCF v3.0 — Public Consultation Open until Aug 15</div>
+          <div class="sv-card-cite">GDPR Art. 6(1)(a) & Art. 7 · IAB Europe TCF v3.0 Draft</div>
+          <div class="sv-card-link">↗ TCF v3.0 Consultation</div>
+        </div>
+        <div class="sv-card" style="--sv-color:#2A4580">
+          <div class="sv-card-label">EDPB · EU / GDPR · FINAL</div>
+          <div class="sv-card-title">Guidelines 1/2024: Legitimate Interest — LI invalid for behavioral advertising</div>
+          <div class="sv-card-cite">GDPR Art. 6(1)(f) · EDPB Guidelines 1/2024 (final, June 2026)</div>
+          <div class="sv-card-link">↗ EDPB Guidelines 1/2024</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOR WHO ── -->
+<section class="audience-section" id="audience">
+  <div class="container">
+    <div class="section-eyebrow">Who it's for</div>
+    <h2 class="section-title">Built for privacy professionals who advise the adtech ecosystem</h2>
+    <p class="section-deck">Whether you're external counsel advising DSPs and SSPs, in-house at a publisher, or running compliance at a CMP — PrivacyWatch is tuned for the overlapping regulatory complexity you live in every day.</p>
+    <div class="audience-grid">
+
+      <div class="audience-card">
+        <div class="audience-avatar">⚖️</div>
+        <div class="audience-role">External counsel</div>
+        <div class="audience-title">Adtech Privacy Lawyer</div>
+        <div class="audience-body">You advise DSPs, SSPs, CMPs, data brokers, and publishers on regulatory risk. You need to know what changed, what the deadline is, and what to tell clients — fast.</div>
+        <ul class="audience-gets">
+          <li>Enforcement actions with citations and deadlines</li>
+          <li>Draft client advisory language via search panel</li>
+          <li>Jurisdiction-by-jurisdiction filter (EU, CA, UK, Multi-state)</li>
+          <li>Standards changes that affect your clients' tech stack</li>
+        </ul>
+      </div>
+
+      <div class="audience-card">
+        <div class="audience-avatar">🏛️</div>
+        <div class="audience-role">In-house counsel</div>
+        <div class="audience-title">General Counsel / Privacy Lead</div>
+        <div class="audience-body">You own the compliance posture across your company's adtech infrastructure. You need a single view of what's live, what's coming, and what you're already late on.</div>
+        <ul class="audience-gets">
+          <li>Deadline tracker sorted by urgency — nothing slips</li>
+          <li>Standards tracker for your engineering team's roadmap</li>
+          <li>Alerts when new enforcement actions or rules drop</li>
+          <li>Primary source links for board-level reporting</li>
+        </ul>
+      </div>
+
+      <div class="audience-card">
+        <div class="audience-avatar">🔒</div>
+        <div class="audience-role">Compliance</div>
+        <div class="audience-title">Privacy & Compliance Officer</div>
+        <div class="audience-body">You translate legal requirements into operational controls. You need to know which technical standards changed, which GPC signals to propagate, and which OpenRTB fields are now mandatory.</div>
+        <ul class="audience-gets">
+          <li>Standards tracker: IAB TCF, GPP, OpenRTB, Apple ATT</li>
+          <li>GPC and consent signal propagation requirements</li>
+          <li>CPPA audit checklist items with statutory citations</li>
+          <li>Live feed of FTC, IAPP, and IAB Tech Lab updates</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="section-eyebrow">Features</div>
+    <h2 class="section-title">What you get inside PrivacyWatch</h2>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">📡</div>
+        <div>
+          <div class="feature-title">Regulation Radar</div>
+          <div class="feature-body">A live feed of adtech regulatory developments across CPPA, EDPB, FTC, ICO, IAB, and W3C — each with status (EFFECTIVE, CONSULTATION, ENFORCEMENT), priority flag, action item, and citation to primary source.</div>
+          <span class="feature-badge badge-live">Live</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚙️</div>
+        <div>
+          <div class="feature-title">Standards Tracker</div>
+          <div class="feature-body">Track the technical standards your clients' systems run on: IAB Europe TCF (v2.2 → v3.0), IAB GPP, Google Privacy Sandbox APIs, Apple ATT, and OpenRTB — with version history, impact level, and spec links.</div>
+          <span class="feature-badge badge-live">Live</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⏱️</div>
+        <div>
+          <div class="feature-title">Deadline Tracker</div>
+          <div class="feature-body">Upcoming compliance deadlines sorted by urgency with day countdown, statutory citation, and a direct link to the source. Never miss a response window or risk assessment due date again.</div>
+          <span class="feature-badge badge-live">Live</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <div>
+          <div class="feature-title">Content Search</div>
+          <div class="feature-body">Search across all regulations, standards, deadlines, and live feed in real time. Type a term — <em>legitimate interest</em>, <em>TCF</em>, <em>GPC</em> — and see every matching item with highlighted excerpts and citations.</div>
+          <span class="feature-badge badge-beta">Beta</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📜</div>
+        <div>
+          <div class="feature-title">Primary Source Citations</div>
+          <div class="feature-body">Every item links directly to the official text — regulation, enforcement notice, spec document, or official guidance. Statutory citations (Cal. Civ. Code §, GDPR Art. 6) are shown alongside every card.</div>
+          <span class="feature-badge badge-live">Live</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <div>
+          <div class="feature-title">Live Feed & Alerts</div>
+          <div class="feature-body">Real-time RSS from FTC, IAPP, and IAB Tech Lab with auto-sync every 10 minutes. New items trigger an alert badge and optional browser notification — so you know the moment something drops.</div>
+          <span class="feature-badge badge-beta">Beta</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SOURCES ── -->
+<section class="sources-section" id="sources">
+  <div class="container">
+    <div class="section-eyebrow">Data sources</div>
+    <h2 class="section-title">Sourced from the authoritative bodies that shape adtech privacy law</h2>
+    <p class="sources-intro">PrivacyWatch monitors primary regulatory and standards sources — not news aggregators. Every item is traced back to an official document, enforcement notice, or specification.</p>
+    <div class="sources-grid">
+      <div class="source-tile" style="--src-color:#8B2535">
+        <div class="source-abbr">FTC</div>
+        <div class="source-name">Federal Trade Commission</div>
+        <div class="source-what">Rulemaking, enforcement actions, commercial surveillance rule, data broker actions</div>
+      </div>
+      <div class="source-tile" style="--src-color:#B8762E">
+        <div class="source-abbr">CPPA</div>
+        <div class="source-name">CA Privacy Protection Agency</div>
+        <div class="source-what">CPRA regulations, ADMT rules, adtech audit initiative, GPC enforcement</div>
+      </div>
+      <div class="source-tile" style="--src-color:#2A4580">
+        <div class="source-abbr">EDPB</div>
+        <div class="source-name">European Data Protection Board</div>
+        <div class="source-what">GDPR guidelines, legitimate interest decisions, DPA enforcement coordination</div>
+      </div>
+      <div class="source-tile" style="--src-color:#5B3A8C">
+        <div class="source-abbr">IAB Europe</div>
+        <div class="source-name">IAB Europe / IAB Tech Lab</div>
+        <div class="source-what">TCF framework, GPP standard, OpenRTB spec, AdsCert, sellers.json</div>
+      </div>
+      <div class="source-tile" style="--src-color:#1E6B7A">
+        <div class="source-abbr">ICO</div>
+        <div class="source-name">UK Information Commissioner</div>
+        <div class="source-what">UK GDPR enforcement, adtech RTB investigation, SSP enforcement notices</div>
+      </div>
+      <div class="source-tile" style="--src-color:#2D6A4F">
+        <div class="source-abbr">W3C</div>
+        <div class="source-name">World Wide Web Consortium</div>
+        <div class="source-what">GPC specification, Privacy Sandbox APIs, Privacy CG working group</div>
+      </div>
+      <div class="source-tile" style="--src-color:#4A5568">
+        <div class="source-abbr">IAPP</div>
+        <div class="source-name">Intl. Assoc. of Privacy Professionals</div>
+        <div class="source-what">Legislative tracker, APRA updates, state law developments, enforcement news</div>
+      </div>
+      <div class="source-tile" style="--src-color:#1A2744">
+        <div class="source-abbr">More</div>
+        <div class="source-name">Additional regulators</div>
+        <div class="source-what">Federal Register, state AGs, Congress.gov legislative tracking — expanding continuously</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how-section" id="how">
+  <div class="container">
+    <div class="section-eyebrow">How it works</div>
+    <h2 class="section-title">Simple to start, useful every day</h2>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Open the Regulation Radar</div>
+          <div class="step-desc">All active adtech regulatory developments are shown in priority order — EFFECTIVE rules first, then ENFORCEMENT actions, then open CONSULTATIONs. Filter by source or jurisdiction from the left rail.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Click any item to read the full development</div>
+          <div class="step-desc">Each card shows the summary, the action your clients need to take, the compliance deadline, and direct links to the primary source documents — regulation text, enforcement notice, or spec.</div>
+          <div class="step-note">Citations include the exact statutory reference (e.g., Cal. Civ. Code § 1798.185(a)(16)) so you can go straight to the authoritative text.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Search across everything</div>
+          <div class="step-desc">Type any term into the right-hand search panel — <em>legitimate interest</em>, <em>GPC propagation</em>, <em>TCF</em>, <em>DSP California</em> — and see matching items from regulations, standards, and deadlines with highlighted matches.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Check the Standards Tracker before advising on tech</div>
+          <div class="step-desc">When a client asks about cookie deprecation, consent string migration, or GPC implementation — the Standards Tracker shows the current version, next version, and what's changing in each major framework.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Stay current with live alerts</div>
+          <div class="step-desc">Enable browser notifications and PrivacyWatch will alert you the moment a new item appears from your watched sources. The site auto-syncs every 10 minutes from FTC, IAPP, and IAB feeds.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DISCLAIMER ── -->
+<section class="disclaimer-section">
+  <div class="container">
+    <div class="disclaimer-box">
+      <div class="disclaimer-icon">ⓘ</div>
+      <div>
+        <div class="disclaimer-title">AI-generated content — verify before advising</div>
+        <div class="disclaimer-body">
+          PrivacyWatch is a research and monitoring tool in beta. Regulatory summaries, action items, and deadlines are AI-generated and may be incomplete, outdated, or imprecise. Always verify against primary sources before relying on this content for legal advice. Every item includes citation links to the authoritative source — use them. This tool is not a substitute for independent legal research or professional judgment.
+          <br><br>
+          Source links verified against official government and standards body URLs. Report broken links or inaccuracies using the <a href="index.html">feedback button</a> in the app.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">Privacy<span>Watch</span></div>
+      <div class="footer-links">
+        <a href="index.html" class="footer-link">Open App</a>
+        <a href="about.html" class="footer-link">About</a>
+        <a href="https://github.com/sravanprat/privacy-watch" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <div class="footer-note">
+      Beta · AI-generated content · Not legal advice · Always verify against primary sources<br>
+      Built for the adtech privacy community · Feedback welcome via the app
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
