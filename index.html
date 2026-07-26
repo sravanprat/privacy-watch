@@ -2567,8 +2567,8 @@ document.addEventListener('DOMContentLoaded', init);
 // FEEDBACK
 // ════════════════════════════════════════════════════════
 
-// FormSubmit.co — free, no account. First submission sends Sravan a one-time activation email.
-const FORM_ENDPOINT = 'https://formsubmit.co/ajax/sravan.prathy@gmail.com';
+// Netlify function — sends FROM feedback@privacywatch.io via Resend
+const FORM_ENDPOINT = '/.netlify/functions/submit';
 
 let fbRating = 0;
 
@@ -2647,15 +2647,15 @@ async function submitFeedback(e) {
   try {
     const res = await fetch(FORM_ENDPOINT, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify(payload),
     });
     const data = await res.json().catch(() => ({}));
-    if (res.ok && (data.success === 'true' || data.success === true)) {
+    if (res.ok && (data.success === true || data.success === 'true')) {
       showThankyou();
       return;
     }
-    throw new Error(data.message || `HTTP ${res.status}`);
+    throw new Error(data.error || `HTTP ${res.status}`);
   } catch (err) {
     // Mailto fallback — opens email client as backup
     btn.disabled = false;
