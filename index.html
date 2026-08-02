@@ -665,6 +665,62 @@ html.dark #disclaimer{background:var(--depth-2);border-top-color:var(--border)}
 @keyframes badge-pop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
 @keyframes toast-in{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
 @keyframes toast-out{to{opacity:0;transform:translateX(20px)}}
+
+/* ── iOS SAFE AREAS (notch / home indicator) ── */
+#disclaimer{padding-bottom:env(safe-area-inset-bottom);height:calc(28px + env(safe-area-inset-bottom))}
+#app{height:calc(100vh - 28px);height:calc(100dvh - 28px)}
+#feedback-btn{bottom:calc(36px + env(safe-area-inset-bottom))}
+
+/* ── MOBILE NAV (hidden on desktop) ── */
+.mobile-nav-btn{
+  display:none;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,0.14);
+  background:rgba(255,255,255,0.07);color:rgba(232,236,244,0.60);cursor:pointer;font-size:15px;
+  align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;
+}
+.mobile-nav-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(196,151,59,0.10)}
+#mobile-backdrop{
+  display:none;position:fixed;top:56px;left:0;right:0;bottom:0;
+  background:rgba(10,13,20,0.45);z-index:35;opacity:0;transition:opacity .2s var(--ease);
+}
+#mobile-backdrop.open{display:block;opacity:1}
+
+/* ── COMPACT LAYOUT: iPad + iPhone (≤1100px) ── */
+@media (max-width:1100px){
+  #app{grid-template-columns:1fr;grid-template-rows:56px 1fr}
+  .mobile-nav-btn{display:flex}
+  .left-rail,.ai-panel{
+    position:fixed;top:56px;bottom:0;width:min(320px,85vw);z-index:40;
+    transition:transform .25s var(--ease);box-shadow:0 0 32px rgba(0,0,0,0.25);
+  }
+  .left-rail{left:0;transform:translateX(-100%)}
+  .left-rail.open{transform:translateX(0)}
+  .ai-panel{right:0;transform:translateX(100%)}
+  .ai-panel.open{transform:translateX(0)}
+  .center-stage{grid-column:1;grid-row:2;min-width:0}
+  .top-bar-label,.top-divider{display:none}
+  .top-bar{min-width:0}
+  .cite-links{flex-shrink:1;min-width:0}
+}
+
+/* ── PHONE (≤640px) ── */
+@media (max-width:640px){
+  .top-bar{padding:0 10px;gap:6px}
+  .last-sync,.top-about-link{display:none}
+  .top-logo{font-size:9px;letter-spacing:.06em}
+  .top-logo span{letter-spacing:.04em}
+  .alert-btn,.mode-toggle,.mobile-nav-btn{width:26px;height:26px;font-size:12px}
+  .sync-badge{padding:3px 6px}
+  .sync-badge span{display:none}
+  .top-bar{gap:5px}
+  .left-rail,.ai-panel{width:min(300px,88vw)}
+  .deadline-grid{grid-template-columns:1fr}
+  .fb-check-grid{grid-template-columns:1fr}
+  .radar-header{flex-direction:column;align-items:stretch}
+  .radar-stats{justify-content:flex-start}
+  #feedback-btn{padding:7px 14px;font-size:11.5px}
+  .reg-card-header,.std-card-header,.lfi-header{flex-wrap:wrap;row-gap:6px}
+  .reg-card-header .card-spacer{flex-basis:100%;height:0}
+}
 </style>
 </head>
 <body>
@@ -673,6 +729,7 @@ html.dark #disclaimer{background:var(--depth-2);border-top-color:var(--border)}
 
   <!-- ── TOP BAR ── -->
   <div class="top-bar">
+    <button class="mobile-nav-btn" onclick="toggleRail()" title="Menu" aria-label="Open navigation">☰</button>
     <a href="https://privacywatch.io" class="top-logo" style="text-decoration:none;cursor:pointer" title="PrivacyWatch Home">Privacy<span>Watch</span></a>
     <div class="top-divider"></div>
     <div class="sync-badge live" id="sync-badge" onclick="syncNow()" title="Click to sync">
@@ -681,15 +738,17 @@ html.dark #disclaimer{background:var(--depth-2);border-top-color:var(--border)}
     </div>
     <div class="top-divider"></div>
     <span class="top-bar-label">Adtech Privacy · Compliance Intelligence</span>
-    <a href="about.html" style="font-size:11px;color:rgba(232,236,244,0.40);font-weight:500;text-decoration:none;margin-left:4px;transition:color .15s" onmouseover="this.style.color='rgba(232,236,244,0.75)'" onmouseout="this.style.color='rgba(232,236,244,0.40)'">About</a>
+    <a href="about.html" class="top-about-link" style="font-size:11px;color:rgba(232,236,244,0.40);font-weight:500;text-decoration:none;margin-left:4px;transition:color .15s" onmouseover="this.style.color='rgba(232,236,244,0.75)'" onmouseout="this.style.color='rgba(232,236,244,0.40)'">About</a>
     <div class="top-spacer"></div>
     <span class="last-sync" id="last-sync-text">—</span>
+    <button class="mobile-nav-btn" onclick="toggleAIPanel()" title="Privacy Counsel AI" aria-label="Open Privacy Counsel AI">⚖</button>
     <button class="alert-btn" onclick="toggleAlerts()" title="Alerts">
       🔔
       <span class="alert-badge hidden" id="alert-badge">0</span>
     </button>
     <button class="mode-toggle" onclick="toggleMode()" title="Toggle light/dark">☾</button>
   </div>
+  <div id="mobile-backdrop" onclick="closeDrawers()"></div>
 
   <!-- ── LEFT RAIL ── -->
   <div class="left-rail">
@@ -1742,7 +1801,35 @@ function switchView(view) {
   }
   renderView();
   renderSuggestions();
+  closeDrawers(); // on mobile/tablet, picking a view should return focus to the content
 }
+
+// ── MOBILE / TABLET DRAWERS (left rail + AI panel) ──────
+function toggleRail() {
+  const rail = document.querySelector('.left-rail');
+  const isOpen = rail.classList.contains('open');
+  closeDrawers();
+  if (!isOpen) openDrawer(rail);
+}
+function toggleAIPanel() {
+  const panel = document.querySelector('.ai-panel');
+  const isOpen = panel.classList.contains('open');
+  closeDrawers();
+  if (!isOpen) openDrawer(panel);
+}
+function openDrawer(el) {
+  el.classList.add('open');
+  document.getElementById('mobile-backdrop').classList.add('open');
+}
+function closeDrawers() {
+  document.querySelector('.left-rail')?.classList.remove('open');
+  document.querySelector('.ai-panel')?.classList.remove('open');
+  document.getElementById('mobile-backdrop')?.classList.remove('open');
+}
+// Reset drawer state if the viewport crosses back to desktop width
+window.matchMedia('(min-width:1101px)').addEventListener('change', (e) => {
+  if (e.matches) closeDrawers();
+});
 
 // ── GROUPED FILTER RAIL ────────────────────────────────
 const FILTER_GROUPS = [
