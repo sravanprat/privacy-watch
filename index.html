@@ -2581,9 +2581,12 @@ function toggleMode() {
 
 function initDarkMode() {
   const saved = localStorage.getItem('pw-dark');
-  // Use saved preference, or fall back to OS preference
+  // Phones and tablets (≤1100px) default to the light theme regardless of OS
+  // preference; desktop still follows OS preference. A manual toggle (saved)
+  // always wins on any device.
+  const isCompact = window.matchMedia('(max-width:1100px)').matches;
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const dark = saved !== null ? saved === '1' : prefersDark;
+  const dark = saved !== null ? saved === '1' : (isCompact ? false : prefersDark);
   if (dark) document.documentElement.classList.add('dark');
   const btn = document.querySelector('.mode-toggle');
   if (btn) btn.textContent = dark ? '☀' : '☾';

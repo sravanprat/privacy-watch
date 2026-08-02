@@ -789,11 +789,13 @@ function toggleAboutMode() {
   const btn = document.getElementById('about-mode-btn');
   if (btn) btn.textContent = isDark ? '☀' : '☾';
 }
-// On load: respect saved preference or system preference
+// On load: respect saved preference, else OS preference on desktop —
+// phones and tablets (≤1100px) default to light regardless of OS setting.
 (function() {
   const saved = localStorage.getItem('pw-dark');
+  const isCompact = window.matchMedia('(max-width:1100px)').matches;
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const dark = saved !== null ? saved === '1' : prefersDark;
+  const dark = saved !== null ? saved === '1' : (isCompact ? false : prefersDark);
   if (dark) {
     document.documentElement.classList.add('dark');
     const btn = document.getElementById('about-mode-btn');
